@@ -1,46 +1,34 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import AuthCard from '../Components/AuthCard';
+import Field, { PrimaryButton } from '../Components/Field';
+import { useLink } from '../Components/LinkContext';
 
-// Dumb page: onSubmit({identifier, password}) and onVerifyMfa(code) come from the entry point.
-export default function Login({ mfaRequired = false, onSubmit, onVerifyMfa }) {
+// Dumb page: onSubmit({identifier, password, remember}) comes from the entry point.
+export default function Login({ errors = {}, flash = {}, onSubmit }) {
     const { t } = useTranslation();
+    const Link = useLink();
     const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
-    const [code, setCode] = useState('');
+    const [remember, setRemember] = useState(false);
 
     const submit = (e) => {
         e.preventDefault();
-        if (mfaRequired) onVerifyMfa?.(code);
-        else onSubmit?.({ identifier, password });
+        onSubmit?.({ identifier, password, remember });
     };
 
-    const field = 'mt-1 w-full rounded border px-3 py-2';
-
     return (
-        <div className="flex min-h-screen items-center justify-center">
-            <form onSubmit={submit} className="w-full max-w-sm space-y-4 rounded-lg bg-white p-8 shadow">
-                <h1 className="text-xl font-semibold">{mfaRequired ? t('login.mfaTitle') : t('login.title')}</h1>
-                {mfaRequired ? (
-                    <label className="block text-sm">
-                        {t('login.mfaCode')}
-                        <input value={code} onChange={(e) => setCode(e.target.value)} inputMode="numeric" maxLength={6} className={field} />
-                    </label>
-                ) : (
-                    <>
-                        <label className="block text-sm">
-                            {t('login.identifier')}
-                            <input value={identifier} onChange={(e) => setIdentifier(e.target.value)} className={field} />
-                        </label>
-                        <label className="block text-sm">
-                            {t('login.password')}
-                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className={field} />
-                        </label>
-                    </>
-                )}
-                <button className="w-full rounded bg-slate-900 py-2 text-white">
-                    {mfaRequired ? t('login.mfaSubmit') : t('login.submit')}
-                </button>
-            </form>
-        </div>
+        <AuthCard title={t('login.title')} status={flash.status} onSubmit={submit}>
+            <Field label={t('login.identifier')} value={identifier} onChange={(e) => setIdentifier(e.target.value)} error={errors.identifier} autoComplete="username" autoFocus />
+            <Field label={t('login.password')} type="password" value={password} onChange={(e) => setPassword(e.target.value)} error={errors.password} autoComplete="current-password" />
+            <div className="flex items-center justify-between text-sm">
+                <label className="flex items-center gap-2">
+                    <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
+                    {t('login.remember')}
+                </label>
+                <Link href="/forgot-password" className="underline">{t('login.forgot')}</Link>
+            </div>
+            <PrimaryButton>{t('login.submit')}</PrimaryButton>
+        </AuthCard>
     );
 }

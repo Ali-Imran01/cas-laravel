@@ -37,7 +37,13 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            //
+            'locale' => app()->getLocale(),
+            'auth' => ['user' => $request->user()?->only(['id', 'staff_id', 'name', 'email', 'mfa_enabled'])],
+            // Read at render time, so flash data set by the previous request is still there.
+            'flash' => fn () => [
+                'status' => $request->session()->get('status'),
+                'recoveryCodes' => $request->session()->get('recoveryCodes'),
+            ],
         ];
     }
 }

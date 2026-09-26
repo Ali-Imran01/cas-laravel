@@ -1,8 +1,26 @@
 {
   "app": { "name": "CAS", "tagline": "Sistem Pentadbiran Berpusat" },
   "nav": { "dashboard": "Papan pemuka", "users": "Pengguna", "roles": "Peranan & kebenaran", "organization": "Organisasi", "apps": "Aplikasi bersambung", "approvals": "Kelulusan", "audit": "Log audit", "settings": "Tetapan" },
-  "login": { "title": "Log masuk", "identifier": "ID staf atau e-mel", "password": "Kata laluan", "submit": "Log masuk", "mfaTitle": "Pengesahan dua langkah", "mfaCode": "Kod 6 digit", "mfaSubmit": "Sahkan" },
+  "login": { "title": "Log masuk", "identifier": "ID staf atau e-mel", "password": "Kata laluan", "remember": "Kekalkan log masuk", "forgot": "Lupa kata laluan?", "submit": "Log masuk" },
+  "mfa": {
+    "title": "Pengesahan dua langkah", "totp": "Aplikasi pengesah", "email": "Kod e-mel", "recovery": "Kod pemulihan",
+    "code": "Kod", "submit": "Sahkan", "sendEmail": "E-mel kod kepada saya", "back": "Kembali ke log masuk"
+  },
+  "forgot": { "title": "Set semula kata laluan", "email": "E-mel", "submit": "Hantar pautan set semula", "back": "Kembali ke log masuk" },
+  "reset": { "title": "Pilih kata laluan baharu", "email": "E-mel", "password": "Kata laluan baharu", "confirm": "Sahkan kata laluan baharu", "submit": "Tetapkan kata laluan" },
+  "password": {
+    "title": "Tukar kata laluan", "forced": "Anda mesti memilih kata laluan baharu sebelum meneruskan.", "current": "Kata laluan semasa",
+    "new": "Kata laluan baharu", "confirm": "Sahkan kata laluan baharu", "submit": "Kemas kini kata laluan",
+    "policy": "Sekurang-kurangnya 12 aksara dengan huruf besar dan kecil, nombor dan simbol. 5 kata laluan terakhir anda tidak boleh digunakan semula."
+  },
+  "mfaSetup": {
+    "title": "Pengesahan dua langkah", "intro": "Imbas kod QR dengan aplikasi pengesah, kemudian masukkan kod 6 digit yang dipaparkan.",
+    "manualKey": "Atau masukkan kunci ini secara manual", "code": "Kod 6 digit", "enable": "Hidupkan",
+    "on": "Pengesahan dua langkah dihidupkan.", "recoveryTitle": "Kod pemulihan", "recoveryHint": "Simpan kod ini sekarang. Setiap kod hanya boleh digunakan sekali dan tidak akan dipaparkan lagi.",
+    "disableTitle": "Matikan", "currentPassword": "Kata laluan semasa", "disable": "Matikan"
+  },
+  "flash": { "mfa-email-sent": "Kod telah dihantar ke e-mel anda.", "mfa-enabled": "Pengesahan dua langkah dihidupkan.", "mfa-disabled": "Pengesahan dua langkah dimatikan.", "password-changed": "Kata laluan dikemas kini." },
   "dashboard": { "title": "Papan pemuka", "users": "Pengguna", "apps": "Aplikasi bersambung", "pendingApprovals": "Kelulusan tertunggak", "signInsToday": "Log masuk hari ini", "signIns": "Log masuk, 14 hari lepas" },
-  "common": { "signOut": "Log keluar", "language": "Bahasa" },
+  "common": { "signOut": "Log keluar", "language": "Bahasa", "security": "Keselamatan" },
   "demo": { "banner": "Mod demo: data contoh, disimpan dalam pelayar anda", "reset": "Set semula", "source": "Lihat kod sumber di GitHub" }
 }

@@ -44,6 +44,7 @@ export default function AppLayout({ current = 'dashboard', onSignOut, children }
                         <option value="en">EN</option>
                         <option value="ms">MS</option>
                     </select>
+                    <Link href="/mfa" className="underline">{t('common.security')}</Link>
                     <button type="button" onClick={onSignOut} className="rounded border px-3 py-1 hover:bg-slate-100">
                         {t('common.signOut')}
                     </button>

@@ -19,6 +19,7 @@
     "dependencies": {
         "@inertiajs/react": "^3.7.1",
         "i18next": "^26.4.2",
+        "qrcode.react": "^4.2.0",
         "react": "^19.3.0",
         "react-dom": "^19.3.0",
         "react-i18next": "^17.0.15",

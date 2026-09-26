@@ -1,8 +1,26 @@
 {
   "app": { "name": "CAS", "tagline": "Centralized Administration System" },
   "nav": { "dashboard": "Dashboard", "users": "Users", "roles": "Roles & permissions", "organization": "Organization", "apps": "Connected apps", "approvals": "Approvals", "audit": "Audit log", "settings": "Settings" },
-  "login": { "title": "Sign in", "identifier": "Staff ID or email", "password": "Password", "submit": "Sign in", "mfaTitle": "Two-step verification", "mfaCode": "6-digit code", "mfaSubmit": "Verify" },
+  "login": { "title": "Sign in", "identifier": "Staff ID or email", "password": "Password", "remember": "Keep me signed in", "forgot": "Forgot password?", "submit": "Sign in" },
+  "mfa": {
+    "title": "Two-step verification", "totp": "Authenticator app", "email": "Email code", "recovery": "Recovery code",
+    "code": "Code", "submit": "Verify", "sendEmail": "Email me a code", "back": "Back to sign in"
+  },
+  "forgot": { "title": "Reset your password", "email": "Email", "submit": "Send reset link", "back": "Back to sign in" },
+  "reset": { "title": "Choose a new password", "email": "Email", "password": "New password", "confirm": "Confirm new password", "submit": "Set password" },
+  "password": {
+    "title": "Change password", "forced": "You must choose a new password before continuing.", "current": "Current password",
+    "new": "New password", "confirm": "Confirm new password", "submit": "Update password",
+    "policy": "At least 12 characters with upper and lower case letters, a number and a symbol. Your last 5 passwords cannot be reused."
+  },
+  "mfaSetup": {
+    "title": "Two-step verification", "intro": "Scan the QR code with an authenticator app, then enter the 6-digit code it shows.",
+    "manualKey": "Or enter this key manually", "code": "6-digit code", "enable": "Turn on",
+    "on": "Two-step verification is on.", "recoveryTitle": "Recovery codes", "recoveryHint": "Save these now. Each works once and they will not be shown again.",
+    "disableTitle": "Turn off", "currentPassword": "Current password", "disable": "Turn off"
+  },
+  "flash": { "mfa-email-sent": "A code was sent to your email.", "mfa-enabled": "Two-step verification is on.", "mfa-disabled": "Two-step verification is off.", "password-changed": "Password updated." },
   "dashboard": { "title": "Dashboard", "users": "Users", "apps": "Connected apps", "pendingApprovals": "Pending approvals", "signInsToday": "Sign-ins today", "signIns": "Sign-ins, last 14 days" },
-  "common": { "signOut": "Sign out", "language": "Language" },
+  "common": { "signOut": "Sign out", "language": "Language", "security": "Security" },
   "demo": { "banner": "Demo mode: sample data, stored in your browser", "reset": "Reset", "source": "View source on GitHub" }
 }

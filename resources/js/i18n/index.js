@@ -22,6 +22,7 @@ i18n.use(initReactI18next).init({
 
 export const setLocale = (lng) => {
     i18n.changeLanguage(lng);
+    document.cookie = `cas_locale=${lng}; path=/; max-age=31536000; samesite=lax`; // server-side messages follow the UI
     try {
         localStorage.setItem(KEY, lng);
     } catch {

@@ -1,12 +1,12 @@
 import '../../css/app.css';
 import '../i18n';
-import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LinkProvider } from '../Components/LinkContext';
 import Dashboard from '../Pages/Dashboard';
 import Login from '../Pages/Login';
+import MfaChallenge from '../Pages/MfaChallenge';
 import seed from './data/seed.json';
 import { resetDemo, useDemo } from './store';
 
@@ -55,12 +55,16 @@ function DemoFooter() {
 // Any credentials work; the MFA step is UI only.
 function LoginRoute() {
     const navigate = useNavigate();
-    const [mfa, setMfa] = useState(false);
+    return <Login onSubmit={() => navigate('/login/mfa')} />;
+}
+
+function MfaRoute() {
+    const navigate = useNavigate();
     const done = () => {
         setSignedIn(true);
         navigate('/');
     };
-    return <Login mfaRequired={mfa} onSubmit={() => setMfa(true)} onVerifyMfa={done} />;
+    return <MfaChallenge onVerify={done} />;
 }
 
 function DashboardRoute() {
@@ -95,6 +99,7 @@ createRoot(document.getElementById('root')).render(
             <DemoBanner />
             <Routes>
                 <Route path="/login" element={<LoginRoute />} />
+                <Route path="/login/mfa" element={<MfaRoute />} />
                 <Route path="/" element={<DashboardRoute />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
