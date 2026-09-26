@@ -1,0 +1,29 @@
+{
+  "org_units": [
+    { "id": 1, "parent_id": null, "type": "headquarters", "code": "HQ", "name": "Headquarters", "head_user_id": 1, "is_active": true },
+    { "id": 2, "parent_id": 1, "type": "division", "code": "ICT", "name": "ICT Division", "head_user_id": 3, "is_active": true },
+    { "id": 3, "parent_id": 2, "type": "unit", "code": "ICT-APD", "name": "Application Development Unit", "head_user_id": 3, "is_active": true }
+  ],
+  "positions": [
+    { "id": 1, "org_unit_id": 2, "title": "Head of Division", "grade": "F52", "headcount": 1 },
+    { "id": 2, "org_unit_id": 3, "title": "Systems Analyst", "grade": "F41", "headcount": 4 }
+  ],
+  "users": [
+    { "id": 1, "staff_id": "STF-10001", "name": "Aisyah Rahman", "email": "superadmin@cas.demo", "org_unit_id": 1, "position_id": null, "status": "active", "mfa_enabled": true },
+    { "id": 2, "staff_id": "STF-10002", "name": "Hafiz Ismail", "email": "hr.officer@cas.demo", "org_unit_id": 1, "position_id": null, "status": "active", "mfa_enabled": true },
+    { "id": 3, "staff_id": "STF-10003", "name": "Nurul Huda", "email": "dept.head@cas.demo", "org_unit_id": 2, "position_id": 1, "status": "active", "mfa_enabled": false },
+    { "id": 4, "staff_id": "STF-10004", "name": "Daniel Lee", "email": "staff@cas.demo", "org_unit_id": 3, "position_id": 2, "status": "active", "mfa_enabled": false },
+    { "id": 5, "staff_id": "STF-10005", "name": "Siti Aminah", "email": "siti@cas.demo", "org_unit_id": 3, "position_id": 2, "status": "locked", "mfa_enabled": false }
+  ],
+  "applications": [
+    { "id": 1, "code": "ams-prod", "name": "Asset Inspection", "environment": "production", "status": "active" },
+    { "id": 2, "code": "itsd-prod", "name": "IT Service Desk", "environment": "production", "status": "active" },
+    { "id": 3, "code": "qr-sandbox", "name": "QR Restaurant", "environment": "sandbox", "status": "sandbox" }
+  ],
+  "approval_requests": [
+    { "id": 1, "reference": "REQ-2291", "workflow_id": 1, "requester_id": 4, "status": "pending", "current_level": 1 },
+    { "id": 2, "reference": "REQ-2292", "workflow_id": 3, "requester_id": 5, "status": "pending", "current_level": 2 },
+    { "id": 3, "reference": "REQ-2280", "workflow_id": 2, "requester_id": 4, "status": "approved", "current_level": 2 }
+  ],
+  "sign_in_counts": [12, 18, 15, 22, 9, 4, 3, 20, 25, 19, 23, 21, 8, 14]
+}

@@ -1,0 +1,8 @@
+{
+  "app": { "name": "CAS", "tagline": "Sistem Pentadbiran Berpusat" },
+  "nav": { "dashboard": "Papan pemuka", "users": "Pengguna", "roles": "Peranan & kebenaran", "organization": "Organisasi", "apps": "Aplikasi bersambung", "approvals": "Kelulusan", "audit": "Log audit", "settings": "Tetapan" },
+  "login": { "title": "Log masuk", "identifier": "ID staf atau e-mel", "password": "Kata laluan", "submit": "Log masuk", "mfaTitle": "Pengesahan dua langkah", "mfaCode": "Kod 6 digit", "mfaSubmit": "Sahkan" },
+  "dashboard": { "title": "Papan pemuka", "users": "Pengguna", "apps": "Aplikasi bersambung", "pendingApprovals": "Kelulusan tertunggak", "signInsToday": "Log masuk hari ini", "signIns": "Log masuk, 14 hari lepas" },
+  "common": { "signOut": "Log keluar", "language": "Bahasa" },
+  "demo": { "banner": "Mod demo: data contoh, disimpan dalam pelayar anda", "reset": "Set semula", "source": "Lihat kod sumber di GitHub" }
+}

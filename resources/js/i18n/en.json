@@ -1,0 +1,8 @@
+{
+  "app": { "name": "CAS", "tagline": "Centralized Administration System" },
+  "nav": { "dashboard": "Dashboard", "users": "Users", "roles": "Roles & permissions", "organization": "Organization", "apps": "Connected apps", "approvals": "Approvals", "audit": "Audit log", "settings": "Settings" },
+  "login": { "title": "Sign in", "identifier": "Staff ID or email", "password": "Password", "submit": "Sign in", "mfaTitle": "Two-step verification", "mfaCode": "6-digit code", "mfaSubmit": "Verify" },
+  "dashboard": { "title": "Dashboard", "users": "Users", "apps": "Connected apps", "pendingApprovals": "Pending approvals", "signInsToday": "Sign-ins today", "signIns": "Sign-ins, last 14 days" },
+  "common": { "signOut": "Sign out", "language": "Language" },
+  "demo": { "banner": "Demo mode: sample data, stored in your browser", "reset": "Reset", "source": "View source on GitHub" }
+}

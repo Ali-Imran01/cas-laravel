@@ -1,0 +1,360 @@
+// CAS — Centralized Administration System · paste into dbdiagram.io for the ERD
+// Stack: Laravel 12 · PostgreSQL · Passport (OAuth2/OIDC) · spatie/laravel-permission
+
+Project CAS { database_type: 'PostgreSQL' }
+
+// ───────── Enums ─────────
+Enum org_unit_type { headquarters division unit state_office }
+Enum user_status { pending active locked inactive }
+Enum app_env { production staging sandbox }
+Enum app_status { active sandbox disabled }
+Enum login_method { password sso mfa }
+Enum auth_result { success failed blocked }
+Enum approver_type { role user unit_head division_head }
+Enum request_status { pending info_requested approved rejected cancelled }
+Enum decision { approved rejected info_requested commented }
+Enum import_status { queued processing completed failed }
+
+// ───────── Organization ─────────
+Table org_units {
+  id bigint [pk, increment]
+  parent_id bigint [null]
+  type org_unit_type [not null]
+  code varchar(20) [unique, not null, note: 'ICT-APD']
+  name varchar(150) [not null]
+  head_user_id bigint [null, note: 'circular with users.org_unit_id: nullable, FK added in a later migration after users exists']
+  cost_centre varchar(30) [null]
+  _lft int [not null, note: 'kalnoy/nestedset: fast subtree queries']
+  _rgt int [not null]
+  sort_order int [default: 0]
+  is_active boolean [default: true]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+  Indexes { (_lft, _rgt) parent_id }
+}
+
+Table positions {
+  id bigint [pk, increment]
+  org_unit_id bigint [not null]
+  title varchar(120) [not null]
+  grade varchar(10) [null, note: 'F41, F44, FA29']
+  headcount smallint [default: 1, note: 'filled = count(users)']
+  created_at timestamp
+  updated_at timestamp
+  Indexes { org_unit_id }
+}
+
+// ───────── Identity ─────────
+Table users {
+  id bigint [pk, increment]
+  staff_id varchar(20) [unique, not null, note: 'STF-10482']
+  name varchar(150) [not null]
+  email varchar(191) [unique, not null]
+  password varchar(255) [null, note: 'null = SSO-only / pending invite']
+  org_unit_id bigint [null]
+  position_id bigint [null]
+  status user_status [not null, default: 'pending']
+  locked_until timestamp [null]
+  failed_login_count tinyint [default: 0]
+  mfa_enabled boolean [default: false]
+  mfa_secret text [null, note: 'encrypted cast']
+  mfa_recovery_codes text [null, note: 'encrypted cast']
+  password_changed_at timestamp [null]
+  must_change_password boolean [default: false]
+  last_login_at timestamp [null]
+  last_login_ip varchar(45) [null]
+  email_verified_at timestamp [null]
+  remember_token varchar(100) [null]
+  created_by bigint [null]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+  Indexes { (org_unit_id, status) status last_login_at }
+}
+
+Table user_assignments {
+  id bigint [pk, increment]
+  user_id bigint [not null]
+  org_unit_id bigint [not null]
+  position_id bigint [null]
+  started_at date [not null]
+  ended_at date [null, note: 'null = current; transfer history']
+  approval_request_id bigint [null]
+  Indexes { (user_id, ended_at) }
+}
+
+Table password_histories {
+  id bigint [pk, increment]
+  user_id bigint [not null]
+  password varchar(255) [not null]
+  created_at timestamp
+  Indexes { user_id }
+}
+
+Table user_imports {
+  id bigint [pk, increment]
+  file_path varchar(255) [not null]
+  status import_status [default: 'queued']
+  total_rows int [default: 0]
+  success_rows int [default: 0]
+  failed_rows int [default: 0]
+  errors json [null, note: '[{row, field, message}]']
+  created_by bigint [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+// ───────── Roles & permissions (spatie/laravel-permission + extra cols) ─────────
+Table roles {
+  id bigint [pk, increment]
+  name varchar(125) [not null, note: 'hr_officer']
+  display_name varchar(125) [not null]
+  description varchar(255) [null]
+  guard_name varchar(125) [not null]
+  is_system boolean [default: false, note: 'cannot delete']
+  created_at timestamp
+  updated_at timestamp
+  Indexes { (name, guard_name) [unique] }
+}
+
+Table permissions {
+  id bigint [pk, increment]
+  name varchar(125) [not null, note: 'users.view, approvals.approve']
+  module varchar(50) [not null, note: 'grid row']
+  action varchar(20) [not null, note: 'view|create|edit|delete|approve']
+  guard_name varchar(125) [not null]
+  created_at timestamp
+  updated_at timestamp
+  Indexes { (name, guard_name) [unique] }
+}
+
+Table role_has_permissions {
+  permission_id bigint [pk]
+  role_id bigint [pk]
+}
+
+Table model_has_roles {
+  role_id bigint [pk]
+  model_type varchar(255) [pk]
+  model_id bigint [pk]
+}
+
+Table model_has_permissions {
+  permission_id bigint [pk]
+  model_type varchar(255) [pk]
+  model_id bigint [pk]
+}
+
+// ───────── Connected apps (wraps Passport) ─────────
+Table oauth_clients {
+  id uuid [pk, note: 'Passport-managed']
+  name varchar(255)
+  secret varchar(100) [null]
+  redirect_uris text
+  grant_types text
+  revoked boolean
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table applications {
+  id bigint [pk, increment]
+  oauth_client_id uuid [unique, not null]
+  code varchar(40) [unique, not null, note: 'ams-prod']
+  name varchar(120) [not null]
+  environment app_env [default: 'production']
+  status app_status [default: 'active']
+  homepage_url varchar(255) [null]
+  color char(7) [null]
+  allowed_scopes json [note: '["openid","profile","org.read"]']
+  owner_user_id bigint [null]
+  secret_rotated_at timestamp [null]
+  disabled_at timestamp [null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table application_role {
+  application_id bigint [pk]
+  role_id bigint [pk]
+  app_role varchar(50) [not null, note: 'Viewer, Agent — sent as claim']
+}
+
+Table application_user {
+  application_id bigint [pk]
+  user_id bigint [pk]
+  app_role varchar(50) [not null]
+  granted_by bigint [null]
+  expires_at timestamp [null]
+  created_at timestamp
+}
+
+// ───────── Sessions, sign-ins, audit ─────────
+Table sessions {
+  id varchar(255) [pk]
+  user_id bigint [null]
+  ip_address varchar(45) [null]
+  user_agent text [null]
+  payload longtext
+  last_activity int
+  Indexes { user_id last_activity }
+}
+
+Table login_attempts {
+  id bigint [pk, increment]
+  user_id bigint [null]
+  identifier varchar(191) [not null, note: 'what was typed']
+  application_id bigint [null]
+  method login_method [not null]
+  result auth_result [not null]
+  failure_reason varchar(100) [null]
+  ip_address varchar(45)
+  user_agent varchar(255) [null]
+  created_at timestamp
+  Indexes { (user_id, created_at) (ip_address, created_at) created_at }
+}
+
+Table audit_logs {
+  id bigint [pk, increment, note: 'append-only; partition by month']
+  actor_id bigint [null, note: 'null = System']
+  action varchar(30) [not null, note: 'CREATE UPDATE DELETE APPROVE LOCKOUT ...']
+  auditable_type varchar(100) [null]
+  auditable_id bigint [null]
+  description varchar(255) [not null]
+  old_values json [null]
+  new_values json [null]
+  application_id bigint [null]
+  result auth_result [default: 'success']
+  ip_address varchar(45) [null]
+  user_agent varchar(255) [null]
+  created_at timestamp [not null]
+  Indexes { created_at (actor_id, created_at) (auditable_type, auditable_id) (action, created_at) }
+}
+
+// ───────── Approval engine ─────────
+Table approval_workflows {
+  id bigint [pk, increment]
+  code varchar(40) [unique, not null, note: 'role_change, new_account, app_access, reactivation, transfer, new_role']
+  name varchar(120) [not null]
+  is_active boolean [default: true]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table approval_workflow_steps {
+  id bigint [pk, increment]
+  workflow_id bigint [not null]
+  level tinyint [not null]
+  name varchar(120) [not null, note: 'Head of Unit']
+  approver_type approver_type [not null]
+  approver_role_id bigint [null]
+  approver_user_id bigint [null]
+  sla_hours smallint [default: 48]
+  Indexes { (workflow_id, level) [unique] }
+}
+
+Table approval_requests {
+  id bigint [pk, increment]
+  reference varchar(20) [unique, not null, note: 'REQ-2291']
+  workflow_id bigint [not null]
+  requester_id bigint [not null]
+  subject_type varchar(100) [not null, note: 'morph: User, Role...']
+  subject_id bigint [null]
+  payload json [not null, note: '{"from_role":"staff","to_role":"hr_officer"}']
+  justification text [null]
+  status request_status [default: 'pending']
+  current_level tinyint [default: 1]
+  source_application_id bigint [null]
+  due_at timestamp [null]
+  completed_at timestamp [null]
+  created_at timestamp
+  updated_at timestamp
+  Indexes { (status, due_at) requester_id (subject_type, subject_id) }
+}
+
+Table approval_actions {
+  id bigint [pk, increment]
+  request_id bigint [not null]
+  step_id bigint [not null]
+  actor_id bigint [not null]
+  decision decision [not null]
+  comment text [null]
+  created_at timestamp
+  Indexes { request_id }
+}
+
+// ───────── Settings & notifications ─────────
+Table settings {
+  id bigint [pk, increment]
+  group varchar(50) [not null, note: 'security, general, sso']
+  key varchar(100) [not null, note: 'session_idle_minutes']
+  value json [not null]
+  updated_by bigint [null]
+  updated_at timestamp
+  Indexes { (group, key) [unique] }
+}
+
+Table email_templates {
+  id bigint [pk, increment]
+  key varchar(60) [not null, note: 'account_locked, invite']
+  locale varchar(5) [default: 'en', note: 'en | ms']
+  subject varchar(200) [not null]
+  body text [not null]
+  updated_by bigint [null]
+  updated_at timestamp
+  Indexes { (key, locale) [unique] }
+}
+
+Table notifications {
+  id uuid [pk, note: 'Laravel default']
+  type varchar(255)
+  notifiable_type varchar(255)
+  notifiable_id bigint
+  data text
+  read_at timestamp [null]
+  created_at timestamp
+}
+
+// ───────── Relationships ─────────
+Ref: org_units.parent_id > org_units.id
+// Circular with users.org_unit_id. Both sides are nullable, so no deferral is needed:
+// create org_units without this FK, create users, then ALTER TABLE org_units ADD FOREIGN KEY (head_user_id) ... ON DELETE SET NULL
+Ref: org_units.head_user_id > users.id [delete: set null]
+Ref: positions.org_unit_id > org_units.id
+Ref: users.org_unit_id > org_units.id [delete: set null]
+Ref: users.position_id > positions.id
+Ref: users.created_by > users.id
+Ref: user_assignments.user_id > users.id
+Ref: user_assignments.org_unit_id > org_units.id
+Ref: user_assignments.position_id > positions.id
+Ref: user_assignments.approval_request_id > approval_requests.id
+Ref: password_histories.user_id > users.id
+Ref: user_imports.created_by > users.id
+Ref: role_has_permissions.role_id > roles.id
+Ref: role_has_permissions.permission_id > permissions.id
+Ref: model_has_roles.role_id > roles.id
+Ref: model_has_permissions.permission_id > permissions.id
+Ref: applications.oauth_client_id - oauth_clients.id
+Ref: applications.owner_user_id > users.id
+Ref: application_role.application_id > applications.id
+Ref: application_role.role_id > roles.id
+Ref: application_user.application_id > applications.id
+Ref: application_user.user_id > users.id
+Ref: application_user.granted_by > users.id
+Ref: sessions.user_id > users.id
+Ref: login_attempts.user_id > users.id
+Ref: login_attempts.application_id > applications.id
+Ref: audit_logs.actor_id > users.id
+Ref: audit_logs.application_id > applications.id
+Ref: approval_workflow_steps.workflow_id > approval_workflows.id
+Ref: approval_workflow_steps.approver_role_id > roles.id
+Ref: approval_workflow_steps.approver_user_id > users.id
+Ref: approval_requests.workflow_id > approval_workflows.id
+Ref: approval_requests.requester_id > users.id
+Ref: approval_requests.source_application_id > applications.id
+Ref: approval_actions.request_id > approval_requests.id
+Ref: approval_actions.step_id > approval_workflow_steps.id
+Ref: approval_actions.actor_id > users.id
+Ref: settings.updated_by > users.id
+Ref: email_templates.updated_by > users.id
