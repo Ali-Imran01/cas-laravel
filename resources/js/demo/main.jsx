@@ -200,7 +200,7 @@ function AppsRoute() {
             selected={selected}
             scopes={SCOPES}
             defaultScopes={['openid', 'profile', 'email']}
-            endpoints={{ authorize: 'https://cas.example.com/oauth/authorize', token: 'https://cas.example.com/oauth/token' }}
+            endpoints={{ discovery: 'https://cas.example.com/.well-known/openid-configuration', authorization: 'https://cas.example.com/oauth/authorize', token: 'https://cas.example.com/oauth/token', userinfo: 'https://cas.example.com/oauth/userinfo' }}
             can={{}}
             onSignOut={() => { setSignedIn(false); navigate('/login'); }}
         />

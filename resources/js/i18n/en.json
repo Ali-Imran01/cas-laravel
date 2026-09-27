@@ -28,14 +28,15 @@
       "user_inactive": "Your account is not active.",
       "invalid_scope": "The app asked for permissions it is not allowed to have.",
       "pkce_required": "The app did not use the required secure sign-in method (PKCE).",
-      "unknown_app": "This app is not registered with CAS."
+      "unknown_app": "This app is not registered with CAS.",
+      "invalid_logout": "This sign-out request is missing a valid ID token hint."
     }
   },
   "appPage": {
     "name": "Name", "code": "Code", "environment": "Environment", "homepage": "Homepage", "color": "Colour", "redirects": "Redirect URIs (one per line)",
     "redirectsHint": "Exact addresses the app signs users back to. https only (http for localhost), no wildcards.", "scopes": "Scopes the app may request",
     "save": "Save settings", "register": "Register app", "newApp": "Register an app", "empty": "No apps registered yet.", "owner": "owner {{name}}",
-    "clientId": "Client ID", "authorizeUrl": "Authorization endpoint", "tokenUrl": "Token endpoint", "secret": "Client secret", "secretHidden": "Stored hashed. It was shown once, when the app was registered.",
+    "clientId": "Client ID", "discoveryUrl": "OpenID Connect discovery", "authorizeUrl": "Authorization endpoint", "tokenUrl": "Token endpoint", "userinfoUrl": "Userinfo endpoint", "secret": "Client secret", "secretHidden": "Stored hashed. It was shown once, when the app was registered.",
     "rotatedOn": "Rotated on {{date}}. The value is not stored.", "secretOnce": "Client secret (copy it now, it is not shown again)",
     "access": "Who can sign in", "accessHint": "People get access through a CAS role mapped to an app role, or one by one. The app role is sent to the app as a claim.",
     "noRoles": "No roles mapped.", "noGrants": "No individual grants.", "casRole": "CAS role", "appRole": "App role", "mapRole": "Map role", "staffId": "Staff ID", "expires": "Expires (optional)",

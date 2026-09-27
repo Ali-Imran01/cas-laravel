@@ -28,14 +28,15 @@
       "user_inactive": "Akaun anda tidak aktif.",
       "invalid_scope": "Aplikasi meminta kebenaran yang tidak dibenarkan.",
       "pkce_required": "Aplikasi tidak menggunakan kaedah log masuk selamat yang diwajibkan (PKCE).",
-      "unknown_app": "Aplikasi ini tidak didaftarkan dengan CAS."
+      "unknown_app": "Aplikasi ini tidak didaftarkan dengan CAS.",
+      "invalid_logout": "Permintaan log keluar ini tiada petunjuk token ID yang sah."
     }
   },
   "appPage": {
     "name": "Nama", "code": "Kod", "environment": "Persekitaran", "homepage": "Laman utama", "color": "Warna", "redirects": "URI ubah hala (satu setiap baris)",
     "redirectsHint": "Alamat tepat yang aplikasi gunakan untuk menghantar pengguna kembali. Hanya https (http untuk localhost), tanpa kad bebas.", "scopes": "Skop yang boleh dimohon aplikasi",
     "save": "Simpan tetapan", "register": "Daftar aplikasi", "newApp": "Daftar aplikasi", "empty": "Belum ada aplikasi didaftarkan.", "owner": "pemilik {{name}}",
-    "clientId": "ID klien", "authorizeUrl": "Titik akhir kebenaran", "tokenUrl": "Titik akhir token", "secret": "Rahsia klien", "secretHidden": "Disimpan dalam bentuk cincangan. Ia dipaparkan sekali, semasa aplikasi didaftarkan.",
+    "clientId": "ID klien", "discoveryUrl": "Penemuan OpenID Connect", "authorizeUrl": "Titik akhir kebenaran", "tokenUrl": "Titik akhir token", "userinfoUrl": "Titik akhir maklumat pengguna", "secret": "Rahsia klien", "secretHidden": "Disimpan dalam bentuk cincangan. Ia dipaparkan sekali, semasa aplikasi didaftarkan.",
     "rotatedOn": "Diputar pada {{date}}. Nilainya tidak disimpan.", "secretOnce": "Rahsia klien (salin sekarang, ia tidak dipaparkan lagi)",
     "access": "Siapa boleh log masuk", "accessHint": "Orang mendapat akses melalui peranan CAS yang dipetakan kepada peranan aplikasi, atau seorang demi seorang. Peranan aplikasi dihantar kepada aplikasi sebagai tuntutan.",
     "noRoles": "Tiada peranan dipetakan.", "noGrants": "Tiada pemberian individu.", "casRole": "Peranan CAS", "appRole": "Peranan aplikasi", "mapRole": "Petakan peranan", "staffId": "ID staf", "expires": "Tamat (pilihan)",

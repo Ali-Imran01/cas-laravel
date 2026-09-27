@@ -6,6 +6,7 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -21,7 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->encryptCookies(except: ['cas_locale']);
         $middleware->web(append: [SetLocale::class, HandleInertiaRequests::class]);
         $middleware->alias(['password.current' => EnsurePasswordIsCurrent::class]);
-        $middleware->redirectGuestsTo(fn () => route('login'));
+        // Bearer-token endpoints answer 401, never a redirect to the login page.
+        $middleware->redirectGuestsTo(fn (Request $request) => $request->is('oauth/userinfo') || ($request->is('oauth/logout') && $request->isMethod('POST')) ? null : route('login'));
         $middleware->redirectUsersTo(fn () => route('dashboard'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -178,8 +178,10 @@ export default function Index({
 
                             <dl className="grid gap-2 rounded bg-slate-50 p-3 text-sm">
                                 <div><dt className="text-slate-500">{t('appPage.clientId')}</dt><dd><code className="break-all select-all">{selected.client_id}</code></dd></div>
-                                <div><dt className="text-slate-500">{t('appPage.authorizeUrl')}</dt><dd><code className="break-all select-all">{endpoints.authorize}</code></dd></div>
+                                <div><dt className="text-slate-500">{t('appPage.discoveryUrl')}</dt><dd><code className="break-all select-all">{endpoints.discovery}</code></dd></div>
+                                <div><dt className="text-slate-500">{t('appPage.authorizeUrl')}</dt><dd><code className="break-all select-all">{endpoints.authorization}</code></dd></div>
                                 <div><dt className="text-slate-500">{t('appPage.tokenUrl')}</dt><dd><code className="break-all select-all">{endpoints.token}</code></dd></div>
+                                <div><dt className="text-slate-500">{t('appPage.userinfoUrl')}</dt><dd><code className="break-all select-all">{endpoints.userinfo}</code></dd></div>
                                 <div><dt className="text-slate-500">{t('appPage.secret')}</dt><dd>{selected.secret_rotated_at ? t('appPage.rotatedOn', { date: new Date(selected.secret_rotated_at).toLocaleDateString(i18n.language) }) : t('appPage.secretHidden')}</dd></div>
                             </dl>
 

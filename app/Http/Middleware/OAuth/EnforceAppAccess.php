@@ -9,6 +9,7 @@ use App\Domain\Audit\Enums\AuthResult;
 use App\Domain\Audit\Enums\LoginMethod;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -45,8 +46,18 @@ class EnforceAppAccess
         $response = $next($request);
 
         // Passport answers a valid request with a redirect back to the app carrying the code.
-        if ($response->isRedirection() && str_contains((string) $response->headers->get('Location'), 'code=')) {
-            Audit::loginAttempt($user, $user->staff_id, LoginMethod::Sso, AuthResult::Success, null, $app->id);
+        if ($response->isRedirection()) {
+            parse_str((string) parse_url((string) $response->headers->get('Location'), PHP_URL_QUERY), $back);
+
+            if (isset($back['code']) && is_string($back['code'])) {
+                Audit::loginAttempt($user, $user->staff_id, LoginMethod::Sso, AuthResult::Success, null, $app->id);
+
+                // OpenID Connect: the nonce belongs to this code and goes into the ID token issued when it is redeemed.
+                $nonce = $request->query('nonce');
+                if (is_string($nonce) && $nonce !== '' && strlen($nonce) <= 255) {
+                    Cache::put('oidc:nonce:'.hash('sha256', $back['code']), $nonce, now()->addMinutes(10));
+                }
+            }
         }
 
         return $response;

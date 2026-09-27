@@ -4,6 +4,7 @@ use App\Domain\Apps\Enums\AppStatus;
 use App\Domain\Apps\Models\Application;
 use App\Domain\Audit\Models\AuditLog;
 use App\Domain\Identity\Models\User;
+use App\Domain\Sso\Issuer;
 use Database\Seeders\AccessSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -268,6 +269,7 @@ it('shows the selected app with its credentials, rules and endpoints', function 
         ->where('selected.code', 'asset-inspection')->where('selected.client_id', $app->oauth_client_id)
         ->where('selected.redirect_uris', ['https://ams.example.com/callback', 'http://localhost:3000/callback'])
         ->where('selected.roles.0.app_role', 'Viewer')
-        ->where('endpoints.authorize', route('passport.authorizations.authorize'))->where('endpoints.token', route('passport.token'))
+        ->where('endpoints.authorization', Issuer::url().'/oauth/authorize')->where('endpoints.token', Issuer::url().'/oauth/token')
+        ->where('endpoints.discovery', Issuer::url().'/.well-known/openid-configuration')->where('endpoints.userinfo', Issuer::url().'/oauth/userinfo')
         ->has('scopes', 6)->where('defaultScopes', ['openid', 'profile', 'email'])->where('can.delete', true));
 });

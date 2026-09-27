@@ -10,6 +10,7 @@ use App\Domain\Apps\Actions\SetApplicationStatus;
 use App\Domain\Apps\Actions\UpdateApplication;
 use App\Domain\Apps\Models\Application;
 use App\Domain\Identity\Models\User;
+use App\Domain\Sso\Issuer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Apps\SaveApplicationRequest;
 use Illuminate\Http\RedirectResponse;
@@ -38,7 +39,7 @@ class ApplicationController extends Controller
             'scopes' => $this->scopeCatalog(),
             'defaultScopes' => config('cas.sso.default_scopes'),
             'roles' => Role::query()->orderBy('name')->get(['id', 'name'])->map(fn (Role $r) => ['id' => $r->id, 'name' => $r->name, 'display_name' => $r->getAttribute('display_name')])->all(),
-            'endpoints' => ['issuer' => url('/'), 'authorize' => route('passport.authorizations.authorize'), 'token' => route('passport.token')],
+            'endpoints' => Issuer::endpoints(),
             'can' => [
                 'create' => $request->user()->can('create', Application::class),
                 'update' => $request->user()->can('update', Application::class),

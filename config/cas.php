@@ -13,6 +13,9 @@ return [
             'approvals' => 'Submit approval requests',
         ],
         'default_scopes' => ['openid', 'profile', 'email'],
+        // The address apps know CAS by (the `iss` of ID tokens). Set CAS_ISSUER in production; it must be https.
+        'issuer' => env('CAS_ISSUER', env('APP_URL', 'http://localhost')),
+        'id_token_minutes' => 10,
         'access_token_minutes' => 15, // short-lived; apps renew with the refresh token
         'refresh_token_days' => 30,
         'max_redirect_uris' => 10,

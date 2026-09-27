@@ -14,6 +14,7 @@ composer install && npm install
 ./vendor/bin/sail up -d
 ./vendor/bin/sail artisan key:generate
 ./vendor/bin/sail artisan migrate --seed
+./vendor/bin/sail artisan passport:keys   # signing keys for SSO tokens; run as the sail user (not root) so the web server can read them
 ./vendor/bin/sail npm run dev
 ./vendor/bin/sail artisan queue:work   # needed for CSV user imports and other queued jobs
 ```
