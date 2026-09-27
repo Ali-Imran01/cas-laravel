@@ -22,6 +22,7 @@ const callbacksFor = (name, props) => ({
         ChangePassword: (data) => router.put('/password/change', data),
         'Users/Create': (data) => router.post('/users', data),
         'Users/Edit': (data) => router.put(`/users/${props.user?.id}`, data),
+        'Approvals/New': (data) => router.post('/approvals', data),
     }[name],
     onVerify: (data) => router.post('/login/mfa', data),
     onSendEmail: () => router.post('/login/mfa/email'),
@@ -60,6 +61,14 @@ const callbacksFor = (name, props) => ({
         ? router.put(`/organization/positions/${id}`, data, keepScroll)
         : router.post(`/organization/units/${props.selected?.id}/positions`, data, keepScroll)),
     onDeletePosition: (id) => router.delete(`/organization/positions/${id}`, keepScroll),
+    onApprove: () => router.post(`/approvals/${props.selected?.id}/approve`, {}, keepScroll),
+    onReject: (comment) => router.post(`/approvals/${props.selected?.id}/reject`, { comment }, keepScroll),
+    onRequestInfo: (comment) => router.post(`/approvals/${props.selected?.id}/request-info`, { comment }, keepScroll),
+    onResubmit: (comment) => router.post(`/approvals/${props.selected?.id}/resubmit`, { comment }, keepScroll),
+    onComment: (comment) => router.post(`/approvals/${props.selected?.id}/comment`, { comment }, keepScroll),
+    onCancel: () => router.post(`/approvals/${props.selected?.id}/cancel`, {}, keepScroll),
+    onUpdateWorkflow: (id, data) => router.put(`/approvals/workflows/${id}`, data, keepScroll),
+    onUpdateStep: (workflowId, stepId, data) => router.put(`/approvals/workflows/${workflowId}/steps/${stepId}`, data, keepScroll),
 });
 
 createInertiaApp({

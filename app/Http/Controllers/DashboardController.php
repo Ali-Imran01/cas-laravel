@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Approvals\Actions\DecideRequest;
+use App\Domain\Approvals\Enums\ApprovalStatus;
+use App\Domain\Approvals\Models\ApprovalRequest;
 use App\Domain\Audit\Enums\AuthResult;
 use App\Domain\Audit\Models\AuditLog;
 use App\Domain\Audit\Models\LoginAttempt;
@@ -14,7 +17,7 @@ class DashboardController extends Controller
 {
     private const DAYS = 14;
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, DecideRequest $decide): Response
     {
         $from = today()->subDays(self::DAYS - 1);
         $perDay = LoginAttempt::query()
@@ -31,7 +34,8 @@ class DashboardController extends Controller
             'kpis' => [
                 'users' => User::query()->count(),
                 'apps' => 0, // connected apps arrive in Phase 4
-                'pendingApprovals' => 0, // approvals arrive in Phase 5
+                'pendingApprovals' => ApprovalRequest::query()->where('status', ApprovalStatus::Pending)->get()
+                    ->filter(fn (ApprovalRequest $r) => $decide->canDecide($request->user(), $r))->count(),
                 'signInsToday' => end($signIns)['count'],
             ],
             'signIns' => $signIns,

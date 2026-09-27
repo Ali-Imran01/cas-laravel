@@ -99,6 +99,33 @@
     }
   },
   "dashboard": { "title": "Papan pemuka", "users": "Pengguna", "apps": "Aplikasi bersambung", "pendingApprovals": "Kelulusan tertunggak", "signInsToday": "Log masuk hari ini", "signIns": "Log masuk, 14 hari lepas", "recent": "Aktiviti terkini", "viewAll": "Lihat semua" },
+  "approvalsPage": {
+    "title": "Kelulusan", "newRequest": "Permohonan baharu", "manageWorkflows": "Urus aliran kerja", "empty": "Tiada apa-apa di sini.",
+    "tabs": { "decide": "Perlu keputusan anda", "mine": "Permohonan saya", "all": "Semua permohonan" },
+    "status": { "pending": "Menunggu", "info_requested": "Maklumat diminta", "approved": "Diluluskan", "rejected": "Ditolak", "cancelled": "Ditarik balik" },
+    "levelOf": "Peringkat {{current}} daripada {{total}}", "overdue": "Tertunggak", "requestedBy": "Dipohon oleh {{name}}", "source": "Dihantar melalui {{name}}",
+    "justification": "Justifikasi", "noJustification": "Tiada justifikasi diberikan.", "payload": "Butiran",
+    "timeline": "Garis masa",
+    "decision": { "submitted": "Dihantar", "approved": "Diluluskan", "rejected": "Ditolak", "info_requested": "Maklumat tambahan diminta", "commented": "Memberi komen", "resubmitted": "Dihantar semula", "cancelled": "Ditarik balik" },
+    "approve": "Luluskan", "reject": "Tolak", "requestInfo": "Tanya soalan", "resubmit": "Hantar semula untuk keputusan", "cancelRequest": "Tarik balik permohonan",
+    "comment": "Komen", "addComment": "Tambah komen", "commentPlaceholder": "Tambah nota (pilihan)", "reasonPlaceholder": "Nyatakan sebab",
+    "confirmCancel": "Tarik balik permohonan ini? Tindakan ini tidak boleh dibatalkan.", "confirm": "Ya, tarik balik", "cancel": "Batal"
+  },
+  "approvalsNew": {
+    "title": "Permohonan baharu", "pickWorkflow": "Apa yang anda perlukan?", "notRequestable": "Anda tidak mempunyai kebenaran untuk memohon ini.",
+    "justification": "Sebab (pilihan)", "submit": "Hantar permohonan", "back": "Kembali ke kelulusan",
+    "fields": {
+      "user": "Orang", "role": "Peranan", "toRole": "Peranan baharu", "staffId": "ID staf", "name": "Nama penuh", "email": "E-mel",
+      "orgUnit": "Unit organisasi", "position": "Jawatan", "application": "Aplikasi", "appRole": "Peranan aplikasi", "expires": "Tamat tempoh (pilihan)",
+      "effective": "Tarikh berkuat kuasa (pilihan)", "displayName": "Nama paparan", "description": "Keterangan (pilihan)", "permissions": "Kebenaran",
+      "noRole": "Tiada peranan", "noUnit": "Tidak ditugaskan", "noPosition": "Tiada jawatan"
+    }
+  },
+  "approvalsWorkflows": {
+    "title": "Aliran kerja kelulusan", "active": "Aktif", "allowApi": "Aplikasi bersambung boleh menghantar ke sini", "save": "Simpan",
+    "step": "Peringkat {{level}}: {{name}}", "approverType": "Siapa yang meluluskan", "role": "Peranan", "person": "Orang", "slaHours": "Jam untuk membuat keputusan", "saveStep": "Simpan",
+    "types": { "role": "Satu peranan", "user": "Orang tertentu", "unit_head": "Ketua unit", "division_head": "Ketua bahagian" }
+  },
   "common": { "signOut": "Log keluar", "language": "Bahasa", "security": "Keselamatan" },
   "demo": { "banner": "Mod demo: data contoh, disimpan dalam pelayar anda", "reset": "Set semula", "source": "Lihat kod sumber di GitHub" }
 }

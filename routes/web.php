@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Access\RoleController;
+use App\Http\Controllers\Approvals\ApprovalController;
+use App\Http\Controllers\Approvals\ApprovalDecisionController;
+use App\Http\Controllers\Approvals\ApprovalSubmitController;
+use App\Http\Controllers\Approvals\ApprovalWorkflowController;
 use App\Http\Controllers\Apps\ApplicationController;
 use App\Http\Controllers\Audit\AuditController;
 use App\Http\Controllers\Auth\AcceptInviteController;
@@ -64,6 +68,20 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/audit', [AuditController::class, 'index'])->name('audit.index');
         Route::get('/audit/export', [AuditController::class, 'export'])->name('audit.export');
+
+        // Static approvals routes come before the {approval} one so "new" and "workflows" are not read as an id.
+        Route::get('/approvals/new', [ApprovalSubmitController::class, 'create'])->name('approvals.create');
+        Route::post('/approvals', [ApprovalSubmitController::class, 'store'])->name('approvals.store');
+        Route::get('/approvals/workflows', [ApprovalWorkflowController::class, 'index'])->name('approvals.workflows.index');
+        Route::put('/approvals/workflows/{workflow}', [ApprovalWorkflowController::class, 'update'])->name('approvals.workflows.update');
+        Route::put('/approvals/workflows/{workflow}/steps/{step}', [ApprovalWorkflowController::class, 'updateStep'])->name('approvals.workflows.steps.update');
+        Route::get('/approvals', [ApprovalController::class, 'index'])->name('approvals.index');
+        Route::post('/approvals/{approval}/approve', [ApprovalDecisionController::class, 'approve'])->name('approvals.approve');
+        Route::post('/approvals/{approval}/reject', [ApprovalDecisionController::class, 'reject'])->name('approvals.reject');
+        Route::post('/approvals/{approval}/request-info', [ApprovalDecisionController::class, 'requestInfo'])->name('approvals.requestInfo');
+        Route::post('/approvals/{approval}/resubmit', [ApprovalDecisionController::class, 'resubmit'])->name('approvals.resubmit');
+        Route::post('/approvals/{approval}/comment', [ApprovalDecisionController::class, 'comment'])->name('approvals.comment');
+        Route::post('/approvals/{approval}/cancel', [ApprovalDecisionController::class, 'cancel'])->name('approvals.cancel');
 
         Route::get('/mfa', [MfaSettingsController::class, 'show'])->name('mfa.setup');
         Route::post('/mfa', [MfaSettingsController::class, 'store'])->name('mfa.enable');

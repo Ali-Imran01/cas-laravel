@@ -10,7 +10,7 @@ const NAV = [
     ['roles', '/roles', 'roles.view'],
     ['organization', '/organization', 'organization.view'],
     ['apps', '/apps', 'apps.view'],
-    ['approvals', '/approvals', 'approvals.view'],
+    ['approvals', '/approvals'], // self-service: everyone may submit and see their own requests
     ['audit', '/audit', 'audit.view'],
     ['settings', '/settings', 'settings.view'],
 ];

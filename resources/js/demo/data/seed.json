@@ -20,10 +20,26 @@
     { "id": 2, "code": "itsd-prod", "name": "IT Service Desk", "environment": "production", "status": "active" },
     { "id": 3, "code": "qr-sandbox", "name": "QR Restaurant", "environment": "sandbox", "status": "sandbox" }
   ],
+  "approval_workflows": [
+    { "id": 1, "code": "role_change", "name": "Role change", "steps": [{ "level": 1, "name": "Head of unit" }, { "level": 2, "name": "Administrator" }] },
+    { "id": 2, "code": "new_account", "name": "New account", "steps": [{ "level": 1, "name": "Head of unit" }, { "level": 2, "name": "HR officer" }] },
+    { "id": 3, "code": "app_access", "name": "App access", "steps": [{ "level": 1, "name": "Head of unit" }, { "level": 2, "name": "Administrator" }] },
+    { "id": 4, "code": "reactivation", "name": "Account reactivation", "steps": [{ "level": 1, "name": "Head of unit" }, { "level": 2, "name": "HR officer" }] },
+    { "id": 5, "code": "transfer", "name": "Transfer", "steps": [{ "level": 1, "name": "Current unit head" }, { "level": 2, "name": "HR officer" }] },
+    { "id": 6, "code": "new_role", "name": "New role", "steps": [{ "level": 1, "name": "Administrator" }] }
+  ],
   "approval_requests": [
-    { "id": 1, "reference": "REQ-2291", "workflow_id": 1, "requester_id": 4, "status": "pending", "current_level": 1 },
-    { "id": 2, "reference": "REQ-2292", "workflow_id": 3, "requester_id": 5, "status": "pending", "current_level": 2 },
-    { "id": 3, "reference": "REQ-2280", "workflow_id": 2, "requester_id": 4, "status": "approved", "current_level": 2 }
+    { "id": 1, "reference": "REQ-2291", "workflow_id": 1, "requester_id": 4, "status": "pending", "current_level": 1, "justification": "Taking over the reporting dashboards.", "payload": { "user_id": 4, "to_role": "hr_officer" }, "due_in_hours": 32 },
+    { "id": 2, "reference": "REQ-2292", "workflow_id": 4, "requester_id": 4, "status": "pending", "current_level": 2, "justification": "Returning from leave.", "payload": { "user_id": 5 }, "due_in_hours": -6 },
+    { "id": 3, "reference": "REQ-2280", "workflow_id": 3, "requester_id": 4, "status": "approved", "current_level": 2, "justification": "Needed for inspections.", "payload": { "application_id": 1, "user_id": 4, "app_role": "Inspector" } }
+  ],
+  "approval_actions": [
+    { "id": 1, "request_id": 1, "level": 1, "actor_id": 4, "decision": "submitted", "comment": "Taking over the reporting dashboards.", "hours_ago": 32 },
+    { "id": 2, "request_id": 2, "level": 1, "actor_id": 4, "decision": "submitted", "comment": "Returning from leave.", "hours_ago": 54 },
+    { "id": 3, "request_id": 2, "level": 1, "actor_id": 3, "decision": "approved", "comment": null, "hours_ago": 50 },
+    { "id": 4, "request_id": 3, "level": 1, "actor_id": 4, "decision": "submitted", "comment": "Needed for inspections.", "hours_ago": 100 },
+    { "id": 5, "request_id": 3, "level": 1, "actor_id": 3, "decision": "approved", "comment": null, "hours_ago": 96 },
+    { "id": 6, "request_id": 3, "level": 2, "actor_id": 1, "decision": "approved", "comment": null, "hours_ago": 90 }
   ],
   "audit_logs": [
     { "id": 6, "hours_ago": 1, "actor": { "name": "Aisyah Rahman", "staff_id": "STF-10001" }, "action": "UPDATE", "subject": "User #4", "description": "Updated user STF-10004", "result": "success", "ip": "203.0.113.10", "old_values": { "name": "Daniel L." }, "new_values": { "name": "Daniel Lee" } },

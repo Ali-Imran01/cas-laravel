@@ -99,6 +99,33 @@
     }
   },
   "dashboard": { "title": "Dashboard", "users": "Users", "apps": "Connected apps", "pendingApprovals": "Pending approvals", "signInsToday": "Sign-ins today", "signIns": "Sign-ins, last 14 days", "recent": "Recent activity", "viewAll": "View all" },
+  "approvalsPage": {
+    "title": "Approvals", "newRequest": "New request", "manageWorkflows": "Manage workflows", "empty": "Nothing here.",
+    "tabs": { "decide": "Needs your decision", "mine": "My requests", "all": "All requests" },
+    "status": { "pending": "Pending", "info_requested": "Info requested", "approved": "Approved", "rejected": "Rejected", "cancelled": "Cancelled" },
+    "levelOf": "Level {{current}} of {{total}}", "overdue": "Overdue", "requestedBy": "Requested by {{name}}", "source": "Submitted through {{name}}",
+    "justification": "Justification", "noJustification": "No justification given.", "payload": "Details",
+    "timeline": "Timeline",
+    "decision": { "submitted": "Submitted", "approved": "Approved", "rejected": "Rejected", "info_requested": "Asked for more information", "commented": "Commented", "resubmitted": "Resubmitted", "cancelled": "Cancelled" },
+    "approve": "Approve", "reject": "Reject", "requestInfo": "Ask a question", "resubmit": "Send back for a decision", "cancelRequest": "Withdraw request",
+    "comment": "Comment", "addComment": "Add comment", "commentPlaceholder": "Add a note (optional)", "reasonPlaceholder": "Say why",
+    "confirmCancel": "Withdraw this request? This cannot be undone.", "confirm": "Yes, withdraw", "cancel": "Cancel"
+  },
+  "approvalsNew": {
+    "title": "New request", "pickWorkflow": "What do you need?", "notRequestable": "You do not have permission to ask for this.",
+    "justification": "Reason (optional)", "submit": "Submit request", "back": "Back to approvals",
+    "fields": {
+      "user": "Person", "role": "Role", "toRole": "New role", "staffId": "Staff ID", "name": "Full name", "email": "Email",
+      "orgUnit": "Org unit", "position": "Position", "application": "Application", "appRole": "App role", "expires": "Expires (optional)",
+      "effective": "Effective date (optional)", "displayName": "Display name", "description": "Description (optional)", "permissions": "Permissions",
+      "noRole": "No role", "noUnit": "Not assigned", "noPosition": "No position"
+    }
+  },
+  "approvalsWorkflows": {
+    "title": "Approval workflows", "active": "Active", "allowApi": "Connected apps may submit to this", "save": "Save",
+    "step": "Level {{level}}: {{name}}", "approverType": "Who approves", "role": "Role", "person": "Person", "slaHours": "Hours to decide", "saveStep": "Save",
+    "types": { "role": "A role", "user": "A specific person", "unit_head": "Head of the unit", "division_head": "Head of the division" }
+  },
   "common": { "signOut": "Sign out", "language": "Language", "security": "Security" },
   "demo": { "banner": "Demo mode: sample data, stored in your browser", "reset": "Reset", "source": "View source on GitHub" }
 }

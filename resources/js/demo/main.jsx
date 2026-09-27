@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LinkProvider } from '../Components/LinkContext';
+import ApprovalsIndex from '../Pages/Approvals/Index';
 import AppsIndex from '../Pages/Apps/Index';
 import AuditIndex from '../Pages/Audit/Index';
 import Dashboard from '../Pages/Dashboard';
@@ -207,6 +208,55 @@ function AppsRoute() {
     );
 }
 
+// Read-only view of the same Approvals/Index page: no `can` flags, so no deciding, submitting or workflow admin.
+function ApprovalsRoute() {
+    const navigate = useNavigate();
+    const [params] = useSearchParams();
+    const requests = useDemo('approval_requests').items;
+    const workflows = useDemo('approval_workflows').items;
+    const log = useDemo('approval_actions').items;
+    const users = useDemo('users').items;
+    if (!isSignedIn()) return <Navigate to="/login" replace />;
+
+    const now = Date.now();
+    const tab = ['decide', 'mine', 'all'].includes(params.get('tab')) ? params.get('tab') : 'decide';
+    const userName = (id) => users.find((u) => u.id === id)?.name ?? `#${id}`;
+    const workflowOf = (id) => workflows.find((w) => w.id === id);
+    const dueAt = (r) => (r.due_in_hours == null ? null : new Date(now + r.due_in_hours * 3600 * 1000).toISOString());
+    const isOverdue = (r) => r.status === 'pending' && r.due_in_hours != null && r.due_in_hours < 0;
+    const summary = (r) => `${workflowOf(r.workflow_id)?.name ?? ''} — ${userName(r.requester_id)}`;
+
+    const rows = requests.filter((r) => tab !== 'decide' || r.status === 'pending').map((r) => ({
+        id: r.id, reference: r.reference, workflow: workflowOf(r.workflow_id)?.name ?? '', requester: userName(r.requester_id),
+        status: r.status, current_level: r.current_level, levels: workflowOf(r.workflow_id)?.steps.length ?? 1,
+        due_at: dueAt(r), overdue: isOverdue(r), summary: summary(r), created_at: new Date(now - 72 * 3600 * 1000).toISOString(),
+    }));
+
+    const request = requests.find((r) => r.id === Number(params.get('request'))) ?? requests.find((r) => r.id === rows[0]?.id);
+    const selected = request && {
+        id: request.id, reference: request.reference, workflow: workflowOf(request.workflow_id)?.name ?? '', workflow_code: workflowOf(request.workflow_id)?.code,
+        requester: { id: request.requester_id, name: userName(request.requester_id), staff_id: users.find((u) => u.id === request.requester_id)?.staff_id },
+        status: request.status, current_level: request.current_level, steps: workflowOf(request.workflow_id)?.steps ?? [],
+        justification: request.justification, payload: request.payload, summary: summary(request), source_application: null,
+        due_at: dueAt(request), overdue: isOverdue(request), completed_at: null, created_at: new Date(now - 72 * 3600 * 1000).toISOString(),
+        actions: log.filter((a) => a.request_id === request.id).map((a) => ({
+            id: a.id, level: a.level, decision: a.decision, actor: userName(a.actor_id), comment: a.comment,
+            created_at: new Date(now - a.hours_ago * 3600 * 1000).toISOString(),
+        })),
+        can: { decide: false, requester: false, comment: false },
+    };
+
+    return (
+        <ApprovalsIndex
+            requests={rows}
+            tab={tab}
+            selected={selected}
+            can={{ oversee: false, submit: false, manageWorkflows: false }}
+            onSignOut={() => { setSignedIn(false); navigate('/login'); }}
+        />
+    );
+}
+
 const MODULES = ['users', 'roles', 'organization', 'apps', 'approvals', 'audit', 'settings'];
 const GRID = MODULES.map((module) => ({ module, actions: ['view', 'create', 'edit', 'delete', ...(module === 'approvals' ? ['approve'] : [])] }));
 const ALL_PERMISSIONS = GRID.flatMap((r) => r.actions.map((a) => `${r.module}.${a}`));
@@ -295,6 +345,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/roles" element={<RolesRoute />} />
                 <Route path="/audit" element={<AuditRoute />} />
                 <Route path="/apps" element={<AppsRoute />} />
+                <Route path="/approvals" element={<ApprovalsRoute />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             <DemoFooter />

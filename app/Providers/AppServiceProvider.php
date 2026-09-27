@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use App\Domain\Access\Policies\RolePolicy;
+use App\Domain\Approvals\Models\ApprovalRequest;
+use App\Domain\Approvals\Models\ApprovalWorkflow;
+use App\Domain\Approvals\Policies\ApprovalPolicy;
+use App\Domain\Approvals\Policies\ApprovalWorkflowPolicy;
 use App\Domain\Apps\Models\Application;
 use App\Domain\Apps\Models\OAuthClient;
 use App\Domain\Apps\Policies\ApplicationPolicy;
@@ -61,6 +65,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(UserImport::class, UserImportPolicy::class);
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(AuditLog::class, AuditPolicy::class);
+        Gate::policy(ApprovalRequest::class, ApprovalPolicy::class);
+        Gate::policy(ApprovalWorkflow::class, ApprovalWorkflowPolicy::class);
         // Super admins pass every permission check. Self-protection lives in the actions, not the policies.
         Gate::before(fn (User $user) => $user->hasRole('super_admin') ? true : null);
 
