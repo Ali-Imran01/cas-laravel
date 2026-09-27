@@ -2,6 +2,7 @@
 
 namespace App\Domain\Identity\Actions;
 
+use App\Domain\Audit\Audit;
 use App\Domain\Identity\Enums\UserStatus;
 use App\Domain\Identity\Models\User;
 use Illuminate\Validation\ValidationException;
@@ -40,6 +41,14 @@ class ChangeUserStatus
         if ($to !== UserStatus::Active) {
             ($this->revoke)($target);
         }
+
+        $action = match (true) {
+            $to === UserStatus::Locked => 'LOCK',
+            $to === UserStatus::Inactive => 'DEACTIVATE',
+            $from === UserStatus::Inactive => 'REACTIVATE',
+            default => 'UNLOCK',
+        };
+        Audit::record($action, ucfirst(strtolower($action))." account {$target->staff_id}", $target, ['status' => $from->value], ['status' => $status->value]);
     }
 
     private function refuse(string $key): ValidationException

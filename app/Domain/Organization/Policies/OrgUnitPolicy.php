@@ -9,21 +9,21 @@ class OrgUnitPolicy
 {
     public function viewAny(User $actor): bool
     {
-        return $actor->hasPermissionTo('organization.view');
+        return $actor->checkPermissionTo('organization.view');
     }
 
     public function create(User $actor): bool
     {
-        return $actor->hasPermissionTo('organization.create');
+        return $actor->checkPermissionTo('organization.create');
     }
 
     public function update(User $actor): bool
     {
-        return $actor->hasPermissionTo('organization.edit');
+        return $actor->checkPermissionTo('organization.edit');
     }
 
     public function delete(User $actor): bool
     {
-        return $actor->hasPermissionTo('organization.delete');
+        return $actor->checkPermissionTo('organization.delete');
     }
 }

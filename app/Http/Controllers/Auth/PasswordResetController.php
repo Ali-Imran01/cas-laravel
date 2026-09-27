@@ -53,7 +53,7 @@ class PasswordResetController extends Controller
                     throw ValidationException::withMessages(['password' => $message]);
                 });
 
-                $change($user, $password); // keeps no session: every device signs out
+                $change($user, $password, null, 'reset'); // keeps no session: every device signs out
             },
         );
 

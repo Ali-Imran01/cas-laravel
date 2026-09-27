@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Domain\Audit\Audit;
+use App\Domain\Audit\Enums\AuthResult;
+use App\Domain\Audit\Enums\LoginMethod;
 use App\Domain\Identity\Actions\AuthenticateUser;
 use App\Domain\Identity\Actions\CompleteLogin;
 use App\Http\Controllers\Controller;
@@ -30,6 +33,8 @@ class LoginController extends Controller
 
         $key = Str::lower($data['identifier']).'|'.$request->ip();
         if (RateLimiter::tooManyAttempts($key, config('cas.auth.login_throttle_per_minute'))) {
+            Audit::loginAttempt(null, $data['identifier'], LoginMethod::Password, AuthResult::Blocked, 'throttled');
+
             throw ValidationException::withMessages([
                 'identifier' => __('cas.auth.throttle', ['seconds' => RateLimiter::availableIn($key)]),
             ]);
@@ -60,6 +65,8 @@ class LoginController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
+        Audit::record('LOGOUT', "{$request->user()->staff_id} signed out", $request->user());
+
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

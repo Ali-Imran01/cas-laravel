@@ -12,27 +12,27 @@ class UserPolicy
 {
     public function viewAny(User $actor): bool
     {
-        return $actor->hasPermissionTo('users.view');
+        return $actor->checkPermissionTo('users.view');
     }
 
     public function view(User $actor, User $target): bool
     {
-        return $actor->hasPermissionTo('users.view');
+        return $actor->checkPermissionTo('users.view');
     }
 
     public function create(User $actor): bool
     {
-        return $actor->hasPermissionTo('users.create');
+        return $actor->checkPermissionTo('users.create');
     }
 
     public function update(User $actor, User $target): bool
     {
-        return $actor->hasPermissionTo('users.edit') && $this->mayManage($actor, $target);
+        return $actor->checkPermissionTo('users.edit') && $this->mayManage($actor, $target);
     }
 
     public function delete(User $actor, User $target): bool
     {
-        return $actor->hasPermissionTo('users.delete') && $this->mayManage($actor, $target);
+        return $actor->checkPermissionTo('users.delete') && $this->mayManage($actor, $target);
     }
 
     // Account state changes share the edit permission.

@@ -10,6 +10,6 @@ class UserImportPolicy
 {
     public function view(User $actor, UserImport $import): bool
     {
-        return $actor->hasPermissionTo('users.create') && $actor->id === $import->created_by;
+        return $actor->checkPermissionTo('users.create') && $actor->id === $import->created_by;
     }
 }

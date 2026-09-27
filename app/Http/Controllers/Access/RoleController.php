@@ -6,6 +6,7 @@ use App\Domain\Access\Actions\DeleteRole;
 use App\Domain\Access\Actions\EnsureRoleManageable;
 use App\Domain\Access\Actions\GrantablePermissions;
 use App\Domain\Access\Actions\SyncRolePermissions;
+use App\Domain\Audit\Audit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Access\StoreRoleRequest;
 use App\Http\Requests\Access\SyncPermissionsRequest;
@@ -66,7 +67,8 @@ class RoleController extends Controller
 
     public function store(StoreRoleRequest $request): RedirectResponse
     {
-        $role = Role::create($request->validated() + ['guard_name' => 'web', 'is_system' => false]);
+        $role = Role::query()->create($request->validated() + ['guard_name' => 'web', 'is_system' => false]);
+        Audit::record('CREATE', "Created role {$role->name}", $role, [], $request->validated());
 
         return redirect()->route('roles.index', ['role' => $role->id])->with('status', __('cas.roles.created'));
     }
@@ -74,7 +76,13 @@ class RoleController extends Controller
     public function update(UpdateRoleRequest $request, Role $role, EnsureRoleManageable $manageable): RedirectResponse
     {
         $manageable($request->user(), $role->loadMissing('permissions'));
+        $before = $role->only(['display_name', 'description']);
         $role->update($request->validated());
+
+        [$old, $new] = Audit::diff($before, $role->only(['display_name', 'description']));
+        if ($new !== []) {
+            Audit::record('UPDATE', "Updated role {$role->name}", $role, $old, $new);
+        }
 
         return back()->with('status', __('cas.roles.updated'));
     }

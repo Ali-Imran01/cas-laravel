@@ -20,6 +20,14 @@
     "disableTitle": "Turn off", "currentPassword": "Current password", "disable": "Turn off"
   },
   "flash": { "mfa-email-sent": "A code was sent to your email.", "mfa-enabled": "Two-step verification is on.", "mfa-disabled": "Two-step verification is off.", "password-changed": "Password updated." },
+  "audit": {
+    "export": "Export CSV", "tabLog": "Changes", "tabSignIns": "Sign-ins", "search": "Search descriptions", "searchIdentifier": "Search the ID or email that was typed",
+    "action": "Action", "allActions": "All actions", "actor": "Who (name or staff ID)", "subject": "Record type", "allSubjects": "All record types", "result": "Result", "allResults": "All results",
+    "method": "Method", "allMethods": "All methods", "from": "From", "to": "To", "when": "When", "identifier": "Typed", "reason": "Reason", "what": "What", "details": "Details",
+    "before": "Before", "after": "After", "system": "System", "empty": "Nothing recorded for these filters.",
+    "results": { "success": "Success", "failed": "Failed", "blocked": "Blocked" },
+    "methods": { "password": "Password", "mfa": "Two-step", "sso": "SSO" }
+  },
   "rolePage": {
     "displayName": "Display name", "name": "Role key", "nameHint": "Lowercase letters, digits and underscores. Apps and code refer to this key, so it cannot be changed later.", "description": "Description",
     "saveDetails": "Save details", "savePermissions": "Save permissions", "create": "Create role", "newTitle": "New role", "module": "Module", "system": "built-in",
@@ -64,7 +72,7 @@
       "startedOn": "Effective date", "transferSubmit": "Record transfer", "back": "Back to users"
     }
   },
-  "dashboard": { "title": "Dashboard", "users": "Users", "apps": "Connected apps", "pendingApprovals": "Pending approvals", "signInsToday": "Sign-ins today", "signIns": "Sign-ins, last 14 days" },
+  "dashboard": { "title": "Dashboard", "users": "Users", "apps": "Connected apps", "pendingApprovals": "Pending approvals", "signInsToday": "Sign-ins today", "signIns": "Sign-ins, last 14 days", "recent": "Recent activity", "viewAll": "View all" },
   "common": { "signOut": "Sign out", "language": "Language", "security": "Security" },
   "demo": { "banner": "Demo mode: sample data, stored in your browser", "reset": "Reset", "source": "View source on GitHub" }
 }

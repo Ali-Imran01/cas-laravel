@@ -27,7 +27,7 @@ const callbacksFor = (name, props) => ({
     onSendEmail: () => router.post('/login/mfa/email'),
     onEnable: (code) => router.post('/mfa', { code }),
     onDisable: (current_password) => router.delete('/mfa', { data: { current_password } }),
-    onFilter: (filters) => router.get('/users', drop(filters), { preserveState: true, replace: true }),
+    onFilter: ({ view, ...filters }) => router.get(name === 'Audit/Index' ? '/audit' : '/users', drop({ view, ...filters }), { preserveState: true, replace: true }),
     onBulk: (data) => router.post('/users/bulk', data, keepScroll),
     onLock: () => router.post(`/users/${props.user?.id}/lock`, {}, keepScroll),
     onUnlock: () => router.post(`/users/${props.user?.id}/unlock`, {}, keepScroll),

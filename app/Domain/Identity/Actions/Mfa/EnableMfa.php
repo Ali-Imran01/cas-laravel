@@ -2,6 +2,7 @@
 
 namespace App\Domain\Identity\Actions\Mfa;
 
+use App\Domain\Audit\Audit;
 use App\Domain\Identity\Models\User;
 
 class EnableMfa
@@ -21,6 +22,7 @@ class EnableMfa
 
         $codes = $this->recovery->generate();
         $user->forceFill(['mfa_secret' => $secret, 'mfa_enabled' => true, 'mfa_recovery_codes' => $codes])->save();
+        Audit::record('MFA_ENABLE', "Two-step verification turned on for {$user->staff_id}", $user, ['mfa_enabled' => false], ['mfa_enabled' => true], actorId: $user->id);
 
         return $codes;
     }

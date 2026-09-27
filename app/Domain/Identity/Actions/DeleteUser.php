@@ -2,6 +2,7 @@
 
 namespace App\Domain\Identity\Actions;
 
+use App\Domain\Audit\Audit;
 use App\Domain\Identity\Models\User;
 use App\Domain\Organization\Models\OrgUnit;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +26,7 @@ class DeleteUser
             OrgUnit::where('head_user_id', $target->id)->update(['head_user_id' => null]);
             ($this->revoke)($target);
             $target->delete();
+            Audit::record('DELETE', "Deleted user {$target->staff_id}", $target, ['staff_id' => $target->staff_id, 'name' => $target->name, 'email' => $target->email]);
         });
     }
 }

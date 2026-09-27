@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Domain\Audit\Enums\AuthResult;
+use App\Domain\Audit\Models\AuditLog;
+use App\Domain\Audit\Models\LoginAttempt;
+use App\Domain\Identity\Models\User;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
+
+class DashboardController extends Controller
+{
+    private const DAYS = 14;
+
+    public function __invoke(Request $request): Response
+    {
+        $from = today()->subDays(self::DAYS - 1);
+        $perDay = LoginAttempt::query()
+            ->where('result', AuthResult::Success->value)->where('created_at', '>=', $from)
+            ->selectRaw('created_at::date as day, count(*) as total')->groupBy('day')->pluck('total', 'day');
+
+        $signIns = collect(range(0, self::DAYS - 1))->map(function (int $i) use ($from, $perDay) {
+            $day = $from->copy()->addDays($i)->toDateString();
+
+            return ['date' => $day, 'count' => (int) ($perDay[$day] ?? 0)];
+        })->all();
+
+        return Inertia::render('Dashboard', [
+            'kpis' => [
+                'users' => User::query()->count(),
+                'apps' => 0, // connected apps arrive in Phase 4
+                'pendingApprovals' => 0, // approvals arrive in Phase 5
+                'signInsToday' => end($signIns)['count'],
+            ],
+            'signIns' => $signIns,
+            // Activity feed only for people allowed to read the audit log.
+            'recent' => $request->user()->can('viewAny', AuditLog::class)
+                ? AuditLog::query()->with('actor')->latest('id')->limit(6)->get()->map(fn (AuditLog $a) => [
+                    'id' => $a->id,
+                    'created_at' => $a->created_at->toIso8601String(),
+                    'actor' => $a->actor?->name,
+                    'description' => $a->description,
+                    'result' => $a->result->value,
+                ])->all()
+                : null,
+        ]);
+    }
+}

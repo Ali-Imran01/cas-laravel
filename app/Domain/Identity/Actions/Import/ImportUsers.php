@@ -3,6 +3,8 @@
 namespace App\Domain\Identity\Actions\Import;
 
 use App\Domain\Access\Actions\AssignableRoles;
+use App\Domain\Audit\Audit;
+use App\Domain\Audit\Enums\AuthResult;
 use App\Domain\Identity\Actions\CreateUser;
 use App\Domain\Identity\Enums\ImportStatus;
 use App\Domain\Identity\Models\User;
@@ -40,7 +42,8 @@ class ImportUsers
             } elseif (! $disk->exists($import->file_path)) {
                 $this->fail($import, 'unreadable');
             } else {
-                $this->process($import, $actor, $disk->path($import->file_path));
+                // Accounts created by the import are attributed to whoever started it, not to "System".
+                Audit::asActor($actor->id, fn () => $this->process($import, $actor, $disk->path($import->file_path)));
             }
         } finally {
             $disk->delete($import->file_path);
@@ -116,6 +119,8 @@ class ImportUsers
             'total_rows' => $total, 'success_rows' => $ok, 'failed_rows' => $bad,
             'errors' => $total === 0 ? [['row' => null, 'field' => 'file', 'message' => __('cas.import.no_rows')]] : $errors,
         ]);
+
+        Audit::record('IMPORT_DONE', "CSV import finished: $ok created, $bad failed", $import, new: ['rows' => $total, 'created' => $ok, 'failed' => $bad], actorId: $actor->id);
     }
 
     /**
@@ -234,6 +239,9 @@ class ImportUsers
     /** @param array<string, int|string> $replace */
     private function fail(UserImport $import, string $key, array $replace = []): void
     {
-        $import->update(['status' => ImportStatus::Failed, 'errors' => [['row' => null, 'field' => 'file', 'message' => __("cas.import.$key", $replace)]]]);
+        $message = __("cas.import.$key", $replace);
+        $import->update(['status' => ImportStatus::Failed, 'errors' => [['row' => null, 'field' => 'file', 'message' => $message]]]);
+
+        Audit::record('IMPORT_FAILED', "CSV import failed: $message", $import, result: AuthResult::Failed, actorId: $import->created_by);
     }
 }

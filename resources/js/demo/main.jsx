@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LinkProvider } from '../Components/LinkContext';
+import AuditIndex from '../Pages/Audit/Index';
 import Dashboard from '../Pages/Dashboard';
 import Login from '../Pages/Login';
 import MfaChallenge from '../Pages/MfaChallenge';
@@ -153,6 +154,26 @@ function UsersRoute() {
     );
 }
 
+// Read-only view of the same Audit/Index page over a few sample entries; filters and export are real-app only.
+function AuditRoute() {
+    const navigate = useNavigate();
+    if (!isSignedIn()) return <Navigate to="/login" replace />;
+
+    const now = Date.now();
+    const data = seed.audit_logs.map((e) => ({ ...e, created_at: new Date(now - e.hours_ago * 3600 * 1000).toISOString() }));
+
+    return (
+        <AuditIndex
+            entries={{ data, current_page: 1, last_page: 1 }}
+            actions={[...new Set(data.map((e) => e.action))].sort()}
+            subjects={['OrgUnit', 'Role', 'User']}
+            results={['success', 'failed', 'blocked']}
+            methods={['password', 'sso', 'mfa']}
+            onSignOut={() => { setSignedIn(false); navigate('/login'); }}
+        />
+    );
+}
+
 const MODULES = ['users', 'roles', 'organization', 'apps', 'approvals', 'audit', 'settings'];
 const GRID = MODULES.map((module) => ({ module, actions: ['view', 'create', 'edit', 'delete', ...(module === 'approvals' ? ['approve'] : [])] }));
 const ALL_PERMISSIONS = GRID.flatMap((r) => r.actions.map((a) => `${r.module}.${a}`));
@@ -239,6 +260,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/users" element={<UsersRoute />} />
                 <Route path="/organization" element={<OrganizationRoute />} />
                 <Route path="/roles" element={<RolesRoute />} />
+                <Route path="/audit" element={<AuditRoute />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             <DemoFooter />

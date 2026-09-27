@@ -25,5 +25,13 @@
     { "id": 2, "reference": "REQ-2292", "workflow_id": 3, "requester_id": 5, "status": "pending", "current_level": 2 },
     { "id": 3, "reference": "REQ-2280", "workflow_id": 2, "requester_id": 4, "status": "approved", "current_level": 2 }
   ],
+  "audit_logs": [
+    { "id": 6, "hours_ago": 1, "actor": { "name": "Aisyah Rahman", "staff_id": "STF-10001" }, "action": "UPDATE", "subject": "User #4", "description": "Updated user STF-10004", "result": "success", "ip": "203.0.113.10", "old_values": { "name": "Daniel L." }, "new_values": { "name": "Daniel Lee" } },
+    { "id": 5, "hours_ago": 3, "actor": { "name": "Aisyah Rahman", "staff_id": "STF-10001" }, "action": "PERMISSIONS", "subject": "Role #3", "description": "Changed permissions of role dept_head", "result": "success", "ip": "203.0.113.10", "old_values": { "permissions": ["users.view"] }, "new_values": { "permissions": ["approvals.approve", "users.view"] } },
+    { "id": 4, "hours_ago": 5, "actor": { "name": "Hafiz Ismail", "staff_id": "STF-10002" }, "action": "TRANSFER", "subject": "User #4", "description": "Transferred user STF-10004", "result": "success", "ip": "203.0.113.22", "old_values": { "org_unit_id": 2 }, "new_values": { "org_unit_id": 3, "effective": "2026-09-01" } },
+    { "id": 3, "hours_ago": 26, "actor": null, "action": "LOCKOUT", "subject": "User #5", "description": "Account STF-10005 locked after too many failed sign-ins", "result": "blocked", "ip": "198.51.100.7", "old_values": null, "new_values": null },
+    { "id": 2, "hours_ago": 30, "actor": { "name": "Aisyah Rahman", "staff_id": "STF-10001" }, "action": "CREATE", "subject": "OrgUnit #3", "description": "Created unit ICT-APD", "result": "success", "ip": "203.0.113.10", "old_values": null, "new_values": { "code": "ICT-APD", "name": "Application Development Unit" } },
+    { "id": 1, "hours_ago": 31, "actor": { "name": "Aisyah Rahman", "staff_id": "STF-10001" }, "action": "CREATE", "subject": "User #4", "description": "Created user STF-10004", "result": "success", "ip": "203.0.113.10", "old_values": null, "new_values": { "staff_id": "STF-10004", "role": "staff" } }
+  ],
   "sign_in_counts": [12, 18, 15, 22, 9, 4, 3, 20, 25, 19, 23, 21, 8, 14]
 }

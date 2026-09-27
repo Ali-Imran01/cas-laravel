@@ -2,6 +2,7 @@
 
 namespace App\Domain\Organization\Actions;
 
+use App\Domain\Audit\Audit;
 use App\Domain\Organization\Models\OrgUnit;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -23,6 +24,7 @@ class DeleteOrgUnit
         DB::transaction(function () use ($unit) {
             $unit->positions()->delete(); // nobody holds them: the users check above covers every position
             $unit->delete();
+            Audit::record('DELETE', "Deleted unit {$unit->code}", $unit, ['code' => $unit->code, 'name' => $unit->name]);
         });
     }
 }

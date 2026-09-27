@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Domain\Audit\Audit;
 use App\Domain\Identity\Actions\Mfa\EnableMfa;
 use App\Domain\Identity\Actions\Mfa\Totp;
 use App\Http\Controllers\Controller;
@@ -48,6 +49,7 @@ class MfaSettingsController extends Controller
         $request->validate(['current_password' => ['required', 'current_password']]);
 
         $request->user()->forceFill(['mfa_enabled' => false, 'mfa_secret' => null, 'mfa_recovery_codes' => null])->save();
+        Audit::record('MFA_DISABLE', "Two-step verification turned off for {$request->user()->staff_id}", $request->user(), ['mfa_enabled' => true], ['mfa_enabled' => false]);
 
         return redirect()->route('mfa.setup')->with('status', 'mfa-disabled');
     }

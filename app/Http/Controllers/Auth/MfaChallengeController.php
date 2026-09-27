@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Domain\Audit\Audit;
+use App\Domain\Audit\Enums\AuthResult;
+use App\Domain\Audit\Enums\LoginMethod;
 use App\Domain\Identity\Actions\CompleteLogin;
 use App\Domain\Identity\Actions\Mfa\EmailOtp;
 use App\Domain\Identity\Actions\Mfa\VerifyMfaChallenge;
@@ -38,6 +41,7 @@ class MfaChallengeController extends Controller
         if (RateLimiter::tooManyAttempts($key, config('cas.auth.mfa_max_attempts'))) {
             // Too many wrong codes: drop the pending sign-in so the password step has to be repeated.
             $request->session()->forget('mfa');
+            Audit::loginAttempt($user, $user->staff_id, LoginMethod::Mfa, AuthResult::Blocked, 'throttled');
 
             return redirect()->route('login')->withErrors([
                 'identifier' => __('cas.auth.throttle', ['seconds' => RateLimiter::availableIn($key)]),
@@ -46,13 +50,14 @@ class MfaChallengeController extends Controller
 
         if (! $verify($user, $data['method'], $data['code'])) {
             RateLimiter::hit($key, 300);
+            Audit::loginAttempt($user, $user->staff_id, LoginMethod::Mfa, AuthResult::Failed, "bad_{$data['method']}_code");
             throw ValidationException::withMessages(['code' => __('cas.auth.mfa_invalid')]);
         }
 
         RateLimiter::clear($key);
         $remember = (bool) $request->session()->get('mfa.remember');
         $request->session()->forget('mfa');
-        $complete($request, $user, $remember);
+        $complete($request, $user, $remember, LoginMethod::Mfa);
 
         return redirect()->intended(route('dashboard'));
     }

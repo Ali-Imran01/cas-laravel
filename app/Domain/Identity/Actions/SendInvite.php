@@ -2,6 +2,7 @@
 
 namespace App\Domain\Identity\Actions;
 
+use App\Domain\Audit\Audit;
 use App\Domain\Identity\Enums\UserStatus;
 use App\Domain\Identity\Models\User;
 use App\Domain\Identity\Notifications\InviteUser;
@@ -19,6 +20,7 @@ class SendInvite
         }
 
         $token = Password::broker('invites')->createToken($user);
+        Audit::record('INVITE', "Sent invitation to {$user->staff_id}", $user);
         $user->notify(new InviteUser($token));
     }
 }

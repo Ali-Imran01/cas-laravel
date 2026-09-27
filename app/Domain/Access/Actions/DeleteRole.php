@@ -2,6 +2,7 @@
 
 namespace App\Domain\Access\Actions;
 
+use App\Domain\Audit\Audit;
 use App\Domain\Identity\Models\User;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Role;
@@ -24,5 +25,6 @@ class DeleteRole
         }
 
         $role->delete();
+        Audit::record('DELETE', "Deleted role {$role->name}", $role, ['name' => $role->name, 'permissions' => $role->permissions->pluck('name')->sort()->values()->all()]);
     }
 }

@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use App\Domain\Access\Policies\RolePolicy;
+use App\Domain\Audit\AuditContext;
+use App\Domain\Audit\Models\AuditLog;
+use App\Domain\Audit\Policies\AuditPolicy;
 use App\Domain\Identity\Models\User;
 use App\Domain\Identity\Models\UserImport;
 use App\Domain\Identity\Policies\UserImportPolicy;
@@ -21,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->scoped(AuditContext::class);
     }
 
     /**
@@ -33,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(OrgUnit::class, OrgUnitPolicy::class);
         Gate::policy(UserImport::class, UserImportPolicy::class);
         Gate::policy(Role::class, RolePolicy::class);
+        Gate::policy(AuditLog::class, AuditPolicy::class);
         // Super admins pass every permission check. Self-protection lives in the actions, not the policies.
         Gate::before(fn (User $user) => $user->hasRole('super_admin') ? true : null);
 

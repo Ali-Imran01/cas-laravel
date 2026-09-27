@@ -2,6 +2,7 @@
 
 namespace App\Domain\Identity\Actions\Import;
 
+use App\Domain\Audit\Audit;
 use App\Domain\Identity\Enums\ImportStatus;
 use App\Domain\Identity\Jobs\ProcessUserImport;
 use App\Domain\Identity\Models\User;
@@ -26,6 +27,8 @@ class StartUserImport
             'status' => ImportStatus::Queued,
             'created_by' => $actor->id,
         ]);
+
+        Audit::record('IMPORT_START', 'Started a CSV user import', $import, new: ['file_name' => $file->getClientOriginalName(), 'size_bytes' => $file->getSize()]);
 
         ProcessUserImport::dispatch($import->id);
 

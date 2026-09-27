@@ -2,6 +2,9 @@
 
 namespace App\Domain\Identity\Actions;
 
+use App\Domain\Audit\Audit;
+use App\Domain\Audit\Enums\AuthResult;
+use App\Domain\Audit\Enums\LoginMethod;
 use App\Domain\Identity\Enums\UserStatus;
 use App\Domain\Identity\Models\User;
 use Illuminate\Auth\Events\Failed;
@@ -30,10 +33,12 @@ class AuthenticateUser
         if (! $user) {
             // Same cost as a real check, so response time does not reveal whether the account exists.
             Hash::check($password, self::$dummyHash ??= Hash::make(Str::random(32)));
+            Audit::loginAttempt(null, $identifier, LoginMethod::Password, AuthResult::Failed, 'unknown_account');
             throw $this->fail('failed');
         }
 
         if ($user->locked_until?->isFuture()) {
+            Audit::loginAttempt($user, $identifier, LoginMethod::Password, AuthResult::Blocked, 'locked');
             throw $this->fail('locked', ['minutes' => (int) ceil(now()->diffInMinutes($user->locked_until, true))]);
         }
 
@@ -44,6 +49,7 @@ class AuthenticateUser
 
         // Only revealed after a correct password, so status does not leak to guessers.
         if ($user->status !== UserStatus::Active) {
+            Audit::loginAttempt($user, $identifier, LoginMethod::Password, AuthResult::Blocked, 'inactive');
             throw $this->fail('inactive');
         }
 
@@ -55,6 +61,7 @@ class AuthenticateUser
     private function recordFailure(User $user, string $identifier): void
     {
         event(new Failed('web', $user, ['identifier' => $identifier]));
+        Audit::loginAttempt($user, $identifier, LoginMethod::Password, AuthResult::Failed, 'bad_password');
 
         $user->increment('failed_login_count');
 
@@ -64,6 +71,7 @@ class AuthenticateUser
                 'locked_until' => now()->addMinutes(config('cas.auth.lockout_minutes')),
             ])->save();
             event(new Lockout(request()));
+            Audit::record('LOCKOUT', "Account {$user->staff_id} locked after too many failed sign-ins", $user, result: AuthResult::Blocked);
         }
     }
 

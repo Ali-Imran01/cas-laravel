@@ -32,15 +32,15 @@ it('lists users for anyone holding users.view', function (string $role) {
 })->with(['hr_officer', 'dept_head']);
 
 it('searches name, staff id and email case-insensitively and treats % and _ literally', function () {
-    User::factory()->create(['name' => 'Aisyah Rahman', 'staff_id' => 'STF-1', 'email' => 'aisyah@x.test']);
-    User::factory()->create(['name' => '50% Off_Man', 'staff_id' => 'STF-2', 'email' => 'off@x.test']);
-    User::factory()->create(['name' => 'Someone Else', 'staff_id' => 'STF-3', 'email' => 'else@x.test']);
+    User::factory()->create(['name' => 'Aisyah Rahman', 'staff_id' => 'ZZZ-1', 'email' => 'aisyah@x.test']);
+    User::factory()->create(['name' => '50% Off_Man', 'staff_id' => 'ZZZ-2', 'email' => 'off@x.test']);
+    User::factory()->create(['name' => 'Someone Else', 'staff_id' => 'ZZZ-3', 'email' => 'else@x.test']);
     $this->actingAs(signedInAs('hr_officer'));
 
-    foreach (['AISYAH', 'stf-1', 'AISYAH@X.TEST'] as $term) {
-        $this->get('/users?search='.urlencode($term))->assertInertia(fn (Assert $p) => $p->has('users.data', 1)->where('users.data.0.staff_id', 'STF-1'));
+    foreach (['AISYAH', 'zzz-1', 'AISYAH@X.TEST'] as $term) {
+        $this->get('/users?search='.urlencode($term))->assertInertia(fn (Assert $p) => $p->has('users.data', 1)->where('users.data.0.staff_id', 'ZZZ-1'));
     }
-    $this->get('/users?search='.urlencode('50%'))->assertInertia(fn (Assert $p) => $p->has('users.data', 1)->where('users.data.0.staff_id', 'STF-2'));
+    $this->get('/users?search='.urlencode('50%'))->assertInertia(fn (Assert $p) => $p->has('users.data', 1)->where('users.data.0.staff_id', 'ZZZ-2'));
     $this->get('/users?search='.urlencode('%'))->assertInertia(fn (Assert $p) => $p->has('users.data', 1)); // not a wildcard
 });
 

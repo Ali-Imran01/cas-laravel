@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\Access\RoleController;
+use App\Http\Controllers\Audit\AuditController;
 use App\Http\Controllers\Auth\AcceptInviteController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MfaChallengeController;
 use App\Http\Controllers\Auth\MfaSettingsController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Organization\OrgUnitController;
 use App\Http\Controllers\Organization\PositionController;
 use App\Http\Controllers\Users\UserBulkController;
@@ -16,7 +18,6 @@ use App\Http\Controllers\Users\UserInviteController;
 use App\Http\Controllers\Users\UserStatusController;
 use App\Http\Controllers\Users\UserTransferController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
@@ -46,11 +47,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/password/change', [PasswordController::class, 'update']);
 
     Route::middleware('password.current')->group(function () {
-        // Phase 0 placeholder props: real data arrives with each module.
-        Route::get('/', fn () => Inertia::render('Dashboard', [
-            'kpis' => ['users' => 0, 'apps' => 0, 'pendingApprovals' => 0, 'signInsToday' => 0],
-            'signIns' => [],
-        ]))->name('dashboard');
+        Route::get('/', DashboardController::class)->name('dashboard');
+
+        Route::get('/audit', [AuditController::class, 'index'])->name('audit.index');
+        Route::get('/audit/export', [AuditController::class, 'export'])->name('audit.export');
 
         Route::get('/mfa', [MfaSettingsController::class, 'show'])->name('mfa.setup');
         Route::post('/mfa', [MfaSettingsController::class, 'store'])->name('mfa.enable');

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Identity\Actions;
 
+use App\Domain\Audit\Audit;
 use App\Domain\Identity\Enums\UserStatus;
 use App\Domain\Identity\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,11 @@ class CreateUser
 
             return $user;
         });
+
+        Audit::record('CREATE', "Created user {$user->staff_id}", $user, [], [
+            'staff_id' => $user->staff_id, 'name' => $user->name, 'email' => $user->email,
+            'role' => $data['role'] ?? null, 'org_unit_id' => $data['org_unit_id'] ?? null, 'position_id' => $data['position_id'] ?? null,
+        ]);
 
         ($this->invite)($user);
 

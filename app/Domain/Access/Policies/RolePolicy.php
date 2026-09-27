@@ -9,21 +9,21 @@ class RolePolicy
 {
     public function viewAny(User $actor): bool
     {
-        return $actor->hasPermissionTo('roles.view');
+        return $actor->checkPermissionTo('roles.view');
     }
 
     public function create(User $actor): bool
     {
-        return $actor->hasPermissionTo('roles.create');
+        return $actor->checkPermissionTo('roles.create');
     }
 
     public function update(User $actor): bool
     {
-        return $actor->hasPermissionTo('roles.edit');
+        return $actor->checkPermissionTo('roles.edit');
     }
 
     public function delete(User $actor): bool
     {
-        return $actor->hasPermissionTo('roles.delete');
+        return $actor->checkPermissionTo('roles.delete');
     }
 }

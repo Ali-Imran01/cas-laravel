@@ -2,6 +2,7 @@
 
 namespace App\Domain\Identity\Actions;
 
+use App\Domain\Audit\Audit;
 use App\Domain\Identity\Enums\UserStatus;
 use App\Domain\Identity\Models\User;
 use App\Domain\Identity\Rules\NotRecentlyUsed;
@@ -29,8 +30,9 @@ class AcceptInvite
                 throw ValidationException::withMessages(['password' => $message]);
             });
 
-            ($this->changePassword)($user, $password);
+            ($this->changePassword)($user, $password, null, 'invite');
             $user->forceFill(['status' => UserStatus::Active, 'email_verified_at' => now()])->save();
+            Audit::record('ACTIVATE', "{$user->staff_id} accepted the invitation and activated the account", $user, ['status' => 'pending'], ['status' => 'active'], actorId: $user->id);
         });
 
         if ($status !== Password::PasswordReset) {

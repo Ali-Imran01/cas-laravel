@@ -2,6 +2,7 @@
 
 namespace App\Domain\Organization\Actions;
 
+use App\Domain\Audit\Audit;
 use App\Domain\Organization\Enums\OrgUnitType;
 use App\Domain\Organization\Models\OrgUnit;
 
@@ -15,12 +16,18 @@ class CreateOrgUnit
         $parent = isset($data['parent_id']) ? OrgUnit::query()->findOrFail($data['parent_id']) : null;
         ($this->placement)(OrgUnitType::from($data['type']), $parent);
 
-        return OrgUnit::create([
+        $unit = OrgUnit::create([
             'parent_id' => $parent?->id,
             'type' => $data['type'],
             'code' => $data['code'],
             'name' => $data['name'],
             'cost_centre' => $data['cost_centre'] ?? null,
         ]);
+
+        Audit::record('CREATE', "Created unit {$unit->code}", $unit, [], [
+            'code' => $unit->code, 'name' => $unit->name, 'type' => $data['type'], 'parent_id' => $parent?->id, 'cost_centre' => $unit->cost_centre,
+        ]);
+
+        return $unit;
     }
 }
