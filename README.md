@@ -15,6 +15,7 @@ composer install && npm install
 ./vendor/bin/sail artisan key:generate
 ./vendor/bin/sail artisan migrate --seed
 ./vendor/bin/sail npm run dev
+./vendor/bin/sail artisan queue:work   # needed for CSV user imports and other queued jobs
 ```
 
 ## Static demo (Cloudflare Pages)

@@ -4,8 +4,8 @@ namespace App\Http\Requests\Users;
 
 use App\Domain\Access\Actions\AssignableRoles;
 use App\Domain\Identity\Models\User;
+use App\Domain\Identity\Rules\UserRules;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 /** Shared rules for creating and editing a user. Subclasses decide who is authorized. */
 abstract class SaveUserRequest extends FormRequest
@@ -29,11 +29,6 @@ abstract class SaveUserRequest extends FormRequest
         // Leaving a role as it is must stay possible even when the actor could not hand it out.
         $allowed = $assignable->merge($target?->getRoleNames() ?? [])->unique()->values()->all();
 
-        return [
-            'staff_id' => ['required', 'string', 'max:20', 'regex:/^[A-Z0-9-]+$/', Rule::unique('users', 'staff_id')->ignore($target?->id)],
-            'name' => ['required', 'string', 'max:150'],
-            'email' => ['required', 'email:rfc', 'max:191', Rule::unique('users', 'email')->ignore($target?->id)],
-            'role' => ['nullable', 'string', Rule::in($allowed)],
-        ];
+        return UserRules::base($target, $allowed);
     }
 }

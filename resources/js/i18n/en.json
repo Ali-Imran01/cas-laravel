@@ -20,6 +20,14 @@
     "disableTitle": "Turn off", "currentPassword": "Current password", "disable": "Turn off"
   },
   "flash": { "mfa-email-sent": "A code was sent to your email.", "mfa-enabled": "Two-step verification is on.", "mfa-disabled": "Two-step verification is off.", "password-changed": "Password updated." },
+  "import": {
+    "title": "Import users from CSV", "intro": "Upload a CSV file with a header row. Up to {{rows}} rows and {{kb}} KB. Every row becomes an invited account, exactly as if it were created on the form.",
+    "columns": "Required: staff_id, name, email. Optional: org_unit_code and position_title (must exist), role (a role you may assign).", "template": "Download a template",
+    "file": "CSV file", "start": "Start import", "recent": "Your recent imports", "counts": "{{ok}} created, {{bad}} failed", "back": "Back to import", "result": "Import result",
+    "created": "Created", "failed": "Failed rows", "rows": "Rows read", "working": "Working on it. This page updates by itself.", "errors": "{{count}} problems",
+    "download": "Download all as CSV", "row": "Row", "field": "Field", "message": "Problem", "moreInFile": "Showing the first {{shown}}. The CSV has the rest.",
+    "status": { "queued": "Waiting", "processing": "Running", "completed": "Done", "failed": "Failed" }
+  },
   "org": {
     "name": "Name", "code": "Code", "type": "Kind", "costCentre": "Cost centre", "head": "Head", "noHead": "No head", "active": "Active",
     "types": { "headquarters": "Headquarters", "division": "Division", "unit": "Unit", "state_office": "State office" },
@@ -31,7 +39,7 @@
   },
   "acceptInvite": { "title": "Set your password", "submit": "Activate account" },
   "users": {
-    "title": "Users", "new": "New user", "search": "Search name, staff ID or email", "allStatuses": "All statuses", "allUnits": "All units", "allRoles": "All roles",
+    "title": "Users", "new": "New user", "import": "Import CSV", "search": "Search name, staff ID or email", "allStatuses": "All statuses", "allUnits": "All units", "allRoles": "All roles",
     "apply": "Apply", "clear": "Clear", "empty": "No users match these filters.", "never": "Never", "autoLocked": "temporarily locked", "selectAll": "Select all on this page",
     "selected": "{{count}} selected", "confirm": "Confirm", "cancel": "Cancel", "next": "Next", "prev": "Previous", "page": "Page {{current}} of {{last}}",
     "col": { "name": "Name", "staffId": "Staff ID", "status": "Status", "unit": "Unit", "role": "Role", "lastLogin": "Last sign-in" },

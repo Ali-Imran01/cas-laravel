@@ -2,6 +2,12 @@
 
 // Security policy defaults. Phase 6 moves the editable ones into the settings table / UI.
 return [
+    'import' => [
+        'max_kb' => 2048,
+        'max_rows' => 5000,
+        'chunk' => 100, // rows per progress update
+        'max_errors' => 1000, // stored per import; the rest are only counted
+    ],
     'auth' => [
         'max_attempts' => 5,
         'lockout_minutes' => 15,

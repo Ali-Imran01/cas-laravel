@@ -35,6 +35,8 @@ const callbacksFor = (name, props) => ({
     onInvite: () => router.post(`/users/${props.user?.id}/invite`, {}, keepScroll),
     onTransfer: (data) => router.post(`/users/${props.user?.id}/transfer`, data, keepScroll),
     onDelete: () => router.delete(`/users/${props.user?.id}`),
+    onUpload: (file) => router.post('/users/import', { file }, { forceFormData: true }),
+    onRefresh: () => router.reload({ only: ['import'] }),
     onCreateUnit: (data) => router.post('/organization/units', data, keepScroll),
     onUpdateUnit: (data) => router.put(`/organization/units/${props.selected?.id}`, data, keepScroll),
     onMoveUnit: (parent_id) => router.post(`/organization/units/${props.selected?.id}/move`, { parent_id }, keepScroll),

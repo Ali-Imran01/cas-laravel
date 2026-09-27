@@ -10,6 +10,7 @@ use App\Http\Controllers\Organization\OrgUnitController;
 use App\Http\Controllers\Organization\PositionController;
 use App\Http\Controllers\Users\UserBulkController;
 use App\Http\Controllers\Users\UserController;
+use App\Http\Controllers\Users\UserImportController;
 use App\Http\Controllers\Users\UserInviteController;
 use App\Http\Controllers\Users\UserStatusController;
 use App\Http\Controllers\Users\UserTransferController;
@@ -62,6 +63,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/organization/units/{unit}/positions', [PositionController::class, 'store'])->name('organization.positions.store');
         Route::put('/organization/positions/{position}', [PositionController::class, 'update'])->name('organization.positions.update');
         Route::delete('/organization/positions/{position}', [PositionController::class, 'destroy'])->name('organization.positions.destroy');
+
+        // Import routes come before the users resource so "import" is not read as a user id.
+        Route::get('/users/import', [UserImportController::class, 'create'])->name('users.import.create');
+        Route::post('/users/import', [UserImportController::class, 'store'])->name('users.import.store');
+        Route::get('/users/import/template', [UserImportController::class, 'template'])->name('users.import.template');
+        Route::get('/users/imports/{import}', [UserImportController::class, 'show'])->name('users.imports.show');
+        Route::get('/users/imports/{import}/errors.csv', [UserImportController::class, 'errors'])->name('users.imports.errors');
 
         Route::post('/users/bulk', [UserBulkController::class, 'store'])->name('users.bulk');
         Route::resource('users', UserController::class);

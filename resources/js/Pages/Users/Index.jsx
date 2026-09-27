@@ -35,7 +35,12 @@ export default function Index({ users, filters = {}, orgUnits = [], roles = [], 
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
                     <h1 className="text-xl font-semibold">{t('users.title')}</h1>
-                    {can.create && <Link href="/users/create" className="rounded bg-slate-900 px-3 py-2 text-sm text-white">{t('users.new')}</Link>}
+                    {can.create && (
+                        <div className="flex gap-2">
+                            <Link href="/users/import" className="rounded border px-3 py-2 text-sm">{t('users.import')}</Link>
+                            <Link href="/users/create" className="rounded bg-slate-900 px-3 py-2 text-sm text-white">{t('users.new')}</Link>
+                        </div>
+                    )}
                 </div>
 
                 <FlashMessages flash={flash} errors={errors} />
