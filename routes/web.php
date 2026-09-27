@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\MfaChallengeController;
 use App\Http\Controllers\Auth\MfaSettingsController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\Organization\OrgUnitController;
+use App\Http\Controllers\Organization\PositionController;
 use App\Http\Controllers\Users\UserBulkController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Users\UserInviteController;
@@ -51,6 +53,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/mfa', [MfaSettingsController::class, 'show'])->name('mfa.setup');
         Route::post('/mfa', [MfaSettingsController::class, 'store'])->name('mfa.enable');
         Route::delete('/mfa', [MfaSettingsController::class, 'destroy'])->name('mfa.disable');
+
+        Route::get('/organization', [OrgUnitController::class, 'index'])->name('organization.index');
+        Route::post('/organization/units', [OrgUnitController::class, 'store'])->name('organization.units.store');
+        Route::put('/organization/units/{unit}', [OrgUnitController::class, 'update'])->name('organization.units.update');
+        Route::post('/organization/units/{unit}/move', [OrgUnitController::class, 'move'])->name('organization.units.move');
+        Route::delete('/organization/units/{unit}', [OrgUnitController::class, 'destroy'])->name('organization.units.destroy');
+        Route::post('/organization/units/{unit}/positions', [PositionController::class, 'store'])->name('organization.positions.store');
+        Route::put('/organization/positions/{position}', [PositionController::class, 'update'])->name('organization.positions.update');
+        Route::delete('/organization/positions/{position}', [PositionController::class, 'destroy'])->name('organization.positions.destroy');
 
         Route::post('/users/bulk', [UserBulkController::class, 'store'])->name('users.bulk');
         Route::resource('users', UserController::class);

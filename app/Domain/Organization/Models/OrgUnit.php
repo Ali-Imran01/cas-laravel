@@ -19,6 +19,12 @@ use Kalnoy\Nestedset\NodeTrait;
  * @property string $name
  * @property int $_lft
  * @property int $_rgt
+ * @property int|null $parent_id
+ * @property OrgUnitType $type
+ * @property string $code
+ * @property string|null $cost_centre
+ * @property bool $is_active
+ * @property int|null $head_user_id
  */
 #[UseFactory(OrgUnitFactory::class)]
 class OrgUnit extends Model

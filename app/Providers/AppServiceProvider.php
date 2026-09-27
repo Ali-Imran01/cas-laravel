@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Domain\Identity\Models\User;
 use App\Domain\Identity\Policies\UserPolicy;
+use App\Domain\Organization\Models\OrgUnit;
+use App\Domain\Organization\Policies\OrgUnitPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(OrgUnit::class, OrgUnitPolicy::class);
         // Super admins pass every permission check. Self-protection lives in the actions, not the policies.
         Gate::before(fn (User $user) => $user->hasRole('super_admin') ? true : null);
 

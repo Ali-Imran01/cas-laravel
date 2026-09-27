@@ -2,12 +2,13 @@ import '../../css/app.css';
 import '../i18n';
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LinkProvider } from '../Components/LinkContext';
 import Dashboard from '../Pages/Dashboard';
 import Login from '../Pages/Login';
 import MfaChallenge from '../Pages/MfaChallenge';
+import OrganizationIndex from '../Pages/Organization/Index';
 import UsersIndex from '../Pages/Users/Index';
 import seed from './data/seed.json';
 import { resetDemo, useDemo } from './store';
@@ -151,6 +152,48 @@ function UsersRoute() {
     );
 }
 
+// Read-only view of the same Organization/Index page (no `can` flags, so no edit forms).
+function OrganizationRoute() {
+    const navigate = useNavigate();
+    const [params] = useSearchParams();
+    const units = useDemo('org_units').items;
+    const users = useDemo('users').items;
+    const positions = useDemo('positions').items;
+    if (!isSignedIn()) return <Navigate to="/login" replace />;
+
+    const kids = (id) => units.filter((u) => u.parent_id === id);
+    const walk = (parentId, depth) => kids(parentId).flatMap((u) => [{ ...u, depth }, ...walk(u.id, depth + 1)]);
+    const tree = (id) => [id, ...kids(id).flatMap((u) => tree(u.id))];
+    const ancestors = (u) => (u.parent_id ? [...ancestors(units.find((p) => p.id === u.parent_id)), units.find((p) => p.id === u.parent_id).name] : []);
+
+    const outline = walk(null, 0).map((u) => ({
+        id: u.id, name: u.name, depth: u.depth, parent_id: u.parent_id, type: u.type, code: u.code, is_active: u.is_active,
+        users_count: users.filter((m) => m.org_unit_id === u.id).length,
+        head: users.find((m) => m.id === u.head_user_id)?.name ?? null,
+    }));
+    const current = units.find((u) => u.id === Number(params.get('unit'))) ?? units.find((u) => u.parent_id === null);
+    const members = current ? users.filter((m) => m.status === 'active' && tree(current.id).includes(m.org_unit_id)) : [];
+    const selected = current && {
+        ...current,
+        cost_centre: null,
+        path: ancestors(current),
+        children_count: kids(current.id).length,
+        users_count: users.filter((m) => m.org_unit_id === current.id).length,
+        positions: positions.filter((p) => p.org_unit_id === current.id).map((p) => ({ ...p, filled: users.filter((m) => m.position_id === p.id).length })),
+        members: members.map((m) => ({ id: m.id, name: m.name, staff_id: m.staff_id })),
+    };
+
+    return (
+        <OrganizationIndex
+            units={outline}
+            selected={selected}
+            types={['headquarters', 'division', 'unit', 'state_office']}
+            can={{}}
+            onSignOut={() => { setSignedIn(false); navigate('/login'); }}
+        />
+    );
+}
+
 createRoot(document.getElementById('root')).render(
     <LinkProvider value={RouterLink}>
         <BrowserRouter>
@@ -160,6 +203,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/login/mfa" element={<MfaRoute />} />
                 <Route path="/" element={<DashboardRoute />} />
                 <Route path="/users" element={<UsersRoute />} />
+                <Route path="/organization" element={<OrganizationRoute />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             <DemoFooter />

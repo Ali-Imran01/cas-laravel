@@ -20,6 +20,15 @@
     "disableTitle": "Turn off", "currentPassword": "Current password", "disable": "Turn off"
   },
   "flash": { "mfa-email-sent": "A code was sent to your email.", "mfa-enabled": "Two-step verification is on.", "mfa-disabled": "Two-step verification is off.", "password-changed": "Password updated." },
+  "org": {
+    "name": "Name", "code": "Code", "type": "Kind", "costCentre": "Cost centre", "head": "Head", "noHead": "No head", "active": "Active",
+    "types": { "headquarters": "Headquarters", "division": "Division", "unit": "Unit", "state_office": "State office" },
+    "save": "Save", "create": "Create unit", "addChild": "Add a unit under {{name}}", "addRoot": "Create the top-level unit",
+    "positions": "Positions", "noPositions": "No positions yet.", "filled": "{{filled}} of {{headcount}} filled", "positionTitle": "Title", "grade": "Grade", "headcount": "Headcount", "addPosition": "Add position",
+    "edit": "Edit", "delete": "Delete", "confirm": "Confirm", "cancel": "Cancel", "empty": "No organization units yet.", "root": "Top level",
+    "summary": "{{people}} people directly in this unit, {{children}} sub-units", "moveTo": "Move under", "move": "Move",
+    "deleteUnit": "Delete this unit", "deleteConfirm": "Delete {{name}}?"
+  },
   "acceptInvite": { "title": "Set your password", "submit": "Activate account" },
   "users": {
     "title": "Users", "new": "New user", "search": "Search name, staff ID or email", "allStatuses": "All statuses", "allUnits": "All units", "allRoles": "All roles",

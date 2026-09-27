@@ -35,6 +35,14 @@ const callbacksFor = (name, props) => ({
     onInvite: () => router.post(`/users/${props.user?.id}/invite`, {}, keepScroll),
     onTransfer: (data) => router.post(`/users/${props.user?.id}/transfer`, data, keepScroll),
     onDelete: () => router.delete(`/users/${props.user?.id}`),
+    onCreateUnit: (data) => router.post('/organization/units', data, keepScroll),
+    onUpdateUnit: (data) => router.put(`/organization/units/${props.selected?.id}`, data, keepScroll),
+    onMoveUnit: (parent_id) => router.post(`/organization/units/${props.selected?.id}/move`, { parent_id }, keepScroll),
+    onDeleteUnit: () => router.delete(`/organization/units/${props.selected?.id}`),
+    onSavePosition: ({ id, ...data }) => (id
+        ? router.put(`/organization/positions/${id}`, data, keepScroll)
+        : router.post(`/organization/units/${props.selected?.id}/positions`, data, keepScroll)),
+    onDeletePosition: (id) => router.delete(`/organization/positions/${id}`, keepScroll),
 });
 
 createInertiaApp({

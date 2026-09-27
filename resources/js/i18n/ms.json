@@ -20,6 +20,15 @@
     "disableTitle": "Matikan", "currentPassword": "Kata laluan semasa", "disable": "Matikan"
   },
   "flash": { "mfa-email-sent": "Kod telah dihantar ke e-mel anda.", "mfa-enabled": "Pengesahan dua langkah dihidupkan.", "mfa-disabled": "Pengesahan dua langkah dimatikan.", "password-changed": "Kata laluan dikemas kini." },
+  "org": {
+    "name": "Nama", "code": "Kod", "type": "Jenis", "costCentre": "Pusat kos", "head": "Ketua", "noHead": "Tiada ketua", "active": "Aktif",
+    "types": { "headquarters": "Ibu pejabat", "division": "Bahagian", "unit": "Unit", "state_office": "Pejabat negeri" },
+    "save": "Simpan", "create": "Cipta unit", "addChild": "Tambah unit di bawah {{name}}", "addRoot": "Cipta unit peringkat tertinggi",
+    "positions": "Jawatan", "noPositions": "Belum ada jawatan.", "filled": "{{filled}} daripada {{headcount}} diisi", "positionTitle": "Tajuk", "grade": "Gred", "headcount": "Bilangan", "addPosition": "Tambah jawatan",
+    "edit": "Sunting", "delete": "Padam", "confirm": "Sahkan", "cancel": "Batal", "empty": "Belum ada unit organisasi.", "root": "Peringkat tertinggi",
+    "summary": "{{people}} orang terus dalam unit ini, {{children}} sub-unit", "moveTo": "Pindah ke bawah", "move": "Pindah",
+    "deleteUnit": "Padam unit ini", "deleteConfirm": "Padam {{name}}?"
+  },
   "acceptInvite": { "title": "Tetapkan kata laluan anda", "submit": "Aktifkan akaun" },
   "users": {
     "title": "Pengguna", "new": "Pengguna baharu", "search": "Cari nama, ID staf atau e-mel", "allStatuses": "Semua status", "allUnits": "Semua unit", "allRoles": "Semua peranan",
