@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LinkProvider } from '../Components/LinkContext';
+import AppsIndex from '../Pages/Apps/Index';
 import AuditIndex from '../Pages/Audit/Index';
 import Dashboard from '../Pages/Dashboard';
 import Login from '../Pages/Login';
@@ -174,6 +175,38 @@ function AuditRoute() {
     );
 }
 
+const SCOPES = [
+    { name: 'openid', description: 'Sign in and identify the user' }, { name: 'profile', description: 'Name, staff ID, organization unit and app role' },
+    { name: 'email', description: 'Email address' }, { name: 'org.read', description: 'Read the organization structure' },
+    { name: 'users.read', description: 'Read the staff directory' }, { name: 'approvals', description: 'Submit approval requests' },
+];
+
+// Read-only view of the same Apps/Index page: no `can` flags, so no forms, secrets or access editing.
+function AppsRoute() {
+    const navigate = useNavigate();
+    const [params] = useSearchParams();
+    const apps = useDemo('applications').items;
+    if (!isSignedIn()) return <Navigate to="/login" replace />;
+
+    const current = apps.find((a) => a.id === Number(params.get('app'))) ?? apps[0];
+    const selected = current && {
+        ...current, homepage_url: null, color: null, allowed_scopes: ['openid', 'profile', 'email'], owner: 'Aisyah Rahman', secret_rotated_at: null,
+        client_id: `00000000-0000-4000-8000-00000000000${current.id}`, redirect_uris: [`https://${current.code}.example.com/callback`], roles: [], grants: [],
+    };
+
+    return (
+        <AppsIndex
+            apps={apps}
+            selected={selected}
+            scopes={SCOPES}
+            defaultScopes={['openid', 'profile', 'email']}
+            endpoints={{ authorize: 'https://cas.example.com/oauth/authorize', token: 'https://cas.example.com/oauth/token' }}
+            can={{}}
+            onSignOut={() => { setSignedIn(false); navigate('/login'); }}
+        />
+    );
+}
+
 const MODULES = ['users', 'roles', 'organization', 'apps', 'approvals', 'audit', 'settings'];
 const GRID = MODULES.map((module) => ({ module, actions: ['view', 'create', 'edit', 'delete', ...(module === 'approvals' ? ['approve'] : [])] }));
 const ALL_PERMISSIONS = GRID.flatMap((r) => r.actions.map((a) => `${r.module}.${a}`));
@@ -261,6 +294,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/organization" element={<OrganizationRoute />} />
                 <Route path="/roles" element={<RolesRoute />} />
                 <Route path="/audit" element={<AuditRoute />} />
+                <Route path="/apps" element={<AppsRoute />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             <DemoFooter />

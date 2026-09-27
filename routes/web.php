@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Access\RoleController;
+use App\Http\Controllers\Apps\ApplicationController;
 use App\Http\Controllers\Audit\AuditController;
 use App\Http\Controllers\Auth\AcceptInviteController;
 use App\Http\Controllers\Auth\LoginController;
@@ -48,6 +49,18 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('password.current')->group(function () {
         Route::get('/', DashboardController::class)->name('dashboard');
+
+        Route::get('/apps', [ApplicationController::class, 'index'])->name('apps.index');
+        Route::post('/apps', [ApplicationController::class, 'store'])->name('apps.store');
+        Route::put('/apps/{app}', [ApplicationController::class, 'update'])->name('apps.update');
+        Route::delete('/apps/{app}', [ApplicationController::class, 'destroy'])->name('apps.destroy');
+        Route::post('/apps/{app}/secret', [ApplicationController::class, 'rotateSecret'])->name('apps.secret');
+        Route::post('/apps/{app}/disable', [ApplicationController::class, 'disable'])->name('apps.disable');
+        Route::post('/apps/{app}/enable', [ApplicationController::class, 'enable'])->name('apps.enable');
+        Route::post('/apps/{app}/roles', [ApplicationController::class, 'mapRole'])->name('apps.roles.map');
+        Route::delete('/apps/{app}/roles/{role}', [ApplicationController::class, 'unmapRole'])->name('apps.roles.unmap');
+        Route::post('/apps/{app}/users', [ApplicationController::class, 'grantUser'])->name('apps.users.grant');
+        Route::delete('/apps/{app}/users/{user}', [ApplicationController::class, 'revokeUser'])->name('apps.users.revoke');
 
         Route::get('/audit', [AuditController::class, 'index'])->name('audit.index');
         Route::get('/audit/export', [AuditController::class, 'export'])->name('audit.export');

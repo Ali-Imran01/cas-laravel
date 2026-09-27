@@ -20,6 +20,20 @@
     "disableTitle": "Turn off", "currentPassword": "Current password", "disable": "Turn off"
   },
   "flash": { "mfa-email-sent": "A code was sent to your email.", "mfa-enabled": "Two-step verification is on.", "mfa-disabled": "Two-step verification is off.", "password-changed": "Password updated." },
+  "appPage": {
+    "name": "Name", "code": "Code", "environment": "Environment", "homepage": "Homepage", "color": "Colour", "redirects": "Redirect URIs (one per line)",
+    "redirectsHint": "Exact addresses the app signs users back to. https only (http for localhost), no wildcards.", "scopes": "Scopes the app may request",
+    "save": "Save settings", "register": "Register app", "newApp": "Register an app", "empty": "No apps registered yet.", "owner": "owner {{name}}",
+    "clientId": "Client ID", "authorizeUrl": "Authorization endpoint", "tokenUrl": "Token endpoint", "secret": "Client secret", "secretHidden": "Stored hashed. It was shown once, when the app was registered.",
+    "rotatedOn": "Rotated on {{date}}. The value is not stored.", "secretOnce": "Client secret (copy it now, it is not shown again)",
+    "access": "Who can sign in", "accessHint": "People get access through a CAS role mapped to an app role, or one by one. The app role is sent to the app as a claim.",
+    "noRoles": "No roles mapped.", "noGrants": "No individual grants.", "casRole": "CAS role", "appRole": "App role", "mapRole": "Map role", "staffId": "Staff ID", "expires": "Expires (optional)",
+    "grant": "Grant access", "remove": "Remove", "until": "until {{date}}", "danger": "Credentials and status", "rotate": "Rotate secret", "disable": "Disable app", "enable": "Enable app", "delete": "Delete app",
+    "yes": "Yes, continue", "cancel": "Cancel",
+    "confirm": { "rotate": "Create a new secret for {{name}}? The old one stops working immediately.", "disable": "Disable {{name}}? Everyone is signed out of it and its tokens are revoked.", "delete": "Delete {{name}} for good?" },
+    "env": { "production": "Production", "staging": "Staging", "sandbox": "Sandbox" },
+    "status": { "active": "Active", "sandbox": "Sandbox", "disabled": "Disabled" }
+  },
   "audit": {
     "export": "Export CSV", "tabLog": "Changes", "tabSignIns": "Sign-ins", "search": "Search descriptions", "searchIdentifier": "Search the ID or email that was typed",
     "action": "Action", "allActions": "All actions", "actor": "Who (name or staff ID)", "subject": "Record type", "allSubjects": "All record types", "result": "Result", "allResults": "All results",

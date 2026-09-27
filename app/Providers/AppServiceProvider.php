@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use App\Domain\Access\Policies\RolePolicy;
+use App\Domain\Apps\Models\Application;
+use App\Domain\Apps\Models\OAuthClient;
+use App\Domain\Apps\Policies\ApplicationPolicy;
 use App\Domain\Audit\AuditContext;
 use App\Domain\Audit\Models\AuditLog;
 use App\Domain\Audit\Policies\AuditPolicy;
@@ -15,6 +18,7 @@ use App\Domain\Organization\Policies\OrgUnitPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Passport\Passport;
 use Spatie\Permission\Models\Role;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,7 +36,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Passport::useClientModel(OAuthClient::class);
+        Passport::tokensCan(config('cas.sso.scopes'));
+        Passport::tokensExpireIn(now()->addMinutes(config('cas.sso.access_token_minutes')));
+        Passport::refreshTokensExpireIn(now()->addDays(config('cas.sso.refresh_token_days')));
+
         Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(Application::class, ApplicationPolicy::class);
         Gate::policy(OrgUnit::class, OrgUnitPolicy::class);
         Gate::policy(UserImport::class, UserImportPolicy::class);
         Gate::policy(Role::class, RolePolicy::class);

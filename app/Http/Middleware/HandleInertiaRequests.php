@@ -52,6 +52,7 @@ class HandleInertiaRequests extends Middleware
             'flash' => fn () => [
                 'status' => $request->session()->get('status'),
                 'recoveryCodes' => $request->session()->get('recoveryCodes'),
+                'appSecret' => $request->session()->get('appSecret'), // shown once, right after it is created or rotated
             ],
         ];
     }

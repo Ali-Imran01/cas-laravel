@@ -20,6 +20,20 @@
     "disableTitle": "Matikan", "currentPassword": "Kata laluan semasa", "disable": "Matikan"
   },
   "flash": { "mfa-email-sent": "Kod telah dihantar ke e-mel anda.", "mfa-enabled": "Pengesahan dua langkah dihidupkan.", "mfa-disabled": "Pengesahan dua langkah dimatikan.", "password-changed": "Kata laluan dikemas kini." },
+  "appPage": {
+    "name": "Nama", "code": "Kod", "environment": "Persekitaran", "homepage": "Laman utama", "color": "Warna", "redirects": "URI ubah hala (satu setiap baris)",
+    "redirectsHint": "Alamat tepat yang aplikasi gunakan untuk menghantar pengguna kembali. Hanya https (http untuk localhost), tanpa kad bebas.", "scopes": "Skop yang boleh dimohon aplikasi",
+    "save": "Simpan tetapan", "register": "Daftar aplikasi", "newApp": "Daftar aplikasi", "empty": "Belum ada aplikasi didaftarkan.", "owner": "pemilik {{name}}",
+    "clientId": "ID klien", "authorizeUrl": "Titik akhir kebenaran", "tokenUrl": "Titik akhir token", "secret": "Rahsia klien", "secretHidden": "Disimpan dalam bentuk cincangan. Ia dipaparkan sekali, semasa aplikasi didaftarkan.",
+    "rotatedOn": "Diputar pada {{date}}. Nilainya tidak disimpan.", "secretOnce": "Rahsia klien (salin sekarang, ia tidak dipaparkan lagi)",
+    "access": "Siapa boleh log masuk", "accessHint": "Orang mendapat akses melalui peranan CAS yang dipetakan kepada peranan aplikasi, atau seorang demi seorang. Peranan aplikasi dihantar kepada aplikasi sebagai tuntutan.",
+    "noRoles": "Tiada peranan dipetakan.", "noGrants": "Tiada pemberian individu.", "casRole": "Peranan CAS", "appRole": "Peranan aplikasi", "mapRole": "Petakan peranan", "staffId": "ID staf", "expires": "Tamat (pilihan)",
+    "grant": "Beri akses", "remove": "Buang", "until": "hingga {{date}}", "danger": "Bukti kelayakan dan status", "rotate": "Putar rahsia", "disable": "Nyahaktif aplikasi", "enable": "Aktifkan aplikasi", "delete": "Padam aplikasi",
+    "yes": "Ya, teruskan", "cancel": "Batal",
+    "confirm": { "rotate": "Cipta rahsia baharu untuk {{name}}? Rahsia lama berhenti berfungsi serta-merta.", "disable": "Nyahaktifkan {{name}}? Semua orang dilog keluar dan token dibatalkan.", "delete": "Padam {{name}} selama-lamanya?" },
+    "env": { "production": "Pengeluaran", "staging": "Pementasan", "sandbox": "Kotak pasir" },
+    "status": { "active": "Aktif", "sandbox": "Kotak pasir", "disabled": "Dinyahaktifkan" }
+  },
   "audit": {
     "export": "Eksport CSV", "tabLog": "Perubahan", "tabSignIns": "Log masuk", "search": "Cari penerangan", "searchIdentifier": "Cari ID atau e-mel yang ditaip",
     "action": "Tindakan", "allActions": "Semua tindakan", "actor": "Siapa (nama atau ID staf)", "subject": "Jenis rekod", "allSubjects": "Semua jenis rekod", "result": "Keputusan", "allResults": "Semua keputusan",
