@@ -2,6 +2,7 @@
 
 namespace App\Domain\Identity\Notifications;
 
+use App\Domain\Settings\Support\EmailTemplates;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -17,9 +18,15 @@ class MfaCode extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->subject(__('cas.mail.otp_subject'))
-            ->line(__('cas.mail.otp_line', ['code' => $this->code, 'minutes' => config('cas.auth.mfa_email_otp_minutes')]))
-            ->line(__('cas.mail.otp_ignore'));
+        $t = app(EmailTemplates::class)->render('mfa_code', app()->getLocale(), [
+            'code' => $this->code, 'minutes' => config('cas.auth.mfa_email_otp_minutes'),
+        ]);
+
+        $mail = (new MailMessage)->subject($t['subject']);
+        foreach ($t['lines'] as $line) {
+            $mail->line($line);
+        }
+
+        return $mail;
     }
 }

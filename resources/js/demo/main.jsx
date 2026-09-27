@@ -13,6 +13,7 @@ import Login from '../Pages/Login';
 import MfaChallenge from '../Pages/MfaChallenge';
 import OrganizationIndex from '../Pages/Organization/Index';
 import RolesIndex from '../Pages/Roles/Index';
+import SettingsEmailTemplates from '../Pages/Settings/EmailTemplates';
 import SettingsIndex from '../Pages/Settings/Index';
 import UsersIndex from '../Pages/Users/Index';
 import seed from './data/seed.json';
@@ -272,6 +273,48 @@ function SettingsRoute() {
     return <SettingsIndex policies={POLICY_DEFAULTS} can={{}} onSignOut={() => { setSignedIn(false); navigate('/login'); }} />;
 }
 
+// Read-only view of the same Settings/EmailTemplates page: the shipped wording, with no `can.update` so no form.
+const EMAIL_TEMPLATES = {
+    invite: {
+        en: { subject: 'You have been invited to CAS', body: 'An account was created for you (staff ID :staff_id). Set your password to activate it.\nThis link expires in :days days.' },
+        ms: { subject: 'Anda dijemput ke CAS', body: 'Satu akaun telah dicipta untuk anda (ID staf :staff_id). Tetapkan kata laluan anda untuk mengaktifkannya.\nPautan ini tamat dalam :days hari.' },
+    },
+    mfa_code: {
+        en: { subject: 'Your sign-in code', body: 'Your sign-in code is :code. It expires in :minutes minutes.\nIf this was not you, change your password.' },
+        ms: { subject: 'Kod log masuk anda', body: 'Kod log masuk anda ialah :code. Kod ini tamat dalam :minutes minit.\nJika ini bukan anda, tukar kata laluan anda.' },
+    },
+    approval_needed: {
+        en: { subject: 'Approval needed: :reference', body: ':summary\nRequested by :requester.' },
+        ms: { subject: 'Kelulusan diperlukan: :reference', body: ':summary\nDimohon oleh :requester.' },
+    },
+    approval_overdue: {
+        en: { subject: 'Overdue: :reference is waiting for you', body: ':summary\nRequested by :requester.' },
+        ms: { subject: 'Tertunggak: :reference menunggu anda', body: ':summary\nDimohon oleh :requester.' },
+    },
+    approval_approved: { en: { subject: 'Approved: :reference', body: ':summary' }, ms: { subject: 'Diluluskan: :reference', body: ':summary' } },
+    approval_rejected: { en: { subject: 'Rejected: :reference', body: ':summary' }, ms: { subject: 'Ditolak: :reference', body: ':summary' } },
+    approval_info_requested: { en: { subject: 'More information needed: :reference', body: ':summary' }, ms: { subject: 'Maklumat tambahan diperlukan: :reference', body: ':summary' } },
+};
+const EMAIL_PLACEHOLDERS = {
+    invite: ['staff_id', 'days'], mfa_code: ['code', 'minutes'],
+    approval_needed: ['reference', 'summary', 'requester'], approval_overdue: ['reference', 'summary', 'requester'],
+    approval_approved: ['reference', 'summary'], approval_rejected: ['reference', 'summary'], approval_info_requested: ['reference', 'summary'],
+};
+
+function EmailTemplatesRoute() {
+    const navigate = useNavigate();
+    if (!isSignedIn()) return <Navigate to="/login" replace />;
+
+    return (
+        <SettingsEmailTemplates
+            templates={EMAIL_TEMPLATES}
+            placeholders={EMAIL_PLACEHOLDERS}
+            can={{}}
+            onSignOut={() => { setSignedIn(false); navigate('/login'); }}
+        />
+    );
+}
+
 const MODULES = ['users', 'roles', 'organization', 'apps', 'approvals', 'audit', 'settings'];
 const GRID = MODULES.map((module) => ({ module, actions: ['view', 'create', 'edit', 'delete', ...(module === 'approvals' ? ['approve'] : [])] }));
 const ALL_PERMISSIONS = GRID.flatMap((r) => r.actions.map((a) => `${r.module}.${a}`));
@@ -362,6 +405,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/apps" element={<AppsRoute />} />
                 <Route path="/approvals" element={<ApprovalsRoute />} />
                 <Route path="/settings" element={<SettingsRoute />} />
+                <Route path="/settings/email" element={<EmailTemplatesRoute />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             <DemoFooter />

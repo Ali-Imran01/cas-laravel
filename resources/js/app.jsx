@@ -72,6 +72,7 @@ const callbacksFor = (name, props) => ({
     onUpdateWorkflow: (id, data) => router.put(`/approvals/workflows/${id}`, data, keepScroll),
     onUpdateStep: (workflowId, stepId, data) => router.put(`/approvals/workflows/${workflowId}/steps/${stepId}`, data, keepScroll),
     onSavePolicies: (data) => router.put('/settings/policies', data, keepScroll),
+    onSaveEmailTemplate: (key, data) => router.put(`/settings/email/${key}`, { [key]: data }, keepScroll),
 });
 
 createInertiaApp({

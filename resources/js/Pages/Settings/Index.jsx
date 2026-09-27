@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import AppLayout from '../../Components/AppLayout';
 import Field from '../../Components/Field';
 import FlashMessages from '../../Components/FlashMessages';
+import { useLink } from '../../Components/LinkContext';
 
 const primary = 'rounded bg-slate-900 px-3 py-1.5 text-sm text-white disabled:opacity-60';
 
@@ -45,13 +46,17 @@ function Group({ title, fields, values, editable, errors, onChange }) {
 // Dumb page: onSavePolicies comes from the entry point and posts every field at once.
 export default function Index({ policies = {}, can = {}, flash = {}, errors = {}, onSavePolicies, onSignOut }) {
     const { t } = useTranslation();
+    const Link = useLink();
     const [values, setValues] = useState(policies);
     const set = (field, value) => setValues((v) => ({ ...v, [field]: value }));
 
     return (
         <AppLayout current="settings" onSignOut={onSignOut}>
             <div className="space-y-4">
-                <h1 className="text-xl font-semibold">{t('nav.settings')}</h1>
+                <div className="flex items-center justify-between">
+                    <h1 className="text-xl font-semibold">{t('nav.settings')}</h1>
+                    <Link href="/settings/email" className="text-sm underline">{t('settingsPage.emailTemplates')}</Link>
+                </div>
                 <FlashMessages flash={flash} errors={errors} />
 
                 <form onSubmit={(e) => { e.preventDefault(); onSavePolicies?.(values); }} className="space-y-4">

@@ -136,7 +136,13 @@
       "mfa_pending_minutes": "Sign-in step expires after (minutes)", "mfa_max_attempts": "Attempts before the sign-in step is refused", "mfa_email_otp_minutes": "Emailed code expires after (minutes)", "recovery_codes": "Recovery codes to generate",
       "max_attempts": "Failed attempts before locking", "lockout_minutes": "Locked for (minutes)", "login_throttle_per_minute": "Sign-in attempts allowed per minute"
     },
-    "save": "Save policy"
+    "save": "Save policy", "emailTemplates": "Email templates", "back": "Back to settings",
+    "subject": "Subject", "body": "Body", "placeholders": "Placeholders",
+    "templates": {
+      "invite": "Invitation to activate an account", "mfa_code": "Emailed sign-in code",
+      "approval_needed": "Approval needed", "approval_overdue": "Approval overdue reminder",
+      "approval_approved": "Request approved", "approval_rejected": "Request rejected", "approval_info_requested": "More information requested"
+    }
   },
   "common": { "signOut": "Sign out", "language": "Language", "security": "Security" },
   "demo": { "banner": "Demo mode: sample data, stored in your browser", "reset": "Reset", "source": "View source on GitHub" }

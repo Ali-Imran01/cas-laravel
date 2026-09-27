@@ -92,6 +92,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
         Route::put('/settings/policies', [SettingsController::class, 'updatePolicies'])->name('settings.policies.update');
+        Route::get('/settings/email', [SettingsController::class, 'emailTemplates'])->name('settings.email.index');
+        Route::put('/settings/email/{key}', [SettingsController::class, 'updateEmailTemplate'])->name('settings.email.update');
 
         Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
         Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');

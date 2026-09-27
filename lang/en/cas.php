@@ -59,14 +59,10 @@ return [
         'step_updated' => 'Approval step updated.',
         'builtin_no_api' => 'Built-in workflows can never be opened to connected apps.',
         'unknown_workflow' => 'This workflow does not accept requests from connected apps.',
+        // The subject and body wording live in the settings > email templates screen; only what stays
+        // fixed regardless of any override (the action button, the reviewer's own comment) is here.
         'mail' => [
-            'needed_subject' => 'Approval needed: :reference',
-            'overdue_subject' => 'Overdue: :reference is waiting for you',
-            'needed_line' => 'Requested by :name.',
             'open' => 'Open the request',
-            'approved_subject' => 'Approved: :reference',
-            'rejected_subject' => 'Rejected: :reference',
-            'info_requested_subject' => 'More information needed: :reference',
             'comment' => 'Comment: :comment',
         ],
     ],
@@ -131,14 +127,11 @@ return [
     ],
     'settings' => [
         'updated' => 'Settings updated.',
+        'unknown_template' => 'There is no email template with this key.',
     ],
+    // The subject and body wording live in the settings > email templates screen; only the action
+    // button's label, which never changes with the template, is here.
     'mail' => [
-        'invite_subject' => 'You have been invited to CAS',
-        'invite_line' => 'An account was created for you (staff ID :staff_id). Set your password to activate it.',
         'invite_action' => 'Set my password',
-        'invite_expiry' => 'This link expires in :days days.',
-        'otp_subject' => 'Your sign-in code',
-        'otp_line' => 'Your sign-in code is :code. It expires in :minutes minutes.',
-        'otp_ignore' => 'If this was not you, change your password.',
     ],
 ];

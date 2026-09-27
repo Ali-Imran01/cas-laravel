@@ -3,6 +3,7 @@
 namespace App\Domain\Approvals\Notifications;
 
 use App\Domain\Approvals\Models\ApprovalRequest;
+use App\Domain\Settings\Support\EmailTemplates;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -20,9 +21,14 @@ class ApprovalOutcome extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
-        $mail = (new MailMessage)
-            ->subject(__("cas.approvals.mail.{$this->outcome}_subject", ['reference' => $this->request->reference]))
-            ->line($this->summary);
+        $t = app(EmailTemplates::class)->render("approval_{$this->outcome}", app()->getLocale(), [
+            'reference' => $this->request->reference, 'summary' => $this->summary,
+        ]);
+
+        $mail = (new MailMessage)->subject($t['subject']);
+        foreach ($t['lines'] as $line) {
+            $mail->line($line);
+        }
 
         if ($this->comment !== null && $this->comment !== '') {
             $mail->line(__('cas.approvals.mail.comment', ['comment' => $this->comment]));

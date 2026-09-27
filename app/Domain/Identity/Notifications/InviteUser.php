@@ -2,6 +2,7 @@
 
 namespace App\Domain\Identity\Notifications;
 
+use App\Domain\Settings\Support\EmailTemplates;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -18,11 +19,13 @@ class InviteUser extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $url = route('invite.accept', ['token' => $this->token, 'email' => $notifiable->email]);
+        $t = app(EmailTemplates::class)->render('invite', app()->getLocale(), ['staff_id' => $notifiable->staff_id, 'days' => 3]);
 
-        return (new MailMessage)
-            ->subject(__('cas.mail.invite_subject'))
-            ->line(__('cas.mail.invite_line', ['staff_id' => $notifiable->staff_id]))
-            ->action(__('cas.mail.invite_action'), $url)
-            ->line(__('cas.mail.invite_expiry', ['days' => 3]));
+        $mail = (new MailMessage)->subject($t['subject']);
+        foreach ($t['lines'] as $line) {
+            $mail->line($line);
+        }
+
+        return $mail->action(__('cas.mail.invite_action'), $url);
     }
 }

@@ -136,7 +136,13 @@
       "mfa_pending_minutes": "Langkah log masuk tamat selepas (minit)", "mfa_max_attempts": "Percubaan sebelum langkah log masuk ditolak", "mfa_email_otp_minutes": "Kod e-mel tamat selepas (minit)", "recovery_codes": "Bilangan kod pemulihan dijana",
       "max_attempts": "Percubaan gagal sebelum dikunci", "lockout_minutes": "Dikunci selama (minit)", "login_throttle_per_minute": "Percubaan log masuk dibenarkan seminit"
     },
-    "save": "Simpan polisi"
+    "save": "Simpan polisi", "emailTemplates": "Templat e-mel", "back": "Kembali ke tetapan",
+    "subject": "Subjek", "body": "Kandungan", "placeholders": "Ruang letak",
+    "templates": {
+      "invite": "Jemputan mengaktifkan akaun", "mfa_code": "Kod log masuk melalui e-mel",
+      "approval_needed": "Kelulusan diperlukan", "approval_overdue": "Peringatan kelulusan tertunggak",
+      "approval_approved": "Permohonan diluluskan", "approval_rejected": "Permohonan ditolak", "approval_info_requested": "Maklumat tambahan diminta"
+    }
   },
   "common": { "signOut": "Log keluar", "language": "Bahasa", "security": "Keselamatan" },
   "demo": { "banner": "Mod demo: data contoh, disimpan dalam pelayar anda", "reset": "Set semula", "source": "Lihat kod sumber di GitHub" }

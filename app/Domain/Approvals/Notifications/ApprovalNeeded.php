@@ -3,6 +3,7 @@
 namespace App\Domain\Approvals\Notifications;
 
 use App\Domain\Approvals\Models\ApprovalRequest;
+use App\Domain\Settings\Support\EmailTemplates;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -19,10 +20,15 @@ class ApprovalNeeded extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->subject(__($this->overdue ? 'cas.approvals.mail.overdue_subject' : 'cas.approvals.mail.needed_subject', ['reference' => $this->request->reference]))
-            ->line($this->summary)
-            ->line(__('cas.approvals.mail.needed_line', ['name' => $this->request->requester->name]))
-            ->action(__('cas.approvals.mail.open'), url('/approvals/'.$this->request->id));
+        $t = app(EmailTemplates::class)->render($this->overdue ? 'approval_overdue' : 'approval_needed', app()->getLocale(), [
+            'reference' => $this->request->reference, 'summary' => $this->summary, 'requester' => $this->request->requester->name,
+        ]);
+
+        $mail = (new MailMessage)->subject($t['subject']);
+        foreach ($t['lines'] as $line) {
+            $mail->line($line);
+        }
+
+        return $mail->action(__('cas.approvals.mail.open'), url('/approvals/'.$this->request->id));
     }
 }

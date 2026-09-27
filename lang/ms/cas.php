@@ -59,14 +59,10 @@ return [
         'step_updated' => 'Langkah kelulusan dikemas kini.',
         'builtin_no_api' => 'Aliran kerja terbina dalam tidak boleh dibuka kepada aplikasi bersambung.',
         'unknown_workflow' => 'Aliran kerja ini tidak menerima permohonan daripada aplikasi bersambung.',
+        // Kandungan subjek dan badan e-mel disimpan dalam skrin tetapan > templat e-mel; hanya yang
+        // kekal tetap tanpa mengira sebarang perubahan (butang tindakan, komen pengulas) ada di sini.
         'mail' => [
-            'needed_subject' => 'Kelulusan diperlukan: :reference',
-            'overdue_subject' => 'Tertunggak: :reference menunggu anda',
-            'needed_line' => 'Dimohon oleh :name.',
             'open' => 'Buka permohonan',
-            'approved_subject' => 'Diluluskan: :reference',
-            'rejected_subject' => 'Ditolak: :reference',
-            'info_requested_subject' => 'Maklumat tambahan diperlukan: :reference',
             'comment' => 'Komen: :comment',
         ],
     ],
@@ -131,14 +127,9 @@ return [
     ],
     'settings' => [
         'updated' => 'Tetapan dikemas kini.',
+        'unknown_template' => 'Tiada templat e-mel dengan kunci ini.',
     ],
     'mail' => [
-        'invite_subject' => 'Anda dijemput ke CAS',
-        'invite_line' => 'Satu akaun telah dicipta untuk anda (ID staf :staff_id). Tetapkan kata laluan anda untuk mengaktifkannya.',
         'invite_action' => 'Tetapkan kata laluan saya',
-        'invite_expiry' => 'Pautan ini tamat dalam :days hari.',
-        'otp_subject' => 'Kod log masuk anda',
-        'otp_line' => 'Kod log masuk anda ialah :code. Kod ini tamat dalam :minutes minit.',
-        'otp_ignore' => 'Jika ini bukan anda, tukar kata laluan anda.',
     ],
 ];

@@ -1,5 +1,5 @@
 // Errors a server action raises about the record as a whole (not a single field).
-const ACTION_ERRORS = ['user', 'unit', 'position', 'role', 'app', 'workflow', 'request'];
+const ACTION_ERRORS = ['user', 'unit', 'position', 'role', 'app', 'workflow', 'request', 'template'];
 
 /** Success message (flash.status) and action-level errors. */
 export default function FlashMessages({ flash = {}, errors = {} }) {
