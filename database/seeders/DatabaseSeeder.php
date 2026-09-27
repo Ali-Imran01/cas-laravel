@@ -27,8 +27,8 @@ class DatabaseSeeder extends Seeder
         $analyst = Position::create(['org_unit_id' => $apd->id, 'title' => 'Systems Analyst', 'grade' => 'F41', 'headcount' => 4]);
 
         $accounts = [
-            ['STF-10001', 'Aisyah Rahman', 'superadmin@cas.demo', 'super_admin', $hq, null, true, UserStatus::Active],
-            ['STF-10002', 'Hafiz Ismail', 'hr.officer@cas.demo', 'hr_officer', $hq, null, true, UserStatus::Active],
+            ['STF-10001', 'Aisyah Rahman', 'superadmin@cas.demo', 'super_admin', $hq, null, false, UserStatus::Active],
+            ['STF-10002', 'Hafiz Ismail', 'hr.officer@cas.demo', 'hr_officer', $hq, null, false, UserStatus::Active],
             ['STF-10003', 'Nurul Huda', 'dept.head@cas.demo', 'dept_head', $ict, $head, false, UserStatus::Active],
             ['STF-10004', 'Daniel Lee', 'staff@cas.demo', 'staff', $apd, $analyst, false, UserStatus::Active],
             ['STF-10005', 'Siti Aminah', 'siti@cas.demo', 'staff', $apd, $analyst, false, UserStatus::Locked],

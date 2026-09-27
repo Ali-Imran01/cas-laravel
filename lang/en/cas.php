@@ -34,6 +34,17 @@ return [
         'last_admin' => 'At least one active super admin must remain.',
         'invalid_transition' => 'That change does not apply to the account in its current state.',
     ],
+    'roles' => [
+        'created' => 'Role created.',
+        'updated' => 'Role updated.',
+        'deleted' => 'Role deleted.',
+        'permissions_saved' => 'Permissions saved.',
+        'super_admin_fixed' => 'The super admin role always has every permission and cannot be changed.',
+        'above_you' => 'This role has permissions you do not hold, so you cannot change it.',
+        'cannot_grant' => 'You can only grant permissions you hold yourself.',
+        'system_role' => 'Built-in roles cannot be deleted.',
+        'in_use' => 'People still have this role. Reassign them first.',
+    ],
     'import' => [
         'active_exists' => 'You already have an import in progress. Wait for it to finish.',
         'not_allowed' => 'You no longer have permission to create users.',

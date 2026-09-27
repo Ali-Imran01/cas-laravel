@@ -20,6 +20,13 @@
     "disableTitle": "Matikan", "currentPassword": "Kata laluan semasa", "disable": "Matikan"
   },
   "flash": { "mfa-email-sent": "Kod telah dihantar ke e-mel anda.", "mfa-enabled": "Pengesahan dua langkah dihidupkan.", "mfa-disabled": "Pengesahan dua langkah dimatikan.", "password-changed": "Kata laluan dikemas kini." },
+  "rolePage": {
+    "displayName": "Nama paparan", "name": "Kunci peranan", "nameHint": "Huruf kecil, digit dan garis bawah. Aplikasi dan kod merujuk kunci ini, jadi ia tidak boleh diubah kemudian.", "description": "Penerangan",
+    "saveDetails": "Simpan butiran", "savePermissions": "Simpan kebenaran", "create": "Cipta peranan", "newTitle": "Peranan baharu", "module": "Modul", "system": "terbina dalam",
+    "holders": "{{count}} orang", "delete": "Padam peranan", "deleteConfirm": "Padam {{name}}?", "confirm": "Sahkan", "cancel": "Batal",
+    "modules": { "users": "Pengguna", "roles": "Peranan & kebenaran", "organization": "Organisasi", "apps": "Aplikasi bersambung", "approvals": "Kelulusan", "audit": "Log audit", "settings": "Tetapan" },
+    "actions": { "view": "Lihat", "create": "Cipta", "edit": "Sunting", "delete": "Padam", "approve": "Lulus" }
+  },
   "import": {
     "title": "Import pengguna daripada CSV", "intro": "Muat naik fail CSV dengan baris pengepala. Sehingga {{rows}} baris dan {{kb}} KB. Setiap baris menjadi akaun berjemput, sama seperti dicipta pada borang.",
     "columns": "Wajib: staff_id, name, email. Pilihan: org_unit_code dan position_title (mesti wujud), role (peranan yang boleh anda berikan).", "template": "Muat turun templat",

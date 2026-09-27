@@ -9,6 +9,7 @@ import Dashboard from '../Pages/Dashboard';
 import Login from '../Pages/Login';
 import MfaChallenge from '../Pages/MfaChallenge';
 import OrganizationIndex from '../Pages/Organization/Index';
+import RolesIndex from '../Pages/Roles/Index';
 import UsersIndex from '../Pages/Users/Index';
 import seed from './data/seed.json';
 import { resetDemo, useDemo } from './store';
@@ -152,6 +153,39 @@ function UsersRoute() {
     );
 }
 
+const MODULES = ['users', 'roles', 'organization', 'apps', 'approvals', 'audit', 'settings'];
+const GRID = MODULES.map((module) => ({ module, actions: ['view', 'create', 'edit', 'delete', ...(module === 'approvals' ? ['approve'] : [])] }));
+const ALL_PERMISSIONS = GRID.flatMap((r) => r.actions.map((a) => `${r.module}.${a}`));
+const ROLE_PERMISSIONS = {
+    super_admin: ALL_PERMISSIONS,
+    hr_officer: ['users.view', 'users.create', 'users.edit', 'organization.view'],
+    dept_head: ['users.view', 'approvals.view', 'approvals.approve'],
+    staff: [],
+};
+
+// Read-only view of the same Roles/Index page: the sample data has the four built-in roles.
+function RolesRoute() {
+    const navigate = useNavigate();
+    const [params] = useSearchParams();
+    const users = useDemo('users').items;
+    if (!isSignedIn()) return <Navigate to="/login" replace />;
+
+    const roles = ROLES.map((r, i) => ({ id: i + 1, name: r.name, display_name: r.display_name, is_system: true, users_count: users.filter((u) => u.role === r.name).length, permissions_count: ROLE_PERMISSIONS[r.name].length }));
+    const current = roles.find((r) => r.id === Number(params.get('role'))) ?? roles[0];
+    const selected = { ...current, description: null, permissions: ROLE_PERMISSIONS[current.name], locked_reason: null };
+
+    return (
+        <RolesIndex
+            roles={roles}
+            selected={selected}
+            grid={GRID}
+            grantable={[]}
+            can={{}}
+            onSignOut={() => { setSignedIn(false); navigate('/login'); }}
+        />
+    );
+}
+
 // Read-only view of the same Organization/Index page (no `can` flags, so no edit forms).
 function OrganizationRoute() {
     const navigate = useNavigate();
@@ -204,6 +238,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/" element={<DashboardRoute />} />
                 <Route path="/users" element={<UsersRoute />} />
                 <Route path="/organization" element={<OrganizationRoute />} />
+                <Route path="/roles" element={<RolesRoute />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             <DemoFooter />

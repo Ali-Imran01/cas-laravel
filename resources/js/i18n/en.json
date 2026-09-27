@@ -20,6 +20,13 @@
     "disableTitle": "Turn off", "currentPassword": "Current password", "disable": "Turn off"
   },
   "flash": { "mfa-email-sent": "A code was sent to your email.", "mfa-enabled": "Two-step verification is on.", "mfa-disabled": "Two-step verification is off.", "password-changed": "Password updated." },
+  "rolePage": {
+    "displayName": "Display name", "name": "Role key", "nameHint": "Lowercase letters, digits and underscores. Apps and code refer to this key, so it cannot be changed later.", "description": "Description",
+    "saveDetails": "Save details", "savePermissions": "Save permissions", "create": "Create role", "newTitle": "New role", "module": "Module", "system": "built-in",
+    "holders": "{{count}} people", "delete": "Delete role", "deleteConfirm": "Delete {{name}}?", "confirm": "Confirm", "cancel": "Cancel",
+    "modules": { "users": "Users", "roles": "Roles & permissions", "organization": "Organization", "apps": "Connected apps", "approvals": "Approvals", "audit": "Audit log", "settings": "Settings" },
+    "actions": { "view": "View", "create": "Create", "edit": "Edit", "delete": "Delete", "approve": "Approve" }
+  },
   "import": {
     "title": "Import users from CSV", "intro": "Upload a CSV file with a header row. Up to {{rows}} rows and {{kb}} KB. Every row becomes an invited account, exactly as if it were created on the form.",
     "columns": "Required: staff_id, name, email. Optional: org_unit_code and position_title (must exist), role (a role you may assign).", "template": "Download a template",

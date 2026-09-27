@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Access\RoleController;
 use App\Http\Controllers\Auth\AcceptInviteController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MfaChallengeController;
@@ -54,6 +55,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/mfa', [MfaSettingsController::class, 'show'])->name('mfa.setup');
         Route::post('/mfa', [MfaSettingsController::class, 'store'])->name('mfa.enable');
         Route::delete('/mfa', [MfaSettingsController::class, 'destroy'])->name('mfa.disable');
+
+        Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+        Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+        Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+        Route::put('/roles/{role}/permissions', [RoleController::class, 'permissions'])->name('roles.permissions');
+        Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
         Route::get('/organization', [OrgUnitController::class, 'index'])->name('organization.index');
         Route::post('/organization/units', [OrgUnitController::class, 'store'])->name('organization.units.store');

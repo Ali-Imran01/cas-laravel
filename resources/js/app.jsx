@@ -2,6 +2,7 @@ import '../css/app.css';
 import './i18n';
 import { createInertiaApp, Link, router } from '@inertiajs/react';
 import { createRoot } from 'react-dom/client';
+import { AccessProvider } from './Components/AccessContext';
 import { LinkProvider } from './Components/LinkContext';
 
 const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true });
@@ -35,6 +36,10 @@ const callbacksFor = (name, props) => ({
     onInvite: () => router.post(`/users/${props.user?.id}/invite`, {}, keepScroll),
     onTransfer: (data) => router.post(`/users/${props.user?.id}/transfer`, data, keepScroll),
     onDelete: () => router.delete(`/users/${props.user?.id}`),
+    onCreateRole: (data) => router.post('/roles', data, keepScroll),
+    onUpdateRole: (data) => router.put(`/roles/${props.selected?.id}`, data, keepScroll),
+    onSavePermissions: (permissions) => router.put(`/roles/${props.selected?.id}/permissions`, { permissions }, keepScroll),
+    onDeleteRole: () => router.delete(`/roles/${props.selected?.id}`),
     onUpload: (file) => router.post('/users/import', { file }, { forceFormData: true }),
     onRefresh: () => router.reload({ only: ['import'] }),
     onCreateUnit: (data) => router.post('/organization/units', data, keepScroll),
@@ -50,7 +55,14 @@ const callbacksFor = (name, props) => ({
 createInertiaApp({
     resolve: (name) => {
         const Page = pages[`./Pages/${name}.jsx`].default;
-        return (props) => <Page {...callbacksFor(name, props)} {...props} />;
+        return (props) => {
+            const held = new Set(props.auth?.permissions ?? []);
+            return (
+                <AccessProvider value={(permission) => held.has(permission)}>
+                    <Page {...callbacksFor(name, props)} {...props} />
+                </AccessProvider>
+            );
+        };
     },
     setup({ el, App, props }) {
         createRoot(el).render(

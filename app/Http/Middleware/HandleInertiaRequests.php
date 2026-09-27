@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Spatie\Permission\Models\Permission;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -38,7 +39,15 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'locale' => app()->getLocale(),
-            'auth' => ['user' => $request->user()?->only(['id', 'staff_id', 'name', 'email', 'mfa_enabled'])],
+            'auth' => [
+                'user' => $request->user()?->only(['id', 'staff_id', 'name', 'email', 'mfa_enabled']),
+                // Used only to hide links and buttons; every route still checks permission on the server.
+                'permissions' => fn () => $request->user() === null ? [] : (
+                    $request->user()->hasRole('super_admin')
+                        ? Permission::query()->pluck('name')->all()
+                        : $request->user()->getAllPermissions()->pluck('name')->values()->all()
+                ),
+            ],
             // Read at render time, so flash data set by the previous request is still there.
             'flash' => fn () => [
                 'status' => $request->session()->get('status'),

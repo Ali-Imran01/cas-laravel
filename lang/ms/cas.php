@@ -34,6 +34,17 @@ return [
         'last_admin' => 'Sekurang-kurangnya satu super admin aktif mesti kekal.',
         'invalid_transition' => 'Perubahan itu tidak sesuai dengan keadaan akaun sekarang.',
     ],
+    'roles' => [
+        'created' => 'Peranan dicipta.',
+        'updated' => 'Peranan dikemas kini.',
+        'deleted' => 'Peranan dipadam.',
+        'permissions_saved' => 'Kebenaran disimpan.',
+        'super_admin_fixed' => 'Peranan super admin sentiasa mempunyai semua kebenaran dan tidak boleh diubah.',
+        'above_you' => 'Peranan ini mempunyai kebenaran yang anda tidak miliki, jadi anda tidak boleh mengubahnya.',
+        'cannot_grant' => 'Anda hanya boleh memberi kebenaran yang anda sendiri miliki.',
+        'system_role' => 'Peranan terbina dalam tidak boleh dipadam.',
+        'in_use' => 'Masih ada orang yang mempunyai peranan ini. Tugaskan semula mereka dahulu.',
+    ],
     'import' => [
         'active_exists' => 'Anda sudah mempunyai import yang sedang berjalan. Tunggu sehingga selesai.',
         'not_allowed' => 'Anda tidak lagi mempunyai kebenaran untuk mencipta pengguna.',
