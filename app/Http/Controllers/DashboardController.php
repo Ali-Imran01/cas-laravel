@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Domain\Approvals\Actions\DecideRequest;
 use App\Domain\Approvals\Enums\ApprovalStatus;
 use App\Domain\Approvals\Models\ApprovalRequest;
+use App\Domain\Apps\Enums\AppStatus;
+use App\Domain\Apps\Models\Application;
 use App\Domain\Audit\Enums\AuthResult;
 use App\Domain\Audit\Models\AuditLog;
 use App\Domain\Audit\Models\LoginAttempt;
@@ -33,7 +35,7 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'kpis' => [
                 'users' => User::query()->count(),
-                'apps' => 0, // connected apps arrive in Phase 4
+                'apps' => Application::query()->where('status', '!=', AppStatus::Disabled->value)->count(),
                 'pendingApprovals' => ApprovalRequest::query()->where('status', ApprovalStatus::Pending)->get()
                     ->filter(fn (ApprovalRequest $r) => $decide->canDecide($request->user(), $r))->count(),
                 'signInsToday' => end($signIns)['count'],
