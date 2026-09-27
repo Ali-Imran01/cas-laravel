@@ -1,7 +1,6 @@
 <?php
 
 use App\Domain\Apps\Actions\AppAccess;
-use App\Domain\Apps\Models\Application;
 use App\Domain\Audit\Models\AuditLog;
 use App\Domain\Identity\Enums\UserStatus;
 use App\Domain\Identity\Models\User;
@@ -16,34 +15,11 @@ use Illuminate\Support\Facades\DB;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\Token\Plain;
 use Spatie\Permission\Models\Role;
 
 uses(RefreshDatabase::class);
 
 beforeEach(fn () => $this->seed(AccessSeeder::class));
-
-/** Runs the whole flow for a person and returns the token response (with id_token when openid was asked for). */
-function oidc_login(Application $app, string $secret, User $user, array $authorize = [], array $tokenExtra = []): array
-{
-    [$verifier, $challenge] = pkce();
-    $code = get_code(test(), $app, $user, $challenge, $authorize);
-
-    return token_request(test(), $app, $secret, ['code' => $code, 'code_verifier' => $verifier] + $tokenExtra)->assertOk()->json();
-}
-
-/** A request with a bearer token; the guard cache is reset so earlier requests in the same test cannot leak in. */
-function bearer(?string $token)
-{
-    app('auth')->forgetGuards();
-
-    return $token ? test()->withToken($token) : test()->withoutToken();
-}
-
-function parse_jwt(string $jwt): Plain
-{
-    return Configuration::forUnsecuredSigner()->parser()->parse($jwt);
-}
 
 it('publishes discovery metadata that matches the real endpoints', function () {
     $response = $this->getJson('/.well-known/openid-configuration')->assertOk();
@@ -167,7 +143,7 @@ it('re-checks access when a code is redeemed and when a token is refreshed', fun
     expect(tokens_revoked($user))->toBeTrue();
 
     // ...or between two refreshes.
-    app(AppAccess::class)->mapRole($app, Role::findByName('staff'), 'Viewer');
+    app(AppAccess::class)->mapRole($app, Role::findByName('staff', 'web'), 'Viewer');
     $tokens = oidc_login($app, $secret, $user);
     $user->forceFill(['status' => UserStatus::Inactive])->save();
     token_request($this, $app, $secret, ['grant_type' => 'refresh_token', 'refresh_token' => $tokens['refresh_token']])->assertStatus(400)->assertJson(['error' => 'invalid_grant']);
@@ -216,7 +192,7 @@ it('signs a person out everywhere from an app\'s server', function () {
     [$one, $secretOne] = sso_app(['code' => 'one']);
     [$two, $secretTwo] = sso_app(['code' => 'two']);
     $user = staff_with_access($one);
-    app(AppAccess::class)->mapRole($two, Role::findByName('staff'), 'Viewer');
+    app(AppAccess::class)->mapRole($two, Role::findByName('staff', 'web'), 'Viewer');
     $tokenOne = oidc_login($one, $secretOne, $user);
     oidc_login($two, $secretTwo, $user);
     DB::table('sessions')->insert(['id' => 'browser-1', 'user_id' => $user->id, 'payload' => '', 'last_activity' => time()]);
@@ -285,7 +261,7 @@ it('exposes claims about the person from the app they signed in to, not from oth
     [$one, $secretOne] = sso_app(['code' => 'one']);
     [$two, $secretTwo] = sso_app(['code' => 'two']);
     $user = staff_with_access($one, 'Viewer');
-    app(AppAccess::class)->mapRole($two, Role::findByName('staff'), 'Admin');
+    app(AppAccess::class)->mapRole($two, Role::findByName('staff', 'web'), 'Admin');
 
     $forOne = bearer(oidc_login($one, $secretOne, $user, ['scope' => 'openid profile'])['access_token'])->getJson('/oauth/userinfo')->json();
     $forTwo = bearer(oidc_login($two, $secretTwo, $user, ['scope' => 'openid profile'])['access_token'])->getJson('/oauth/userinfo')->json();

@@ -83,8 +83,10 @@ it('throttles repeated attempts from one client for one identifier', function ()
         $this->post('/login', ['identifier' => 'ghost@x.test', 'password' => 'nope-nope-nope']);
     }
 
-    $this->post('/login', ['identifier' => 'ghost@x.test', 'password' => 'nope-nope-nope'])
-        ->assertSessionHasErrors(['identifier' => __('cas.auth.throttle', ['seconds' => 60])]);
+    $response = $this->post('/login', ['identifier' => 'ghost@x.test', 'password' => 'nope-nope-nope'])->assertSessionHasErrors('identifier');
+
+    // The wait is 60 s, or 59 if a second ticked over between the attempts: the exact number is not the point.
+    expect($response->getSession()->get('errors')->first('identifier'))->toMatch('/^Too many attempts\. Try again in (59|60) seconds\.$/');
 });
 
 it('signs out and protects the dashboard', function () {

@@ -15,7 +15,10 @@ use App\Domain\Identity\Policies\UserImportPolicy;
 use App\Domain\Identity\Policies\UserPolicy;
 use App\Domain\Organization\Models\OrgUnit;
 use App\Domain\Organization\Policies\OrgUnitPolicy;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Passport\Passport;
@@ -37,6 +40,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // API rate limit: per app and person, so one busy app cannot starve another and NAT does not merge callers.
+        RateLimiter::for('api', function (Request $request) {
+            $token = $request->user('api')?->currentAccessToken();
+
+            return Limit::perMinute((int) config('cas.api.rate_limit'))
+                ->by($token ? data_get($token, 'client_id').'|'.$request->user('api')->id : (string) $request->ip());
+        });
+
         Passport::useClientModel(OAuthClient::class);
         // Passport needs a consent view registered even though no CAS app ever shows one (all are first-party).
         Passport::authorizationView(fn () => abort(403));

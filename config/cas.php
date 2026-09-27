@@ -20,6 +20,9 @@ return [
         'refresh_token_days' => 30,
         'max_redirect_uris' => 10,
     ],
+    'api' => [
+        'rate_limit' => 120, // requests per minute, per app and person
+    ],
     'import' => [
         'max_kb' => 2048,
         'max_rows' => 5000,

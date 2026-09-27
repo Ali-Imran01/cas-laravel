@@ -43,7 +43,7 @@ function staff_with_access(Application $app, string $appRole = 'Viewer'): User
 {
     $user = User::factory()->create();
     $user->assignRole('staff');
-    app(AppAccess::class)->mapRole($app, Role::findByName('staff'), $appRole);
+    app(AppAccess::class)->mapRole($app, Role::findByName('staff', 'web'), $appRole);
 
     return $user;
 }
@@ -80,4 +80,21 @@ function tokens_revoked(User $user): bool
 {
     return DB::table('oauth_access_tokens')->where('user_id', $user->id)->where('revoked', false)->doesntExist()
         && DB::table('oauth_refresh_tokens')->whereIn('access_token_id', DB::table('oauth_access_tokens')->where('user_id', $user->id)->select('id'))->where('revoked', false)->doesntExist();
+}
+
+/** Runs the whole flow for a person and returns the token response (with id_token when openid was asked for). */
+function oidc_login(Application $app, string $secret, User $user, array $authorize = [], array $tokenExtra = []): array
+{
+    [$verifier, $challenge] = pkce();
+    $code = get_code(test(), $app, $user, $challenge, $authorize);
+
+    return token_request(test(), $app, $secret, ['code' => $code, 'code_verifier' => $verifier] + $tokenExtra)->assertOk()->json();
+}
+
+/** A request with a bearer token; the guard cache is reset so earlier requests in the same test cannot leak in. */
+function bearer(?string $token)
+{
+    app('auth')->forgetGuards();
+
+    return $token ? test()->withToken($token) : test()->withoutToken();
 }

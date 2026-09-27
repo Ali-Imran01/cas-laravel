@@ -206,15 +206,15 @@ it('ends app sessions when a role change or removed access takes the person out 
     // Unmapping the role revokes its holders...
     $second = staff_with_access($app);
     signed_in_via_app($app, $second, $secret);
-    $this->actingAs($admin)->delete("/apps/$app->id/roles/".Role::findByName('staff')->id);
+    $this->actingAs($admin)->delete("/apps/$app->id/roles/".Role::findByName('staff', 'web')->id);
     expect(tokens_revoked($second))->toBeTrue();
 
     // ...but not people who still have another way in.
-    app(AppAccess::class)->mapRole($app, Role::findByName('staff'), 'Viewer');
+    app(AppAccess::class)->mapRole($app, Role::findByName('staff', 'web'), 'Viewer');
     $third = staff_with_access($app);
     app(AppAccess::class)->grantUser($admin, $app, $third, 'Agent', null);
     signed_in_via_app($app, $third, $secret);
-    $this->actingAs($admin)->delete("/apps/$app->id/roles/".Role::findByName('staff')->id);
+    $this->actingAs($admin)->delete("/apps/$app->id/roles/".Role::findByName('staff', 'web')->id);
     expect(tokens_revoked($third))->toBeFalse();
 
     // Removing the last way in revokes.
@@ -242,7 +242,7 @@ it('does not touch other apps or other people when revoking', function () {
     [$one, $secretOne] = sso_app(['code' => 'one']);
     [$two, $secretTwo] = sso_app(['code' => 'two']);
     $user = staff_with_access($one);
-    app(AppAccess::class)->mapRole($two, Role::findByName('staff'), 'Viewer');
+    app(AppAccess::class)->mapRole($two, Role::findByName('staff', 'web'), 'Viewer');
     $bystander = staff_with_access($one);
     signed_in_via_app($one, $user, $secretOne);
     signed_in_via_app($two, $user, $secretTwo);
