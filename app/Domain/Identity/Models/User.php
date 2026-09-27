@@ -7,6 +7,7 @@ use App\Domain\Organization\Models\OrgUnit;
 use App\Domain\Organization\Models\Position;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property int $id
@@ -35,7 +37,7 @@ use Illuminate\Support\Carbon;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, HasRoles, Notifiable, SoftDeletes;
 
     protected $fillable = [
         'staff_id',
@@ -76,6 +78,34 @@ class User extends Authenticatable
             'mfa_secret' => 'encrypted',
             'mfa_recovery_codes' => 'encrypted:array',
         ];
+    }
+
+    /**
+     * Name, staff ID or email contains the term (case-insensitive; LIKE wildcards in the term are literal).
+     *
+     * @param  Builder<User>  $query
+     */
+    public function scopeSearch(Builder $query, ?string $term): void
+    {
+        if ($term === null || trim($term) === '') {
+            return;
+        }
+
+        $like = '%'.addcslashes(mb_strtolower(trim($term)), '\\%_').'%';
+        $query->where(fn (Builder $q) => $q
+            ->whereRaw('lower(name) like ?', [$like])
+            ->orWhereRaw('lower(staff_id) like ?', [$like])
+            ->orWhereRaw('lower(email) like ?', [$like]));
+    }
+
+    /**
+     * Members of an org unit or any unit below it.
+     *
+     * @param  Builder<User>  $query
+     */
+    public function scopeInUnitTree(Builder $query, int $orgUnitId): void
+    {
+        $query->whereIn('org_unit_id', OrgUnit::treeIds($orgUnitId));
     }
 
     /** @return BelongsTo<OrgUnit, $this> */

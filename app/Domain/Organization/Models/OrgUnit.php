@@ -11,8 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Kalnoy\Nestedset\NodeTrait;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property int $_lft
+ * @property int $_rgt
+ */
 #[UseFactory(OrgUnitFactory::class)]
 class OrgUnit extends Model
 {
@@ -27,6 +34,40 @@ class OrgUnit extends Model
             'type' => OrgUnitType::class,
             'is_active' => 'boolean',
         ];
+    }
+
+    /**
+     * Ids of a unit and everything below it, straight from the nested-set bounds.
+     *
+     * @return Collection<int, int>
+     */
+    public static function treeIds(int $id): Collection
+    {
+        $unit = static::query()->findOrFail($id);
+
+        return static::query()->whereBetween('_lft', [$unit->_lft, $unit->_rgt])->pluck('id');
+    }
+
+    /**
+     * Every unit in tree order with its depth, for indented pickers. One pass over the _lft ordering:
+     * a stack of open ancestors' _rgt values gives the depth.
+     *
+     * @return list<array{id: int, name: string, depth: int}>
+     */
+    public static function outline(): array
+    {
+        $open = [];
+        $rows = [];
+
+        foreach (static::query()->orderBy('_lft')->get(['id', 'name', '_lft', '_rgt']) as $unit) {
+            while ($open !== [] && end($open) < $unit->_lft) {
+                array_pop($open);
+            }
+            $rows[] = ['id' => $unit->id, 'name' => $unit->name, 'depth' => count($open)];
+            $open[] = $unit->_rgt;
+        }
+
+        return $rows;
     }
 
     /** @return BelongsTo<User, $this> */

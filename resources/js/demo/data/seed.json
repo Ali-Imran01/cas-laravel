@@ -9,11 +9,11 @@
     { "id": 2, "org_unit_id": 3, "title": "Systems Analyst", "grade": "F41", "headcount": 4 }
   ],
   "users": [
-    { "id": 1, "staff_id": "STF-10001", "name": "Aisyah Rahman", "email": "superadmin@cas.demo", "org_unit_id": 1, "position_id": null, "status": "active", "mfa_enabled": true },
-    { "id": 2, "staff_id": "STF-10002", "name": "Hafiz Ismail", "email": "hr.officer@cas.demo", "org_unit_id": 1, "position_id": null, "status": "active", "mfa_enabled": true },
-    { "id": 3, "staff_id": "STF-10003", "name": "Nurul Huda", "email": "dept.head@cas.demo", "org_unit_id": 2, "position_id": 1, "status": "active", "mfa_enabled": false },
-    { "id": 4, "staff_id": "STF-10004", "name": "Daniel Lee", "email": "staff@cas.demo", "org_unit_id": 3, "position_id": 2, "status": "active", "mfa_enabled": false },
-    { "id": 5, "staff_id": "STF-10005", "name": "Siti Aminah", "email": "siti@cas.demo", "org_unit_id": 3, "position_id": 2, "status": "locked", "mfa_enabled": false }
+    { "id": 1, "staff_id": "STF-10001", "name": "Aisyah Rahman", "email": "superadmin@cas.demo", "org_unit_id": 1, "position_id": null, "status": "active", "role": "super_admin", "mfa_enabled": true },
+    { "id": 2, "staff_id": "STF-10002", "name": "Hafiz Ismail", "email": "hr.officer@cas.demo", "org_unit_id": 1, "position_id": null, "status": "active", "role": "hr_officer", "mfa_enabled": true },
+    { "id": 3, "staff_id": "STF-10003", "name": "Nurul Huda", "email": "dept.head@cas.demo", "org_unit_id": 2, "position_id": 1, "status": "active", "role": "dept_head", "mfa_enabled": false },
+    { "id": 4, "staff_id": "STF-10004", "name": "Daniel Lee", "email": "staff@cas.demo", "org_unit_id": 3, "position_id": 2, "status": "active", "role": "staff", "mfa_enabled": false },
+    { "id": 5, "staff_id": "STF-10005", "name": "Siti Aminah", "email": "siti@cas.demo", "org_unit_id": 3, "position_id": 2, "status": "locked", "role": "staff", "mfa_enabled": false }
   ],
   "applications": [
     { "id": 1, "code": "ams-prod", "name": "Asset Inspection", "environment": "production", "status": "active" },

@@ -20,6 +20,26 @@
     "disableTitle": "Turn off", "currentPassword": "Current password", "disable": "Turn off"
   },
   "flash": { "mfa-email-sent": "A code was sent to your email.", "mfa-enabled": "Two-step verification is on.", "mfa-disabled": "Two-step verification is off.", "password-changed": "Password updated." },
+  "acceptInvite": { "title": "Set your password", "submit": "Activate account" },
+  "users": {
+    "title": "Users", "new": "New user", "search": "Search name, staff ID or email", "allStatuses": "All statuses", "allUnits": "All units", "allRoles": "All roles",
+    "apply": "Apply", "clear": "Clear", "empty": "No users match these filters.", "never": "Never", "autoLocked": "temporarily locked", "selectAll": "Select all on this page",
+    "selected": "{{count}} selected", "confirm": "Confirm", "cancel": "Cancel", "next": "Next", "prev": "Previous", "page": "Page {{current}} of {{last}}",
+    "col": { "name": "Name", "staffId": "Staff ID", "status": "Status", "unit": "Unit", "role": "Role", "lastLogin": "Last sign-in" },
+    "status": { "pending": "Invited", "active": "Active", "locked": "Locked", "inactive": "Inactive" },
+    "bulk": { "lock": "Lock", "unlock": "Unlock", "deactivate": "Deactivate" },
+    "form": {
+      "createTitle": "New user", "editTitle": "Edit user", "staffId": "Staff ID", "name": "Full name", "email": "Email", "role": "Role", "noRole": "No role",
+      "unit": "Org unit", "noUnit": "Not assigned", "position": "Position", "noPosition": "No position", "save": "Save", "create": "Create and send invitation",
+      "inviteNote": "The user gets an email to set their own password. The link works for 3 days."
+    },
+    "show": {
+      "email": "Email", "mfa": "Two-step verification", "on": "On", "off": "Off", "unit": "Unit", "position": "Position", "role": "Role",
+      "edit": "Edit", "lock": "Lock", "unlock": "Unlock", "deactivate": "Deactivate", "reactivate": "Reactivate", "resend": "Resend invitation", "delete": "Delete",
+      "history": "Assignment history", "from": "From", "to": "To", "current": "Current", "transfer": "Transfer", "transferUnit": "New unit", "transferPosition": "New position",
+      "startedOn": "Effective date", "transferSubmit": "Record transfer", "back": "Back to users"
+    }
+  },
   "dashboard": { "title": "Dashboard", "users": "Users", "apps": "Connected apps", "pendingApprovals": "Pending approvals", "signInsToday": "Sign-ins today", "signIns": "Sign-ins, last 14 days" },
   "common": { "signOut": "Sign out", "language": "Language", "security": "Security" },
   "demo": { "banner": "Demo mode: sample data, stored in your browser", "reset": "Reset", "source": "View source on GitHub" }

@@ -20,6 +20,26 @@
     "disableTitle": "Matikan", "currentPassword": "Kata laluan semasa", "disable": "Matikan"
   },
   "flash": { "mfa-email-sent": "Kod telah dihantar ke e-mel anda.", "mfa-enabled": "Pengesahan dua langkah dihidupkan.", "mfa-disabled": "Pengesahan dua langkah dimatikan.", "password-changed": "Kata laluan dikemas kini." },
+  "acceptInvite": { "title": "Tetapkan kata laluan anda", "submit": "Aktifkan akaun" },
+  "users": {
+    "title": "Pengguna", "new": "Pengguna baharu", "search": "Cari nama, ID staf atau e-mel", "allStatuses": "Semua status", "allUnits": "Semua unit", "allRoles": "Semua peranan",
+    "apply": "Guna", "clear": "Kosongkan", "empty": "Tiada pengguna sepadan dengan penapis ini.", "never": "Tidak pernah", "autoLocked": "dikunci sementara", "selectAll": "Pilih semua pada halaman ini",
+    "selected": "{{count}} dipilih", "confirm": "Sahkan", "cancel": "Batal", "next": "Seterusnya", "prev": "Sebelumnya", "page": "Halaman {{current}} daripada {{last}}",
+    "col": { "name": "Nama", "staffId": "ID staf", "status": "Status", "unit": "Unit", "role": "Peranan", "lastLogin": "Log masuk terakhir" },
+    "status": { "pending": "Dijemput", "active": "Aktif", "locked": "Dikunci", "inactive": "Tidak aktif" },
+    "bulk": { "lock": "Kunci", "unlock": "Buka kunci", "deactivate": "Nyahaktif" },
+    "form": {
+      "createTitle": "Pengguna baharu", "editTitle": "Sunting pengguna", "staffId": "ID staf", "name": "Nama penuh", "email": "E-mel", "role": "Peranan", "noRole": "Tiada peranan",
+      "unit": "Unit organisasi", "noUnit": "Tidak ditugaskan", "position": "Jawatan", "noPosition": "Tiada jawatan", "save": "Simpan", "create": "Cipta dan hantar jemputan",
+      "inviteNote": "Pengguna akan menerima e-mel untuk menetapkan kata laluan sendiri. Pautan sah selama 3 hari."
+    },
+    "show": {
+      "email": "E-mel", "mfa": "Pengesahan dua langkah", "on": "Hidup", "off": "Mati", "unit": "Unit", "position": "Jawatan", "role": "Peranan",
+      "edit": "Sunting", "lock": "Kunci", "unlock": "Buka kunci", "deactivate": "Nyahaktif", "reactivate": "Aktifkan semula", "resend": "Hantar semula jemputan", "delete": "Padam",
+      "history": "Sejarah penugasan", "from": "Dari", "to": "Hingga", "current": "Semasa", "transfer": "Pertukaran", "transferUnit": "Unit baharu", "transferPosition": "Jawatan baharu",
+      "startedOn": "Tarikh berkuat kuasa", "transferSubmit": "Rekod pertukaran", "back": "Kembali ke pengguna"
+    }
+  },
   "dashboard": { "title": "Papan pemuka", "users": "Pengguna", "apps": "Aplikasi bersambung", "pendingApprovals": "Kelulusan tertunggak", "signInsToday": "Log masuk hari ini", "signIns": "Log masuk, 14 hari lepas" },
   "common": { "signOut": "Log keluar", "language": "Bahasa", "security": "Keselamatan" },
   "demo": { "banner": "Mod demo: data contoh, disimpan dalam pelayar anda", "reset": "Set semula", "source": "Lihat kod sumber di GitHub" }

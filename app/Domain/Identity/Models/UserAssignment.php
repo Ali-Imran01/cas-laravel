@@ -6,7 +6,12 @@ use App\Domain\Organization\Models\OrgUnit;
 use App\Domain\Organization\Models\Position;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property Carbon $started_at
+ * @property Carbon|null $ended_at
+ */
 class UserAssignment extends Model
 {
     public $timestamps = false;

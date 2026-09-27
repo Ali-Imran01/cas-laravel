@@ -1,10 +1,16 @@
 <?php
 
+use App\Http\Controllers\Auth\AcceptInviteController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MfaChallengeController;
 use App\Http\Controllers\Auth\MfaSettingsController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\Users\UserBulkController;
+use App\Http\Controllers\Users\UserController;
+use App\Http\Controllers\Users\UserInviteController;
+use App\Http\Controllers\Users\UserStatusController;
+use App\Http\Controllers\Users\UserTransferController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,6 +22,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [PasswordResetController::class, 'email'])->name('password.email');
     Route::get('/reset-password/{token}', [PasswordResetController::class, 'edit'])->name('password.reset');
     Route::post('/reset-password', [PasswordResetController::class, 'update'])->name('password.update');
+
+    Route::get('/accept-invite/{token}', [AcceptInviteController::class, 'create'])->name('invite.accept');
+    Route::post('/accept-invite', [AcceptInviteController::class, 'store'])->name('invite.store');
 });
 
 // Second sign-in step: not authenticated yet, only a pending user id in the session.
@@ -42,5 +51,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/mfa', [MfaSettingsController::class, 'show'])->name('mfa.setup');
         Route::post('/mfa', [MfaSettingsController::class, 'store'])->name('mfa.enable');
         Route::delete('/mfa', [MfaSettingsController::class, 'destroy'])->name('mfa.disable');
+
+        Route::post('/users/bulk', [UserBulkController::class, 'store'])->name('users.bulk');
+        Route::resource('users', UserController::class);
+        Route::post('/users/{user}/lock', [UserStatusController::class, 'lock'])->name('users.lock');
+        Route::post('/users/{user}/unlock', [UserStatusController::class, 'unlock'])->name('users.unlock');
+        Route::post('/users/{user}/deactivate', [UserStatusController::class, 'deactivate'])->name('users.deactivate');
+        Route::post('/users/{user}/reactivate', [UserStatusController::class, 'reactivate'])->name('users.reactivate');
+        Route::post('/users/{user}/transfer', [UserTransferController::class, 'store'])->name('users.transfer');
+        Route::post('/users/{user}/invite', [UserInviteController::class, 'store'])->name('users.invite');
     });
 });
