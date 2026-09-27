@@ -129,6 +129,15 @@
     "step": "Peringkat {{level}}: {{name}}", "approverType": "Siapa yang meluluskan", "role": "Peranan", "person": "Orang", "slaHours": "Jam untuk membuat keputusan", "saveStep": "Simpan",
     "types": { "role": "Satu peranan", "user": "Orang tertentu", "unit_head": "Ketua unit", "division_head": "Ketua bahagian" }
   },
+  "settingsPage": {
+    "groups": { "password": "Polisi kata laluan", "mfa": "Pengesahan dua langkah", "lockout": "Log masuk & kunci akaun" },
+    "fields": {
+      "password_min_length": "Panjang minimum", "password_history": "Tidak boleh guna semula N kata laluan terakhir", "password_expiry_days": "Tamat tempoh selepas (hari, 0 = tiada)",
+      "mfa_pending_minutes": "Langkah log masuk tamat selepas (minit)", "mfa_max_attempts": "Percubaan sebelum langkah log masuk ditolak", "mfa_email_otp_minutes": "Kod e-mel tamat selepas (minit)", "recovery_codes": "Bilangan kod pemulihan dijana",
+      "max_attempts": "Percubaan gagal sebelum dikunci", "lockout_minutes": "Dikunci selama (minit)", "login_throttle_per_minute": "Percubaan log masuk dibenarkan seminit"
+    },
+    "save": "Simpan polisi"
+  },
   "common": { "signOut": "Log keluar", "language": "Bahasa", "security": "Keselamatan" },
   "demo": { "banner": "Mod demo: data contoh, disimpan dalam pelayar anda", "reset": "Set semula", "source": "Lihat kod sumber di GitHub" }
 }

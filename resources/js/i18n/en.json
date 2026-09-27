@@ -129,6 +129,15 @@
     "step": "Level {{level}}: {{name}}", "approverType": "Who approves", "role": "Role", "person": "Person", "slaHours": "Hours to decide", "saveStep": "Save",
     "types": { "role": "A role", "user": "A specific person", "unit_head": "Head of the unit", "division_head": "Head of the division" }
   },
+  "settingsPage": {
+    "groups": { "password": "Password policy", "mfa": "Two-step verification", "lockout": "Sign-in & lockout" },
+    "fields": {
+      "password_min_length": "Minimum length", "password_history": "Cannot reuse the last N passwords", "password_expiry_days": "Expires after (days, 0 = never)",
+      "mfa_pending_minutes": "Sign-in step expires after (minutes)", "mfa_max_attempts": "Attempts before the sign-in step is refused", "mfa_email_otp_minutes": "Emailed code expires after (minutes)", "recovery_codes": "Recovery codes to generate",
+      "max_attempts": "Failed attempts before locking", "lockout_minutes": "Locked for (minutes)", "login_throttle_per_minute": "Sign-in attempts allowed per minute"
+    },
+    "save": "Save policy"
+  },
   "common": { "signOut": "Sign out", "language": "Language", "security": "Security" },
   "demo": { "banner": "Demo mode: sample data, stored in your browser", "reset": "Reset", "source": "View source on GitHub" }
 }

@@ -129,6 +129,9 @@ return [
         'position_deleted' => 'Position deleted.',
         'position_in_use' => 'People still hold this position.',
     ],
+    'settings' => [
+        'updated' => 'Settings updated.',
+    ],
     'mail' => [
         'invite_subject' => 'You have been invited to CAS',
         'invite_line' => 'An account was created for you (staff ID :staff_id). Set your password to activate it.',

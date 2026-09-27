@@ -129,6 +129,9 @@ return [
         'position_deleted' => 'Jawatan dipadam.',
         'position_in_use' => 'Masih ada orang yang memegang jawatan ini.',
     ],
+    'settings' => [
+        'updated' => 'Tetapan dikemas kini.',
+    ],
     'mail' => [
         'invite_subject' => 'Anda dijemput ke CAS',
         'invite_line' => 'Satu akaun telah dicipta untuk anda (ID staf :staff_id). Tetapkan kata laluan anda untuk mengaktifkannya.',

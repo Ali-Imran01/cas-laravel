@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\Api\EnsureTokenAppHasAccess;
+use App\Http\Middleware\ApplySecuritySettings;
 use App\Http\Middleware\EnsurePasswordIsCurrent;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\OAuth\AsJson;
@@ -25,7 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // The language switch sets this cookie from JavaScript, so it must not be encrypted.
         $middleware->encryptCookies(except: ['cas_locale']);
-        $middleware->web(append: [SetLocale::class, HandleInertiaRequests::class]);
+        $middleware->web(prepend: [ApplySecuritySettings::class], append: [SetLocale::class, HandleInertiaRequests::class]);
         // First in line, so even an unauthenticated API call is answered as JSON rather than redirected to the login page.
         $middleware->prependToGroup('api', AsJson::class);
         $middleware->alias([

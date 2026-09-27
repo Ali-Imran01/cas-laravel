@@ -16,6 +16,7 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Organization\OrgUnitController;
 use App\Http\Controllers\Organization\PositionController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\Users\UserBulkController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Users\UserImportController;
@@ -88,6 +89,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/mfa', [MfaSettingsController::class, 'show'])->name('mfa.setup');
         Route::post('/mfa', [MfaSettingsController::class, 'store'])->name('mfa.enable');
         Route::delete('/mfa', [MfaSettingsController::class, 'destroy'])->name('mfa.disable');
+
+        Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+        Route::put('/settings/policies', [SettingsController::class, 'updatePolicies'])->name('settings.policies.update');
 
         Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
         Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');

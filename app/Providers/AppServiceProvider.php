@@ -21,6 +21,8 @@ use App\Domain\Identity\Policies\UserImportPolicy;
 use App\Domain\Identity\Policies\UserPolicy;
 use App\Domain\Organization\Models\OrgUnit;
 use App\Domain\Organization\Policies\OrgUnitPolicy;
+use App\Domain\Settings\Models\Setting;
+use App\Domain\Settings\Policies\SettingsPolicy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -70,6 +72,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(AuditLog::class, AuditPolicy::class);
         Gate::policy(ApprovalRequest::class, ApprovalPolicy::class);
         Gate::policy(ApprovalWorkflow::class, ApprovalWorkflowPolicy::class);
+        Gate::policy(Setting::class, SettingsPolicy::class);
         // Super admins pass every permission check. Self-protection lives in the actions, not the policies.
         Gate::before(fn (User $user) => $user->hasRole('super_admin') ? true : null);
 

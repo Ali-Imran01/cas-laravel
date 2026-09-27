@@ -13,6 +13,7 @@ import Login from '../Pages/Login';
 import MfaChallenge from '../Pages/MfaChallenge';
 import OrganizationIndex from '../Pages/Organization/Index';
 import RolesIndex from '../Pages/Roles/Index';
+import SettingsIndex from '../Pages/Settings/Index';
 import UsersIndex from '../Pages/Users/Index';
 import seed from './data/seed.json';
 import { resetDemo, useDemo } from './store';
@@ -257,6 +258,20 @@ function ApprovalsRoute() {
     );
 }
 
+// Read-only view of the same Settings/Index page: the shipped policy defaults, with no `can.update` so no form.
+const POLICY_DEFAULTS = {
+    max_attempts: 5, lockout_minutes: 15, login_throttle_per_minute: 10,
+    password_min_length: 12, password_history: 5, password_expiry_days: 90,
+    mfa_pending_minutes: 10, mfa_max_attempts: 5, mfa_email_otp_minutes: 10, recovery_codes: 8,
+};
+
+function SettingsRoute() {
+    const navigate = useNavigate();
+    if (!isSignedIn()) return <Navigate to="/login" replace />;
+
+    return <SettingsIndex policies={POLICY_DEFAULTS} can={{}} onSignOut={() => { setSignedIn(false); navigate('/login'); }} />;
+}
+
 const MODULES = ['users', 'roles', 'organization', 'apps', 'approvals', 'audit', 'settings'];
 const GRID = MODULES.map((module) => ({ module, actions: ['view', 'create', 'edit', 'delete', ...(module === 'approvals' ? ['approve'] : [])] }));
 const ALL_PERMISSIONS = GRID.flatMap((r) => r.actions.map((a) => `${r.module}.${a}`));
@@ -346,6 +361,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/audit" element={<AuditRoute />} />
                 <Route path="/apps" element={<AppsRoute />} />
                 <Route path="/approvals" element={<ApprovalsRoute />} />
+                <Route path="/settings" element={<SettingsRoute />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             <DemoFooter />

@@ -71,6 +71,7 @@ const callbacksFor = (name, props) => ({
     onCancel: () => router.post(`/approvals/${props.selected?.id}/cancel`, {}, keepScroll),
     onUpdateWorkflow: (id, data) => router.put(`/approvals/workflows/${id}`, data, keepScroll),
     onUpdateStep: (workflowId, stepId, data) => router.put(`/approvals/workflows/${workflowId}/steps/${stepId}`, data, keepScroll),
+    onSavePolicies: (data) => router.put('/settings/policies', data, keepScroll),
 });
 
 createInertiaApp({
