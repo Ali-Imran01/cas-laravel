@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->call(AccessSeeder::class);
+        $this->call([AccessSeeder::class, ApprovalSeeder::class]);
 
         $hq = OrgUnit::create(['type' => OrgUnitType::Headquarters, 'code' => 'HQ', 'name' => 'Headquarters']);
         $ict = OrgUnit::create(['type' => OrgUnitType::Division, 'code' => 'ICT', 'name' => 'ICT Division', 'parent_id' => $hq->id]);

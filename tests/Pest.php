@@ -49,3 +49,5 @@ function something()
 }
 
 require_once __DIR__.'/Helpers/sso.php';
+
+require_once __DIR__.'/Helpers/approvals.php';

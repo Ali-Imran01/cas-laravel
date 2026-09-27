@@ -2,7 +2,6 @@
 
 namespace App\Domain\Identity\Actions;
 
-use App\Domain\Apps\Actions\RevokeAppTokens;
 use App\Domain\Audit\Audit;
 use App\Domain\Identity\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 
 class UpdateUser
 {
-    public function __construct(private readonly EnsureAdminRemains $ensureAdminRemains) {}
+    public function __construct(private readonly ChangeUserRole $changeRole) {}
 
     /**
      * @param  array{staff_id: string, name: string, email: string, role?: string|null}  $data  `role` absent = leave roles alone
@@ -24,20 +23,7 @@ class UpdateUser
             $target->fill(['staff_id' => $data['staff_id'], 'name' => $data['name'], 'email' => $data['email']])->save();
 
             if (array_key_exists('role', $data)) {
-                $new = $data['role'] === null || $data['role'] === '' ? [] : [$data['role']];
-
-                if ($target->getRoleNames()->all() !== $new) {
-                    // Nobody edits their own roles, and the last super admin cannot lose the role.
-                    if ($actor->is($target)) {
-                        throw ValidationException::withMessages(['role' => __('cas.users.self_action')]);
-                    }
-                    if (! in_array('super_admin', $new, true)) {
-                        ($this->ensureAdminRemains)($target);
-                    }
-                    $target->syncRoles($new);
-                    // A different role can mean losing access to some apps: cut those sessions now.
-                    app(RevokeAppTokens::class)->forLostAccess($target);
-                }
+                ($this->changeRole)($actor, $target, $data['role'], audit: false); // logged below, together with the profile changes
             }
 
             [$old, $new] = Audit::diff($before, $this->snapshot($target));
