@@ -10,10 +10,13 @@ use Spatie\Permission\Models\Role;
 
 /**
  * Who may sign in to an app, and with which app role. Two routes to access: a whole CAS role is mapped
- * to an app role, or a single person is granted one (optionally until a date).
+ * to an app role, or a single person is granted one (optionally until a date). Removing access also
+ * ends the sessions it was carrying.
  */
 class AppAccess
 {
+    public function __construct(private readonly RevokeAppTokens $tokens) {}
+
     public function mapRole(Application $app, Role $role, string $appRole): void
     {
         $before = $app->roles()->whereKey($role->id)->first()?->getRelation('pivot')->getAttribute('app_role');
@@ -27,6 +30,11 @@ class AppAccess
         $app->roles()->detach($role->id);
 
         Audit::record('ACCESS_REVOKE', "Removed role {$role->name} from {$app->code}", $app, ['role' => $role->name]);
+
+        // Holders of the role may have lost their only way in.
+        foreach (User::role($role->name)->get() as $user) {
+            $this->tokens->forLostAccess($user);
+        }
     }
 
     public function grantUser(User $actor, Application $app, User $user, string $appRole, ?CarbonInterface $expiresAt): void
@@ -45,5 +53,7 @@ class AppAccess
         $app->users()->detach($user->id);
 
         Audit::record('ACCESS_REVOKE', "Removed {$user->staff_id} from {$app->code}", $app, ['staff_id' => $user->staff_id]);
+
+        $this->tokens->forLostAccess($user);
     }
 }

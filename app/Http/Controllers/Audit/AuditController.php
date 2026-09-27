@@ -34,6 +34,7 @@ class AuditController extends Controller
                 'method' => $a->method->value,
                 'result' => $a->result->value,
                 'reason' => $a->failure_reason,
+                'app' => $a->application?->name,
                 'ip' => $a->ip_address,
             ]);
         } else {

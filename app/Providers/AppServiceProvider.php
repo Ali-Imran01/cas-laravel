@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->scoped(AuditContext::class);
+        Passport::ignoreRoutes(); // routes/oauth.php defines the few endpoints CAS actually uses
     }
 
     /**
@@ -37,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Passport::useClientModel(OAuthClient::class);
+        // Passport needs a consent view registered even though no CAS app ever shows one (all are first-party).
+        Passport::authorizationView(fn () => abort(403));
         Passport::tokensCan(config('cas.sso.scopes'));
         Passport::tokensExpireIn(now()->addMinutes(config('cas.sso.access_token_minutes')));
         Passport::refreshTokensExpireIn(now()->addDays(config('cas.sso.refresh_token_days')));

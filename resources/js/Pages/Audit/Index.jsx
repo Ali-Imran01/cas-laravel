@@ -93,7 +93,7 @@ export default function Index({ view = 'log', entries, filters = {}, actions = [
                             {entries.data.map((e) => (signIns ? (
                                 <tr key={e.id} className="border-b last:border-0">
                                     <td className="p-3 whitespace-nowrap">{when(e.created_at)}</td>
-                                    <td className="p-3">{e.identifier}</td>
+                                    <td className="p-3">{e.identifier}{e.app && <div className="text-xs text-slate-500">{t('audit.toApp', { name: e.app })}</div>}</td>
                                     <td className="p-3">{t(`audit.methods.${e.method}`)}</td>
                                     <td className="p-3"><span className={`rounded px-2 py-0.5 text-xs ${RESULT_TONE[e.result]}`}>{t(`audit.results.${e.result}`)}</span></td>
                                     <td className="p-3 text-slate-500">{e.reason ?? '-'}</td>

@@ -20,6 +20,17 @@
     "disableTitle": "Turn off", "currentPassword": "Current password", "disable": "Turn off"
   },
   "flash": { "mfa-email-sent": "A code was sent to your email.", "mfa-enabled": "Two-step verification is on.", "mfa-disabled": "Two-step verification is off.", "password-changed": "Password updated." },
+  "oauth": {
+    "title": "Cannot sign you in to this app", "back": "Back to CAS",
+    "reason": {
+      "no_access": "Your account has not been given access to this app. Ask your administrator.",
+      "app_disabled": "This app is currently disabled.",
+      "user_inactive": "Your account is not active.",
+      "invalid_scope": "The app asked for permissions it is not allowed to have.",
+      "pkce_required": "The app did not use the required secure sign-in method (PKCE).",
+      "unknown_app": "This app is not registered with CAS."
+    }
+  },
   "appPage": {
     "name": "Name", "code": "Code", "environment": "Environment", "homepage": "Homepage", "color": "Colour", "redirects": "Redirect URIs (one per line)",
     "redirectsHint": "Exact addresses the app signs users back to. https only (http for localhost), no wildcards.", "scopes": "Scopes the app may request",
@@ -38,7 +49,7 @@
     "export": "Export CSV", "tabLog": "Changes", "tabSignIns": "Sign-ins", "search": "Search descriptions", "searchIdentifier": "Search the ID or email that was typed",
     "action": "Action", "allActions": "All actions", "actor": "Who (name or staff ID)", "subject": "Record type", "allSubjects": "All record types", "result": "Result", "allResults": "All results",
     "method": "Method", "allMethods": "All methods", "from": "From", "to": "To", "when": "When", "identifier": "Typed", "reason": "Reason", "what": "What", "details": "Details",
-    "before": "Before", "after": "After", "system": "System", "empty": "Nothing recorded for these filters.",
+    "before": "Before", "after": "After", "toApp": "to {{name}}", "system": "System", "empty": "Nothing recorded for these filters.",
     "results": { "success": "Success", "failed": "Failed", "blocked": "Blocked" },
     "methods": { "password": "Password", "mfa": "Two-step", "sso": "SSO" }
   },

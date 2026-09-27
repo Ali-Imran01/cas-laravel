@@ -47,7 +47,7 @@ final class AuditQueries
      */
     public static function signIns(array $f): Builder
     {
-        $query = LoginAttempt::query()->latest('id');
+        $query = LoginAttempt::query()->with('application:id,name')->latest('id');
 
         if (! empty($f['search'])) {
             $query->whereRaw('lower(identifier) like ?', ['%'.self::like($f['search']).'%']);

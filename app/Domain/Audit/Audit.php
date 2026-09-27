@@ -41,10 +41,11 @@ final class Audit
         ]);
     }
 
-    public static function loginAttempt(?User $user, string $identifier, LoginMethod $method, AuthResult $result, ?string $reason = null): LoginAttempt
+    public static function loginAttempt(?User $user, string $identifier, LoginMethod $method, AuthResult $result, ?string $reason = null, ?int $applicationId = null): LoginAttempt
     {
         return LoginAttempt::create([
             'user_id' => $user?->id,
+            'application_id' => $applicationId,
             'identifier' => Str::limit(trim($identifier), 191, ''),
             'method' => $method,
             'result' => $result,

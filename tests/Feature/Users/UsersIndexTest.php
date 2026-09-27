@@ -13,7 +13,7 @@ beforeEach(fn () => $this->seed(AccessSeeder::class));
 
 function signedInAs(string $role): User
 {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['name' => 'Aaa Actor']); // sorts last when descending, so sorting tests never depend on a random name
     $user->assignRole($role);
 
     return $user;

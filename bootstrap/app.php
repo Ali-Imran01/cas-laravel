@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
+        then: function () {
+            require __DIR__.'/../routes/oauth.php';
+        },
     )
     ->withMiddleware(function (Middleware $middleware): void {
         // The language switch sets this cookie from JavaScript, so it must not be encrypted.

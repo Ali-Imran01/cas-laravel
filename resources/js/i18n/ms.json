@@ -20,6 +20,17 @@
     "disableTitle": "Matikan", "currentPassword": "Kata laluan semasa", "disable": "Matikan"
   },
   "flash": { "mfa-email-sent": "Kod telah dihantar ke e-mel anda.", "mfa-enabled": "Pengesahan dua langkah dihidupkan.", "mfa-disabled": "Pengesahan dua langkah dimatikan.", "password-changed": "Kata laluan dikemas kini." },
+  "oauth": {
+    "title": "Tidak dapat melog masuk anda ke aplikasi ini", "back": "Kembali ke CAS",
+    "reason": {
+      "no_access": "Akaun anda belum diberi akses ke aplikasi ini. Hubungi pentadbir anda.",
+      "app_disabled": "Aplikasi ini sedang dinyahaktifkan.",
+      "user_inactive": "Akaun anda tidak aktif.",
+      "invalid_scope": "Aplikasi meminta kebenaran yang tidak dibenarkan.",
+      "pkce_required": "Aplikasi tidak menggunakan kaedah log masuk selamat yang diwajibkan (PKCE).",
+      "unknown_app": "Aplikasi ini tidak didaftarkan dengan CAS."
+    }
+  },
   "appPage": {
     "name": "Nama", "code": "Kod", "environment": "Persekitaran", "homepage": "Laman utama", "color": "Warna", "redirects": "URI ubah hala (satu setiap baris)",
     "redirectsHint": "Alamat tepat yang aplikasi gunakan untuk menghantar pengguna kembali. Hanya https (http untuk localhost), tanpa kad bebas.", "scopes": "Skop yang boleh dimohon aplikasi",
@@ -38,7 +49,7 @@
     "export": "Eksport CSV", "tabLog": "Perubahan", "tabSignIns": "Log masuk", "search": "Cari penerangan", "searchIdentifier": "Cari ID atau e-mel yang ditaip",
     "action": "Tindakan", "allActions": "Semua tindakan", "actor": "Siapa (nama atau ID staf)", "subject": "Jenis rekod", "allSubjects": "Semua jenis rekod", "result": "Keputusan", "allResults": "Semua keputusan",
     "method": "Kaedah", "allMethods": "Semua kaedah", "from": "Dari", "to": "Hingga", "when": "Bila", "identifier": "Ditaip", "reason": "Sebab", "what": "Apa", "details": "Butiran",
-    "before": "Sebelum", "after": "Selepas", "system": "Sistem", "empty": "Tiada rekod untuk penapis ini.",
+    "before": "Sebelum", "after": "Selepas", "toApp": "ke {{name}}", "system": "Sistem", "empty": "Tiada rekod untuk penapis ini.",
     "results": { "success": "Berjaya", "failed": "Gagal", "blocked": "Disekat" },
     "methods": { "password": "Kata laluan", "mfa": "Dua langkah", "sso": "SSO" }
   },

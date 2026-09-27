@@ -2,6 +2,7 @@
 
 namespace App\Domain\Identity\Actions;
 
+use App\Domain\Apps\Actions\RevokeAppTokens;
 use App\Domain\Audit\Audit;
 use App\Domain\Identity\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,8 @@ class UpdateUser
                         ($this->ensureAdminRemains)($target);
                     }
                     $target->syncRoles($new);
+                    // A different role can mean losing access to some apps: cut those sessions now.
+                    app(RevokeAppTokens::class)->forLostAccess($target);
                 }
             }
 

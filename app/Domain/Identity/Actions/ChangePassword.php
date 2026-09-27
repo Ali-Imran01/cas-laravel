@@ -2,6 +2,7 @@
 
 namespace App\Domain\Identity\Actions;
 
+use App\Domain\Apps\Actions\RevokeAppTokens;
 use App\Domain\Audit\Audit;
 use App\Domain\Identity\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +34,9 @@ class ChangePassword
                 ->where('user_id', $user->id)
                 ->when($keepSessionId, fn ($q) => $q->where('id', '!=', $keepSessionId))
                 ->delete();
+
+            // A new password also ends the person's sessions inside connected apps.
+            app(RevokeAppTokens::class)->forUser($user);
 
             // The person is always the actor here: even a reset or invitation is them proving control of the account.
             Audit::record('PASSWORD_CHANGE', "Password set for {$user->staff_id}", $user, new: ['via' => $via], actorId: $user->id);
