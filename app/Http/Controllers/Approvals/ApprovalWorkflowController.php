@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Approvals;
 use App\Domain\Approvals\Actions\UpdateWorkflow;
 use App\Domain\Approvals\Actions\UpdateWorkflowStep;
 use App\Domain\Approvals\Enums\ApproverType;
+use App\Domain\Approvals\Handlers\HandlerRegistry;
 use App\Domain\Approvals\Models\ApprovalWorkflow;
 use App\Domain\Approvals\Models\ApprovalWorkflowStep;
 use App\Http\Controllers\Controller;
@@ -17,6 +18,8 @@ use Spatie\Permission\Models\Role;
 
 class ApprovalWorkflowController extends Controller
 {
+    public function __construct(private readonly HandlerRegistry $handlers) {}
+
     public function index(Request $request): Response
     {
         $this->authorize('viewAny', ApprovalWorkflow::class);
@@ -27,6 +30,8 @@ class ApprovalWorkflowController extends Controller
             'name' => $w->name,
             'is_active' => $w->is_active,
             'allow_api' => $w->allow_api,
+            // A built-in workflow's last approval puts real administrative power into effect; it can never be opened to a connected app.
+            'has_handler' => $this->handlers->for($w->code) !== null,
             'steps' => $w->steps->map(fn (ApprovalWorkflowStep $s) => [
                 'id' => $s->id, 'level' => $s->level, 'name' => $s->name, 'approver_type' => $s->approver_type->value,
                 'approver_role_id' => $s->approver_role_id, 'approver_user_id' => $s->approver_user_id, 'sla_hours' => $s->sla_hours,

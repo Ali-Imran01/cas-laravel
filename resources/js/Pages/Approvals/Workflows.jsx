@@ -61,8 +61,13 @@ function WorkflowCard({ workflow, roles, errors, onToggle, onSaveStep }) {
                         <input type="checkbox" checked={workflow.is_active} onChange={(e) => onToggle({ is_active: e.target.checked, allow_api: workflow.allow_api })} />
                         {t('approvalsWorkflows.active')}
                     </label>
-                    <label className="flex items-center gap-2">
-                        <input type="checkbox" checked={workflow.allow_api} onChange={(e) => onToggle({ is_active: workflow.is_active, allow_api: e.target.checked })} />
+                    <label className={`flex items-center gap-2 ${workflow.has_handler ? 'text-slate-400' : ''}`} title={workflow.has_handler ? t('approvalsWorkflows.builtinNoApi') : undefined}>
+                        <input
+                            type="checkbox"
+                            checked={workflow.allow_api}
+                            disabled={workflow.has_handler}
+                            onChange={(e) => onToggle({ is_active: workflow.is_active, allow_api: e.target.checked })}
+                        />
                         {t('approvalsWorkflows.allowApi')}
                     </label>
                 </div>

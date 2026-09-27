@@ -26,6 +26,8 @@ use Spatie\Permission\Models\Role;
  * @property int|null $owner_user_id
  * @property Carbon|null $secret_rotated_at
  * @property Carbon|null $disabled_at
+ * @property string|null $webhook_url
+ * @property string|null $webhook_secret
  */
 class Application extends Model
 {
@@ -39,6 +41,8 @@ class Application extends Model
             'allowed_scopes' => 'array',
             'secret_rotated_at' => 'datetime',
             'disabled_at' => 'datetime',
+            // Unlike the client secret (hashed, one-way), CAS needs this again for every webhook it signs, so it is kept, encrypted at rest.
+            'webhook_secret' => 'encrypted',
         ];
     }
 

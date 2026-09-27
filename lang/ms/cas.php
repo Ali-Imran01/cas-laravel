@@ -57,6 +57,8 @@ return [
         'cancelled' => 'Permohonan ditarik balik.',
         'workflow_updated' => 'Aliran kerja dikemas kini.',
         'step_updated' => 'Langkah kelulusan dikemas kini.',
+        'builtin_no_api' => 'Aliran kerja terbina dalam tidak boleh dibuka kepada aplikasi bersambung.',
+        'unknown_workflow' => 'Aliran kerja ini tidak menerima permohonan daripada aplikasi bersambung.',
         'mail' => [
             'needed_subject' => 'Kelulusan diperlukan: :reference',
             'overdue_subject' => 'Tertunggak: :reference menunggu anda',
@@ -81,6 +83,10 @@ return [
         'access_saved' => 'Peraturan akses disimpan.',
         'unknown_staff' => 'Tiada pengguna dengan ID staf ini.',
         'bad_redirect' => 'Gunakan alamat https (http dibenarkan untuk localhost sahaja) tanpa kad bebas, kelayakan atau #serpihan.',
+        'webhook_saved' => 'Webhook disimpan. Salin rahsia tandatangan sekarang: ia hanya dipaparkan sekali.',
+        'webhook_cleared' => 'Webhook dibuang.',
+        'webhook_secret_rotated' => 'Rahsia webhook baharu dicipta. Salin sekarang: ia hanya dipaparkan sekali. Rahsia lama tidak lagi berfungsi.',
+        'no_webhook' => 'Tetapkan URL webhook sebelum mencipta rahsia tandatangan untuknya.',
     ],
     'roles' => [
         'created' => 'Peranan dicipta.',

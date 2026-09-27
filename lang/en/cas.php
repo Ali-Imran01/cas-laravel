@@ -57,6 +57,8 @@ return [
         'cancelled' => 'Request withdrawn.',
         'workflow_updated' => 'Workflow updated.',
         'step_updated' => 'Approval step updated.',
+        'builtin_no_api' => 'Built-in workflows can never be opened to connected apps.',
+        'unknown_workflow' => 'This workflow does not accept requests from connected apps.',
         'mail' => [
             'needed_subject' => 'Approval needed: :reference',
             'overdue_subject' => 'Overdue: :reference is waiting for you',
@@ -81,6 +83,10 @@ return [
         'access_saved' => 'Access rules saved.',
         'unknown_staff' => 'No user has this staff ID.',
         'bad_redirect' => 'Use an https address (http is allowed only for localhost) without wildcards, credentials or a #fragment.',
+        'webhook_saved' => 'Webhook saved. Copy the signing secret now: it is shown only once.',
+        'webhook_cleared' => 'Webhook removed.',
+        'webhook_secret_rotated' => 'New webhook secret created. Copy it now: it is shown only once. The old one no longer works.',
+        'no_webhook' => 'Set a webhook URL before creating a signing secret for it.',
     ],
     'roles' => [
         'created' => 'Role created.',

@@ -53,6 +53,7 @@ class HandleInertiaRequests extends Middleware
                 'status' => $request->session()->get('status'),
                 'recoveryCodes' => $request->session()->get('recoveryCodes'),
                 'appSecret' => $request->session()->get('appSecret'), // shown once, right after it is created or rotated
+                'webhookSecret' => $request->session()->get('webhookSecret'), // shown once, right after it is set or rotated
             ],
         ];
     }

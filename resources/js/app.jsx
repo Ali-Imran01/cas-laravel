@@ -47,6 +47,8 @@ const callbacksFor = (name, props) => ({
     onUnmapRole: (roleId) => router.delete(`/apps/${props.selected?.id}/roles/${roleId}`, keepScroll),
     onGrantUser: (data) => router.post(`/apps/${props.selected?.id}/users`, data, keepScroll),
     onRevokeUser: (userId) => router.delete(`/apps/${props.selected?.id}/users/${userId}`, keepScroll),
+    onUpdateWebhook: (webhook_url) => router.put(`/apps/${props.selected?.id}/webhook`, { webhook_url }, keepScroll),
+    onRotateWebhookSecret: () => router.post(`/apps/${props.selected?.id}/webhook/secret`, {}, keepScroll),
     onCreateRole: (data) => router.post('/roles', data, keepScroll),
     onUpdateRole: (data) => router.put(`/roles/${props.selected?.id}`, data, keepScroll),
     onSavePermissions: (permissions) => router.put(`/roles/${props.selected?.id}/permissions`, { permissions }, keepScroll),

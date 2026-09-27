@@ -69,6 +69,28 @@ function AppForm({ app, scopes, defaultScopes, errors, onSubmit }) {
     );
 }
 
+function Webhook({ app, errors, onUpdate, onRotate }) {
+    const { t } = useTranslation();
+    const [url, setUrl] = useState(app.webhook_url ?? '');
+
+    return (
+        <section className="space-y-3">
+            <h3 className="font-medium">{t('appPage.webhook')}</h3>
+            <p className="text-sm text-slate-500">{t('appPage.webhookHint')}</p>
+            <form onSubmit={(e) => { e.preventDefault(); onUpdate?.(url.trim() || null); }} className="flex flex-wrap items-end gap-2">
+                <Field label={t('appPage.webhookUrl')} value={url} onChange={(e) => setUrl(e.target.value)} error={errors.webhook_url} placeholder="https://" />
+                <button className={primary}>{t('appPage.save')}</button>
+            </form>
+            {app.webhook_url && (
+                <div className="flex flex-wrap items-center gap-2 text-sm">
+                    <span className="text-slate-500">{app.webhook_configured ? t('appPage.webhookSigned') : t('appPage.webhookUnsigned')}</span>
+                    <button type="button" className={button} onClick={onRotate}>{t('appPage.rotateWebhookSecret')}</button>
+                </div>
+            )}
+        </section>
+    );
+}
+
 function Access({ app, roles, errors, onMapRole, onUnmapRole, onGrantUser, onRevokeUser }) {
     const { t } = useTranslation();
     const [role, setRole] = useState({ role_id: '', app_role: '' });
@@ -116,7 +138,8 @@ function Access({ app, roles, errors, onMapRole, onUnmapRole, onGrantUser, onRev
 // Dumb page: every action is a callback from the entry point; choosing an app is a plain link (?app=ID).
 export default function Index({
     apps = [], selected, scopes = [], defaultScopes = [], roles = [], endpoints = {}, can = {}, flash = {}, errors = {},
-    onRegisterApp, onUpdateApp, onRotateSecret, onDisableApp, onEnableApp, onDeleteApp, onMapRole, onUnmapRole, onGrantUser, onRevokeUser, onSignOut,
+    onRegisterApp, onUpdateApp, onRotateSecret, onDisableApp, onEnableApp, onDeleteApp, onMapRole, onUnmapRole, onGrantUser, onRevokeUser,
+    onUpdateWebhook, onRotateWebhookSecret, onSignOut,
 }) {
     const { t, i18n } = useTranslation();
     const Link = useLink();
@@ -134,6 +157,12 @@ export default function Index({
                     <div role="alert" className="rounded border-2 border-amber-400 bg-amber-50 p-3 text-sm">
                         <div className="font-medium">{t('appPage.secretOnce')}</div>
                         <code className="mt-1 block break-all rounded bg-white p-2 select-all">{flash.appSecret}</code>
+                    </div>
+                )}
+                {flash.webhookSecret && (
+                    <div role="alert" className="rounded border-2 border-amber-400 bg-amber-50 p-3 text-sm">
+                        <div className="font-medium">{t('appPage.webhookSecretOnce')}</div>
+                        <code className="mt-1 block break-all rounded bg-white p-2 select-all">{flash.webhookSecret}</code>
                     </div>
                 )}
 
@@ -188,6 +217,16 @@ export default function Index({
                             {can.update && <AppForm key={`f${selected.id}:${selected.redirect_uris.join()}:${selected.allowed_scopes.join()}`} app={selected} scopes={scopes} defaultScopes={defaultScopes} errors={errors} onSubmit={onUpdateApp} />}
 
                             {can.update && <Access key={`a${selected.id}`} app={selected} roles={roles} errors={errors} onMapRole={onMapRole} onUnmapRole={onUnmapRole} onGrantUser={onGrantUser} onRevokeUser={onRevokeUser} />}
+
+                            {can.update && (
+                                <Webhook
+                                    key={`w${selected.id}:${selected.webhook_url}`}
+                                    app={selected}
+                                    errors={errors}
+                                    onUpdate={onUpdateWebhook}
+                                    onRotate={onRotateWebhookSecret}
+                                />
+                            )}
 
                             {can.update && (
                                 <section className="space-y-2">

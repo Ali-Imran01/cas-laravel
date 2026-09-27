@@ -1,5 +1,6 @@
 <?php
 
+use App\Domain\Approvals\Models\ApprovalWorkflow;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\Permission\Models\Role;
@@ -23,17 +24,34 @@ it('lists every workflow with its steps', function () {
 
     $this->actingAs($w['admin'])->get('/approvals/workflows')->assertOk()->assertInertia(fn (Assert $p) => $p
         ->component('Approvals/Workflows')->has('workflows', 6)
-        ->has('workflows.0.steps'));
+        ->has('workflows.0.steps')->where('workflows.0.has_handler', true));
 });
 
-it('toggles a workflow on and off and whether apps may submit to it', function () {
+it('toggles a workflow active or inactive', function () {
     $w = approval_world();
     $workflow = workflow('reactivation');
 
-    $this->actingAs($w['admin'])->put("/approvals/workflows/$workflow->id", ['is_active' => false, 'allow_api' => true])->assertSessionHasNoErrors();
+    $this->actingAs($w['admin'])->put("/approvals/workflows/$workflow->id", ['is_active' => false, 'allow_api' => false])->assertSessionHasNoErrors();
 
-    $workflow->refresh();
-    expect($workflow->is_active)->toBeFalse()->and($workflow->allow_api)->toBeTrue();
+    expect($workflow->refresh()->is_active)->toBeFalse();
+});
+
+it('never lets a built-in workflow be opened to connected apps, whoever asks', function () {
+    $w = approval_world();
+    $workflow = workflow('reactivation');
+
+    $this->actingAs($w['admin'])->put("/approvals/workflows/$workflow->id", ['is_active' => true, 'allow_api' => true])->assertSessionHasErrors('allow_api');
+
+    expect($workflow->refresh()->allow_api)->toBeFalse();
+});
+
+it('lets a custom (non-built-in) workflow be opened to connected apps', function () {
+    $w = approval_world();
+    $custom = ApprovalWorkflow::create(['code' => 'ticket_escalation', 'name' => 'Ticket escalation', 'is_active' => true]);
+
+    $this->actingAs($w['admin'])->put("/approvals/workflows/$custom->id", ['is_active' => true, 'allow_api' => true])->assertSessionHasNoErrors();
+
+    expect($custom->refresh()->allow_api)->toBeTrue();
 });
 
 it("changes a step's approver and SLA, clearing whichever id does not apply", function () {

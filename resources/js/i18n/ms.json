@@ -41,6 +41,9 @@
     "access": "Siapa boleh log masuk", "accessHint": "Orang mendapat akses melalui peranan CAS yang dipetakan kepada peranan aplikasi, atau seorang demi seorang. Peranan aplikasi dihantar kepada aplikasi sebagai tuntutan.",
     "noRoles": "Tiada peranan dipetakan.", "noGrants": "Tiada pemberian individu.", "casRole": "Peranan CAS", "appRole": "Peranan aplikasi", "mapRole": "Petakan peranan", "staffId": "ID staf", "expires": "Tamat (pilihan)",
     "grant": "Beri akses", "remove": "Buang", "until": "hingga {{date}}", "danger": "Bukti kelayakan dan status", "rotate": "Putar rahsia", "disable": "Nyahaktif aplikasi", "enable": "Aktifkan aplikasi", "delete": "Padam aplikasi",
+    "webhook": "Webhook", "webhookHint": "CAS akan menghubungi alamat ini apabila permohonan yang dihantar aplikasi melalui API diluluskan, ditolak atau ditarik balik, ditandatangani supaya aplikasi dapat mengesahkan panggilan itu benar.",
+    "webhookUrl": "URL webhook", "webhookSigned": "Rahsia tandatangan telah ditetapkan.", "webhookUnsigned": "Belum ada rahsia tandatangan.", "rotateWebhookSecret": "Rahsia tandatangan baharu",
+    "webhookSecretOnce": "Salin rahsia tandatangan webhook sekarang: ia hanya dipaparkan sekali.",
     "yes": "Ya, teruskan", "cancel": "Batal",
     "confirm": { "rotate": "Cipta rahsia baharu untuk {{name}}? Rahsia lama berhenti berfungsi serta-merta.", "disable": "Nyahaktifkan {{name}}? Semua orang dilog keluar dan token dibatalkan.", "delete": "Padam {{name}} selama-lamanya?" },
     "env": { "production": "Pengeluaran", "staging": "Pementasan", "sandbox": "Kotak pasir" },
@@ -122,7 +125,7 @@
     }
   },
   "approvalsWorkflows": {
-    "title": "Aliran kerja kelulusan", "active": "Aktif", "allowApi": "Aplikasi bersambung boleh menghantar ke sini", "save": "Simpan",
+    "title": "Aliran kerja kelulusan", "active": "Aktif", "allowApi": "Aplikasi bersambung boleh menghantar ke sini", "builtinNoApi": "Aliran kerja terbina dalam tidak boleh dibuka kepada aplikasi bersambung.", "save": "Simpan",
     "step": "Peringkat {{level}}: {{name}}", "approverType": "Siapa yang meluluskan", "role": "Peranan", "person": "Orang", "slaHours": "Jam untuk membuat keputusan", "saveStep": "Simpan",
     "types": { "role": "Satu peranan", "user": "Orang tertentu", "unit_head": "Ketua unit", "division_head": "Ketua bahagian" }
   },

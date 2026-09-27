@@ -10,3 +10,6 @@ Artisan::command('inspire', function () {
 
 // Time-limited app access ends on its date even though refresh tokens outlive the access token.
 Schedule::command('apps:revoke-expired')->hourly();
+
+// A request left pending past its SLA gets its approvers one reminder each.
+Schedule::command('approvals:check-sla')->hourly();

@@ -65,6 +65,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/apps/{app}/roles/{role}', [ApplicationController::class, 'unmapRole'])->name('apps.roles.unmap');
         Route::post('/apps/{app}/users', [ApplicationController::class, 'grantUser'])->name('apps.users.grant');
         Route::delete('/apps/{app}/users/{user}', [ApplicationController::class, 'revokeUser'])->name('apps.users.revoke');
+        Route::put('/apps/{app}/webhook', [ApplicationController::class, 'updateWebhook'])->name('apps.webhook.update');
+        Route::post('/apps/{app}/webhook/secret', [ApplicationController::class, 'rotateWebhookSecret'])->name('apps.webhook.secret');
 
         Route::get('/audit', [AuditController::class, 'index'])->name('audit.index');
         Route::get('/audit/export', [AuditController::class, 'export'])->name('audit.export');

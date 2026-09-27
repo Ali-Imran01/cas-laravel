@@ -6,9 +6,12 @@ use App\Domain\Apps\Actions\AppAccess;
 use App\Domain\Apps\Actions\DeleteApplication;
 use App\Domain\Apps\Actions\RegisterApplication;
 use App\Domain\Apps\Actions\RotateClientSecret;
+use App\Domain\Apps\Actions\RotateWebhookSecret;
 use App\Domain\Apps\Actions\SetApplicationStatus;
+use App\Domain\Apps\Actions\SetWebhook;
 use App\Domain\Apps\Actions\UpdateApplication;
 use App\Domain\Apps\Models\Application;
+use App\Domain\Apps\Rules\RedirectUri;
 use App\Domain\Identity\Models\User;
 use App\Domain\Sso\Issuer;
 use App\Http\Controllers\Controller;
@@ -143,6 +146,24 @@ class ApplicationController extends Controller
         return back()->with('status', __('cas.apps.access_saved'));
     }
 
+    public function updateWebhook(Request $request, Application $app, SetWebhook $set): RedirectResponse
+    {
+        $this->authorize('update', Application::class);
+        $data = $request->validate(['webhook_url' => ['nullable', 'string', 'max:255', new RedirectUri]]);
+
+        $secret = $set($app, $data['webhook_url'] ?? null);
+        $redirect = back()->with('status', __($data['webhook_url'] === null ? 'cas.apps.webhook_cleared' : 'cas.apps.webhook_saved'));
+
+        return $secret === null ? $redirect : $redirect->with('webhookSecret', $secret);
+    }
+
+    public function rotateWebhookSecret(Application $app, RotateWebhookSecret $rotate): RedirectResponse
+    {
+        $this->authorize('update', Application::class);
+
+        return back()->with('status', __('cas.apps.webhook_secret_rotated'))->with('webhookSecret', $rotate($app));
+    }
+
     /** @return list<array{name: string, description: string}> */
     private function scopeCatalog(): array
     {
@@ -172,6 +193,8 @@ class ApplicationController extends Controller
             'client_id' => $client->getKey(),
             'secret_rotated_at' => $app->secret_rotated_at?->toIso8601String(),
             'owner' => $app->owner?->name,
+            'webhook_url' => $app->webhook_url,
+            'webhook_configured' => $app->webhook_secret !== null,
             'roles' => $app->roles()->orderBy('name')->get()->map(fn (Role $r) => [
                 'id' => $r->id, 'name' => $r->name, 'app_role' => $r->getRelation('pivot')->getAttribute('app_role'),
             ])->all(),

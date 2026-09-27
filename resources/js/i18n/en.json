@@ -41,6 +41,9 @@
     "access": "Who can sign in", "accessHint": "People get access through a CAS role mapped to an app role, or one by one. The app role is sent to the app as a claim.",
     "noRoles": "No roles mapped.", "noGrants": "No individual grants.", "casRole": "CAS role", "appRole": "App role", "mapRole": "Map role", "staffId": "Staff ID", "expires": "Expires (optional)",
     "grant": "Grant access", "remove": "Remove", "until": "until {{date}}", "danger": "Credentials and status", "rotate": "Rotate secret", "disable": "Disable app", "enable": "Enable app", "delete": "Delete app",
+    "webhook": "Webhook", "webhookHint": "CAS calls this address once a request the app submitted through the API is approved, rejected or cancelled, signed so the app can tell the call is genuine.",
+    "webhookUrl": "Webhook URL", "webhookSigned": "Signing secret set.", "webhookUnsigned": "No signing secret yet.", "rotateWebhookSecret": "New signing secret",
+    "webhookSecretOnce": "Copy the webhook signing secret now: it is shown only once.",
     "yes": "Yes, continue", "cancel": "Cancel",
     "confirm": { "rotate": "Create a new secret for {{name}}? The old one stops working immediately.", "disable": "Disable {{name}}? Everyone is signed out of it and its tokens are revoked.", "delete": "Delete {{name}} for good?" },
     "env": { "production": "Production", "staging": "Staging", "sandbox": "Sandbox" },
@@ -122,7 +125,7 @@
     }
   },
   "approvalsWorkflows": {
-    "title": "Approval workflows", "active": "Active", "allowApi": "Connected apps may submit to this", "save": "Save",
+    "title": "Approval workflows", "active": "Active", "allowApi": "Connected apps may submit to this", "builtinNoApi": "Built-in workflows can never be opened to connected apps.", "save": "Save",
     "step": "Level {{level}}: {{name}}", "approverType": "Who approves", "role": "Role", "person": "Person", "slaHours": "Hours to decide", "saveStep": "Save",
     "types": { "role": "A role", "user": "A specific person", "unit_head": "Head of the unit", "division_head": "Head of the division" }
   },
